@@ -43,7 +43,7 @@ public class VCFRead {
         VCFHeader header = (VCFHeader) reader.getHeader();
         System.out.println(header);
         /**
-         * loop over each Variation
+         * loop over each Variation.
          */
         Iterator<VariantContext> it = reader.iterator();
         while (it.hasNext()) {
