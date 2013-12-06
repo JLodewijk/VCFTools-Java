@@ -8,7 +8,7 @@ import java.io.IOException;
 
 /**
  *
- * @author Sergio Bondietti
+ * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class Settings {
 
@@ -20,7 +20,6 @@ public class Settings {
     
     /**
      * Load settings files into memory
-     * @author Sergio Bondietti
      * @throws IOException
      */
     public void load() throws IOException {
@@ -29,7 +28,6 @@ public class Settings {
 
     /**
      * Save settings from memory to file
-     * @author Sergio Bondietti
      * @throws IOException
      */
     public void save() throws IOException {

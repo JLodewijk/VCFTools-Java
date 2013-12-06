@@ -8,7 +8,7 @@ package nl.bioinf.vcftools.settings;
 
 /**
  *
- * @author Sergio Bondietti
+ * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class SettingsSiteFilters {
     
