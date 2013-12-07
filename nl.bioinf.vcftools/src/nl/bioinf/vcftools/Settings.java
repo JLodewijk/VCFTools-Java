@@ -21,7 +21,7 @@ public class Settings {
     /* Variables for basic functioning of the Settings class */
     
     /** Creates static object instance of class */
-    private static Settings instance;
+    private static Settings instance = new Settings();
     /** XML input file */
     private String configFile;
     /** commons configuration XMLConfiguration */
