@@ -5,23 +5,30 @@
  */
 
 package nl.bioinf.vcftools;
-import nl.bioinf.vcftools.Settings;
+
 /**
  *
  * @author mhroelfes
  */
 public class NlBioinfVcftools {
+    private Settings settings;
 
   /**
    * @param args the command line arguments
    */
   public static void main(String[] args) {
     // TODO code application logic here
+      
       Cli c = new Cli();
       c.parse(args);
+       settings= c.getSettings();
       
 //      System.out.println(settings);
-       System.out.println(Settings.getInstance().getInputFile());
+//       System.out.println(Settings.getInstance().getInputFile());
   }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
   
 }

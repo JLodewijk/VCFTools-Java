@@ -15,15 +15,18 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.ParseException;
-import nl.bioinf.vcftools.Settings;
 
 /**
  *
  * @author aponnudurai
  */
 public class Cli{
+private Settings settings;
+
+
 
        public void parse(String[] args){
+           settings = new Settings();
            
         Options opt = defineOptions();
         CommandLineParser parser = new BasicParser();
@@ -42,14 +45,14 @@ public class Cli{
        
        
        }
+
+    public Settings getSettings() {
+        return settings;
+    }
        
        public void usages(){System.out.println("help function");}
-       
-       
-       
-       
-       
-       public Options defineOptions(){
+
+ public Options defineOptions(){
        Options opt = new Options();
                opt.addOption("h","help",false, "Help function");
 //         opt.addOption("<oneLetterOption>","<multipleLetterOption>",true,"description"); // true = can accept arguments, false = can not accept arguments
@@ -126,9 +129,10 @@ public class Cli{
         if(cmd.hasOption("vcf")){
             
             
-//            settings.setInputFile(cmd.getOptionValue("vcf"));}
-            Settings.getInstance().setInputFile(cmd.getOptionValue("vcf"));
-           
+            settings.setInputFile(cmd.getOptionValue("vcf"));}
+            
+//            Settings.getInstance().setInputFile(cmd.getOptionValue("vcf"));
+//            System.out.println(Settings.getInstance().getInputFile());
 //        if(cmd.hasOption("gvcf")){settings.setGzipped(true);}
 //        if(cmd.hasOption("out")){settings.setOutputFile(true);}
 //        if(cmd.hasOption("chr")){
@@ -220,7 +224,7 @@ public class Cli{
 
         
     }
-}
+
         
     
 
