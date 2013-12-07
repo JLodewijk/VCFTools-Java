@@ -21,7 +21,7 @@ public class NlBioinfVcftools {
       
       Cli c = new Cli();
       c.parse(args);
-//       settings= c.getSettings();
+//       settings = c.getSettings();
       
 //      System.out.println(settings);
 //       System.out.println(Settings.getInstance().getInputFile());
