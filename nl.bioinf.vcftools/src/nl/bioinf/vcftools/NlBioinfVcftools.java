@@ -5,7 +5,7 @@
  */
 
 package nl.bioinf.vcftools;
-
+import nl.bioinf.vcftools.Settings;
 /**
  *
  * @author mhroelfes
@@ -17,6 +17,11 @@ public class NlBioinfVcftools {
    */
   public static void main(String[] args) {
     // TODO code application logic here
+      Cli c = new Cli();
+      c.parse(args);
+      
+//      System.out.println(settings);
+       System.out.println(Settings.getInstance().getInputFile());
   }
   
 }
