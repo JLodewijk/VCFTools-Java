@@ -9,7 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.XMLConfiguration;
 /**
  *
  * @author Sergio Bondietti <sergio@bondietti.nl>
@@ -17,31 +18,30 @@ import java.util.logging.Logger;
 public class Settings {
 
     private static Settings instance;
-    private SettingsBasic settingsBasic;
-    private SettingsSiteFilters settingsSiteFilters;
-    private SettingsIndividualFilters settingsIndividualFilters;
+    private String configFile;
+    private XMLConfiguration config;
 
     /**
      * Constructor for the settings class
      */
     public Settings() {
-        settingsBasic = new SettingsBasic();
-        settingsSiteFilters = new SettingsSiteFilters();
-        settingsIndividualFilters = new SettingsIndividualFilters();
-        try {
-            this.load();
-        } catch (IOException ex) {
-            Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.configFile = "defaultConfig.xml";
+        this.load();
     }
     
-    
+    public Settings(String configFile) {
+        this.configFile = configFile;
+        this.load();
+    }    
     /**
      * Load settings files into memory
-     * @throws IOException
      */
-    public void load() throws IOException {
-
+    public void load() {
+        try {
+            this.config = new XMLConfiguration("tables.xml");
+        } catch (ConfigurationException ex) {
+            Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -54,18 +54,6 @@ public class Settings {
 
     public static Settings getInstance() {
         return instance;
-    }
-
-    public SettingsBasic getSettingsBasic() {
-        return settingsBasic;
-    }
-
-    public SettingsSiteFilters getSettingsSiteFilters() {
-        return settingsSiteFilters;
-    }
-
-    public SettingsIndividualFilters getSettingsIndividualFilters() {
-        return settingsIndividualFilters;
     }
 
 }
