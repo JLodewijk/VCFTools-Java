@@ -20,9 +20,9 @@ public class Settings {
 
     /* Variables for basic functioning of the Settings class */
     
-    /** XML input file */
+    /* XML input file */
     private String configFile;
-    /** commons configuration XMLConfiguration */
+    /* commons configuration XMLConfiguration */
     private XMLConfiguration config;
 
     /* VcfTools settings */
@@ -91,7 +91,7 @@ public class Settings {
     private boolean phased;
     private int maxIndv;
     
-    /* statistics */
+    /* Statistics */
     
     private boolean count;
     private boolean freq;
