@@ -11,7 +11,7 @@ package nl.bioinf.vcftools;
  * @author mhroelfes
  */
 public class NlBioinfVcftools {
-    private Settings settings;
+    private static Settings settings;
 
   /**
    * @param args the command line arguments
@@ -21,9 +21,9 @@ public class NlBioinfVcftools {
       
       Cli c = new Cli();
       c.parse(args);
-//       settings = c.getSettings();
+       settings = c.getSettings();
       
-//      System.out.println(settings);
+      System.out.println(settings.getInputFile());
 //       System.out.println(Settings.getInstance().getInputFile());
   }
 
