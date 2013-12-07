@@ -20,8 +20,6 @@ public class Settings {
 
     /* Variables for basic functioning of the Settings class */
     
-    /** Creates static object instance of class */
-    private static Settings instance = new Settings();
     /** XML input file */
     private String configFile;
     /** commons configuration XMLConfiguration */
@@ -99,6 +97,7 @@ public class Settings {
     private boolean freq;
     private boolean depth;
     
+    
     /**
      * This constructor will load defaultConfig.xml
      */
@@ -144,10 +143,6 @@ public class Settings {
         } catch (ConfigurationException ex) {
             Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public static Settings getInstance() {
-        return instance;
     }
 
     /*
