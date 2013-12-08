@@ -19,22 +19,18 @@ import org.apache.commons.configuration.XMLConfiguration;
 public class Settings {
 
     /* Variables for basic functioning of the Settings class */
-    
     /* XML input file */
     private String configFile;
     /* commons configuration XMLConfiguration */
     private XMLConfiguration config;
 
     /* VcfTools settings */
-    
     /* Basic Settings */
-    
     private String inputFile;
     private boolean gzipped;
     private boolean outputFile;
-    
+
     /* Site Filters */
-    
     private ArrayList<String> chr;
     private ArrayList<String> notChr;
     private int fromBp;
@@ -78,9 +74,8 @@ public class Settings {
     private String mask;
     private String invertMask;
     private int maskMin;
-    
+
     /* Individual filters */
-    
     private ArrayList<String> keepIndv;
     private String keepIndvFile;
     private ArrayList<String> removeIndv;
@@ -90,16 +85,14 @@ public class Settings {
     private float mind;
     private boolean phased;
     private int maxIndv;
-    
+
     /* Statistics */
-    
     private boolean count;
     private boolean freq;
     private boolean depth;
-    
-    
+
     /**
-     * This constructor will load defaultConfig.xml
+     * This constructor will set defaultConfig.xml as configuration file and load it.
      */
     public Settings() {
         //this.configFile = "defaultConfig.xml";
@@ -107,7 +100,7 @@ public class Settings {
     }
 
     /**
-     * This constructor loads the given filename configuration
+     * This constructor set the given filename as configuration and load it.
      *
      * @param filename Filename to set as configuration source
      */
@@ -117,12 +110,21 @@ public class Settings {
     }
 
     /**
-     * Load settings files into memory
+     * Load in constructor defined settings file into memory.
      */
     public void load() {
+        this.load(this.configFile);
+    }
+
+    /**
+     * Load given settings file into memory.
+     *
+     * @param filename settings XML filename.
+     */
+    public void load(String filename) {
         try {
-            this.config = new XMLConfiguration(this.configFile);
-            this.config.setAutoSave(false);
+            this.config = new XMLConfiguration(filename);
+            this.config.setAutoSave(false); // Disable auto save because we want to do this in one run.
 
             // add other load logic here
         } catch (ConfigurationException ex) {
@@ -132,22 +134,22 @@ public class Settings {
     }
 
     /**
-     * Save settings from memory to file
+     * Save settings from memory to file.
      *
      * @param filename Filename to save to.
      * @throws IOException
      */
     public void save(String filename) throws IOException {
         try {
+            // add other save logic here
+
             this.config.save(filename);
         } catch (ConfigurationException ex) {
             Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /*
-    Getters and setters for the VCFTools settings
-     */
+    /* Getters and setters for the VCFTools settings */
     public String getInputFile() {
         return inputFile;
     }
@@ -595,8 +597,5 @@ public class Settings {
     public void setDepth(boolean depth) {
         this.depth = depth;
     }
-    
-    
-    
-    
+
 }
