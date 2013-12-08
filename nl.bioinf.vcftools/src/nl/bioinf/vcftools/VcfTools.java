@@ -8,8 +8,10 @@ package nl.bioinf.vcftools;
 /**
  *
  * @author mhroelfes
+ * @author Sergio Bondietti <sergio@bondietti.nl>
+ * @author aponnudurai
  */
-public class NlBioinfVcftools {
+public class VcfTools {
 
     /**
      * @param args the command line arguments
