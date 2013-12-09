@@ -128,7 +128,7 @@ public class SiteFilters {
          * variant_file::filter_sites_by_mean_depth(double min_mean_depth,
          * double max_mean_depth) in variant_file_filters.cpp MeanDept would
          * require a mean sum that counts all the means given in the file.
-         * Another requirement of MeanDept is it needs a Number of Individuals
+         * Another requirement of MeanDept is it needs a Number of Individual
          * (lines in a file minus the header and empty lines). Once all the
          * depts are added to the mean sum, a mean can be calculated using sum/
          * individuals. After this each mean can be compared.
