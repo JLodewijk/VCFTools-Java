@@ -11,7 +11,7 @@ import java.io.IOException;
  *
  * @author Marco Roelfes
  */
-public class ReadVcf {
+public class VcfReader {
 
     /**
      * @author Marco Roelfes
@@ -20,7 +20,7 @@ public class ReadVcf {
      */
     public static void main(String[] args) throws IOException {
 
-        ReadVcf read = new ReadVcf();
+        VcfReader read = new VcfReader();
         read.readVcfLine("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
     }
 
