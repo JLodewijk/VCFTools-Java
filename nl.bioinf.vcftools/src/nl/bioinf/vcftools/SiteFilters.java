@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.bioinf.vcftools;
 
 import static java.util.Arrays.asList;
@@ -12,15 +11,27 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
 
 /**
  *
- * This Java class contains numerous test function for Site filtering.
- * If you want to run this file, than you need to call in a different program (ReadVcf.java) this program.  
- * You can do this by: SiteFilters site = new SiteFilters(); and site.*insert function name*( vcf.getNextIter(file),*insert other parameters*);
+ * This Java class contains numerous test function for Site filtering. If you
+ * want to run this file, than you need to call in a different program
+ * (ReadVcf.java) this program. You can do this by: SiteFilters site = new
+ * SiteFilters(); and site.*insert function name*( vcf.getNextIter(file),*insert
+ * other parameters*);
  *
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  * @url: http://vcftools.sourceforge.net/options.html#site_filter
  */
 public class SiteFilters {
 
+    /**
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param chromosome User defined chromosome name, is capable of supporting
+     * multiple chromosomes.
+     * @param args Acts as a flag to activate either the IncludeChromosome
+     * (true) or the ExcludeChromosome (false).
+     *
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
     void Chromosome(VariantContext line, String chromosome, boolean args) {
         //Multiple chromosomes support. Example: "22,23" becomes [22, 23] as a array list.
         List<String> chromosomes = asList(chromosome.split(","));
@@ -41,6 +52,16 @@ public class SiteFilters {
         }
     }
 
+    /**
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param bp User defined base pair number, is used for the options ToBp and
+     * FromBp.
+     * @param args Acts as a flag to activate either the FromBp (true) or the
+     * ToBp (false).
+     *
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
     void Bp(VariantContext line, int bp, boolean args) {
         //Args true only if option FromBp is given.
         if (args == true) {
@@ -60,6 +81,14 @@ public class SiteFilters {
         }
     }
 
+    /**
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param minQ User defined minimal quality number, determines how low the
+     * quality score can be before it is being filterd.
+     *
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
     void MinimalQuality(VariantContext line, double minQ) {
         /*
          * To compare two doubles you need
@@ -80,6 +109,14 @@ public class SiteFilters {
 
     }
 
+    /**
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param args Acts as a flag to activate either the keep-only-indels (true)
+     * or the remove-indels (false).
+     *
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
     void Indel(VariantContext line, boolean args) {
         //--keep-only-indels
         if (args == true) {
@@ -98,6 +135,18 @@ public class SiteFilters {
         }
     }
 
+    /**
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param fileContent contains digits ranging from 0 to 9, indication
+     * positions which could be potentially masked.
+     * @param mask User defined digit which determines what position would be
+     * kept.
+     * @param inverse Acts as a flag to either inverse the fileContent (false)
+     * or leave it as it is (true).
+     *
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
     void mask(VariantContext line, String fileContent, String mask, boolean inverse) {
         /*
          * Mask needs to have a fasta file containing digits, these digits serve
@@ -121,6 +170,13 @@ public class SiteFilters {
         }
     }
 
+    /**
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param NIndividuals Numbers of all the VCF SNP's.
+     * 
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
     void MeanDept(VariantContext line, int NIndividuals) {
         /*
          *
@@ -140,25 +196,35 @@ public class SiteFilters {
          *
          */
     }
+
+    /**
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param all Acts as flag to either remove all the filtered (true) or
+     * remove specific filters (false).
+     * @param keep Acts as flag to either keep a certain filter condition (true)
+     * or remove a certain filter condition (false).
+     *
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
     void FilterStatus(VariantContext line, boolean all, boolean keep) {
-	//If you would like to keep only the sites that pass all filters use the --remove-filtered-all option. 
-	if (all == true) {
-	    //If a filter has not passed, flag it for removal
-	    if(line.isNotFiltered() == false){
-	    System.out.println("Line: "+line+" is rejected since it has not passed: "+line.getFilters());
-	    }
+        //If you would like to keep only the sites that pass all filters use the --remove-filtered-all option. 
+        if (all == true) {
+            //If a filter has not passed, flag it for removal
+            if (line.isNotFiltered() == false) {
+                System.out.println("Line: " + line + " is rejected since it has not passed: " + line.getFilters());
+            }
 
-	}//User want to keep or remove a specific filter condition.
-	else {
-	    //If you want to keep a certained filter condition.
-	    if (keep == true) {
+        }//User want to keep or remove a specific filter condition.
+        else {
+            //If you want to keep a certain  filter condition.
+            if (keep == true) {
 
-	    }//Else you want to remove a certained filter condition.
-	    else {
+            }//Else you want to remove a certain  filter condition.
+            else {
 
-	    }
+            }
 
-	}
+        }
     }
 }
-
