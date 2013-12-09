@@ -174,7 +174,7 @@ public class SiteFilters {
      *
      * @param line VCF snip line that will be analysed.
      * @param NIndividuals Numbers of all the VCF SNP's.
-     * 
+     *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     void MeanDept(VariantContext line, int NIndividuals) {
@@ -204,10 +204,12 @@ public class SiteFilters {
      * remove specific filters (false).
      * @param keep Acts as flag to either keep a certain filter condition (true)
      * or remove a certain filter condition (false).
+     * @param status User defined condition that either keeps or removes
+     * filters based on that condition.
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void FilterStatus(VariantContext line, boolean all, boolean keep) {
+    void FilterStatus(VariantContext line, boolean all, boolean keep, String status) {
         //If you would like to keep only the sites that pass all filters use the --remove-filtered-all option. 
         if (all == true) {
             //If a filter has not passed, flag it for removal
@@ -215,16 +217,21 @@ public class SiteFilters {
                 System.out.println("Line: " + line + " is rejected since it has not passed: " + line.getFilters());
             }
 
-        }//User want to keep or remove a specific filter condition.
+        }//User want to keep or remove a specific filter status.
         else {
-            //If you want to keep a certain  filter condition.
+            //If you want to keep a certain  filter status.
             if (keep == true) {
+                System.out.println(line.getFilters());
+                if (!line.getFilters().contains(status)) {
+                    System.out.println("Could not find " + status + " in " + line.getFilters() + " as a result it is marked for removal");
+                }
 
-            }//Else you want to remove a certain  filter condition.
+            }//Else you want to remove a certain  filter status.
             else {
-
+                if (line.getFilters().contains(status)) {
+                    System.out.println("Found " + status + " in " + line.getFilters() + " as a result it is marked for removal");
+                }
             }
-
         }
     }
 }
