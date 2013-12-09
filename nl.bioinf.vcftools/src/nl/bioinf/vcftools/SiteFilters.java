@@ -12,7 +12,7 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
 
 /**
  *
- * This java class contains numerous test function for Site filtering.
+ * This Java class contains numerous test function for Site filtering.
  * If you want to run this file, than you need to call in a different program (ReadVcf.java) this program.  
  * You can do this by: SiteFilters site = new SiteFilters(); and site.*insert function name*( vcf.getNextIter(file),*insert other parameters*);
  *
@@ -22,7 +22,7 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
 public class SiteFilters {
 
     void Chromosome(VariantContext line, String chromosome, boolean args) {
-        //Mulitpul chromosoms support. Example: "22,23" becomes [22, 23] as a array lsit
+        //Multiple chromosomes support. Example: "22,23" becomes [22, 23] as a array list.
         List<String> chromosomes = asList(chromosome.split(","));
         //If option IncludeChromosome is given then args is true.
         if (args == true) {
@@ -42,7 +42,7 @@ public class SiteFilters {
     }
 
     void Bp(VariantContext line, int bp, boolean args) {
-        //Args true only if option FromBp is given
+        //Args true only if option FromBp is given.
         if (args == true) {
             if (bp > line.getStart()) {
                 System.out.println("Line is rejected based on: " + line.getStart() + " since it less then " + bp);
@@ -61,15 +61,13 @@ public class SiteFilters {
     }
 
     void MinimalQuality(VariantContext line, double minQ) {
-        /**
-         *
+        /*
          * To compare two doubles you need
          * Double.compare(line.getPhredScaledQual(),minQ), after both doubles
          * are compared then it return a int. It can be -1 if
          * line.getPhredScaledQual() is less then minQ. Or 1 if
-         * line.getPhredScaledQual() is greater then minQ . Finaly it can be 0
+         * line.getPhredScaledQual() is greater then minQ . Finally it can be 0
          * if there are equal to each other.
-         *
          */
         int MinimalQuality = Double.compare((double) line.getPhredScaledQual(), minQ);
         if (MinimalQuality > 0) {
@@ -101,14 +99,11 @@ public class SiteFilters {
     }
 
     void mask(VariantContext line, String fileContent, String mask, boolean inverse) {
-        /**
+        /*
          * Mask needs to have a fasta file containing digits, these digits serve
-         * to mask certained entries in the chromosome (disqualify vcf line).
+         * to mask certain entries in the chromosome (disqualify vcf line).
          * Also mask would need at a later date a fasta file reader. This is not
          * included yet
-         *
-         * 
-         * 
          */
         if (inverse == false) {
             String pos = fileContent.substring(line.getStart(), line.getEnd() + 1);
@@ -127,9 +122,9 @@ public class SiteFilters {
     }
 
     void MeanDept(VariantContext line, int NIndividuals) {
-        /**
+        /*
          *
-         * Note: this is baded on the void
+         * Note: this is based on the void
          * variant_file::filter_sites_by_mean_depth(double min_mean_depth,
          * double max_mean_depth) in variant_file_filters.cpp MeanDept would
          * require a mean sum that counts all the means given in the file.
@@ -144,6 +139,26 @@ public class SiteFilters {
          * Data: NIndividuals consits out of 669 lines in the regio.txt
          *
          */
+    }
+    void FilterStatus(VariantContext line, boolean all, boolean keep) {
+	//If you would like to keep only the sites that pass all filters use the --remove-filtered-all option. 
+	if (all == true) {
+	    //If a filter has not passed, flag it for removal
+	    if(line.isNotFiltered() == false){
+	    System.out.println("Line: "+line+" is rejected since it has not passed: "+line.getFilters());
+	    }
+
+	}//User want to keep or remove a specific filter condition.
+	else {
+	    //If you want to keep a certained filter condition.
+	    if (keep == true) {
+
+	    }//Else you want to remove a certained filter condition.
+	    else {
+
+	    }
+
+	}
     }
 }
 
