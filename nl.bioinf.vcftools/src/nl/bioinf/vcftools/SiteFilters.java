@@ -204,12 +204,12 @@ public class SiteFilters {
      * remove specific filters (false).
      * @param keep Acts as flag to either keep a certain filter condition (true)
      * or remove a certain filter condition (false).
-     * @param status User defined condition that either keeps or removes
+     * @param condition User defined condition that either keeps or removes
      * filters based on that condition.
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void FilterStatus(VariantContext line, boolean all, boolean keep, String status) {
+    void FilterStatus(VariantContext line, boolean all, boolean keep, String condition) {
         //If you would like to keep only the sites that pass all filters use the --remove-filtered-all option. 
         if (all == true) {
             //If a filter has not passed, flag it for removal
@@ -217,21 +217,61 @@ public class SiteFilters {
                 System.out.println("Line: " + line + " is rejected since it has not passed: " + line.getFilters());
             }
 
-        }//User want to keep or remove a specific filter status.
+        }//User want to keep or remove a specific filter condition.
         else {
-            //If you want to keep a certain  filter status.
+            //If you want to keep a certain  filter condition.
             if (keep == true) {
                 System.out.println(line.getFilters());
-                if (!line.getFilters().contains(status)) {
-                    System.out.println("Could not find " + status + " in " + line.getFilters() + " as a result it is marked for removal");
+                if (!line.getFilters().contains(condition)) {
+                    System.out.println("Could not find " + condition + " in " + line.getFilters() + " as a result it is marked for removal");
                 }
 
-            }//Else you want to remove a certain  filter status.
+            }//Else you want to remove a certain  filter condition.
             else {
-                if (line.getFilters().contains(status)) {
-                    System.out.println("Found " + status + " in " + line.getFilters() + " as a result it is marked for removal");
+                if (line.getFilters().contains(condition)) {
+                    System.out.println("Found " + condition + " in " + line.getFilters() + " as a result it is marked for removal");
                 }
             }
         }
     }
+
+    /**
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param NAllels User defined int, determines the range.
+     * @param args Acts as flag to either --max-alleles (true) or --min-alleles
+     * (false).
+     *
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
+    public void OneAllelicRange(VariantContext line, int NAllels, boolean args) {
+        if (args == true) {
+            if (line.getNAlleles() > NAllels) {
+                System.out.println("Allel " + line.getNAlleles() + " is to high. So it is marked for removal.");
+            }
+        } else {
+            if (line.getNAlleles() < NAllels) {
+                System.out.println("Allel " + line.getNAlleles() + " is to low. So it is marked for removal.");
+            }
+        }
+    }
+
+    /**
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param MinAllels User defined int, determines the range of the option
+     * --min-alleles.
+     * @param MaxAllels User defined int, determines the range of the option
+     * --max-alleles.
+     *
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
+    public void BothAllelicRanges(VariantContext line, int MinAllels, int MaxAllels) {
+        //There are circumstances were the user will use both options, I cannot think of a other way to accommodate this.
+        if (line.getNAlleles() < MinAllels | line.getNAlleles() > MaxAllels) {
+            System.out.println("Allel " + line.getNAlleles() + " is either to small or to high. So it is marked for removal.");
+        }
+
+    }
+
 }
