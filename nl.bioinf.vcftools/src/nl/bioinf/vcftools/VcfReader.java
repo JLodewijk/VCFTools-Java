@@ -6,6 +6,9 @@
 package nl.bioinf.vcftools;
 
 import java.io.IOException;
+import org.broadinstitute.variant.variantcontext.Genotype;
+import org.broadinstitute.variant.variantcontext.GenotypesContext;
+import org.broadinstitute.variant.variantcontext.VariantContext;
 
 /**
  *
@@ -36,8 +39,17 @@ public class VcfReader {
         Vcf vcf = new Vcf(file);
 
         //while vcf file has next iteration get next iteration
-        while (vcf.hasNextIter(file)) {
-            System.out.println(vcf.getNextIter(file));
+        while (vcf.hasNextIter(file)){ 
+            //get next line
+            VariantContext nextLine = vcf.getNextIter(file);
+            System.out.println(nextLine.getAlternateAlleles());
+            VariantContext nextLine2 = vcf.getNextIter(file);
+            System.out.println(nextLine2.getAllele("C"));
+            VariantContext nextLine3 = vcf.getNextIter(file);
+            Genotype genotypes = nextLine.getGenotype(0);
+            System.out.println(genotypes.getAlleles());
+            
+            break;
         }
         
         return null;
