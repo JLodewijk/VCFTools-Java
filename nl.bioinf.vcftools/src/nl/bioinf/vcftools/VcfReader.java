@@ -24,7 +24,7 @@ public class VcfReader {
     public static void main(String[] args) throws IOException {
 
         VcfReader read = new VcfReader();
-        read.readVcfLine("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
+        read.readVcfLine("/share/home/sbondietti/Dropbox/Thema10/VCF/region.txt");
     }
 
     /**
@@ -43,11 +43,11 @@ public class VcfReader {
             //get next line
             VariantContext nextLine = vcf.getNextIter(file);
             System.out.println(nextLine.getAlternateAlleles());
-            VariantContext nextLine2 = vcf.getNextIter(file);
-            System.out.println(nextLine2.getAllele("C"));
-            VariantContext nextLine3 = vcf.getNextIter(file);
-            Genotype genotypes = nextLine.getGenotype(0);
-            System.out.println(genotypes.getAlleles());
+//            VariantContext nextLine2 = vcf.getNextIter(file);
+//            System.out.println(nextLine2.getAllele("C"));
+//            VariantContext nextLine3 = vcf.getNextIter(file);
+//            Genotype genotypes = nextLine.getGenotype(0);
+//            System.out.println(genotypes.getAlleles());
             
             break;
         }

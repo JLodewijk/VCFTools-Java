@@ -14,8 +14,8 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
 import org.broadinstitute.variant.vcf.VCFCodec;
 
 /**
- *
  * @author mhroelfes
+ * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class Vcf {
     
@@ -26,7 +26,6 @@ public class Vcf {
 
     /**
      * defines reader and iterator
-     * @author Marco Roelfes
      * @param file vcf input file
      * @throws IOException
      */
@@ -39,18 +38,20 @@ public class Vcf {
 
     /**
      * return every iteration
-     * @author Marco Roelfes
      * @param file
      * @return
      * @throws IOException
      */
+//    public VcfLine getNextIter(String file) throws IOException {
+//        return new VcfLine(iter.next());
+//    }
+
     public VariantContext getNextIter(String file) throws IOException {
         return iter.next();
     }
-
+    
     /**
      * checks if next iteration exists
-     * @author  Marco Roelfes
      * @param file
      * @return
      * @throws IOException
