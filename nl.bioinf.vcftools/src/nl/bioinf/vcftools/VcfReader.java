@@ -13,11 +13,11 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
 /**
  *
  * @author Marco Roelfes
+ * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class VcfReader {
 
     /**
-     * @author Marco Roelfes
      * @param args
      * @throws IOException
      */
@@ -30,7 +30,6 @@ public class VcfReader {
     /**
      * Reads VCF line for line while file has next line
      *
-     * @author Marco Roelfes
      * @param file
      * @return
      * @throws IOException
