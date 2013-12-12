@@ -292,15 +292,28 @@ public class SiteFilters {
      * @param snps List<String>, contains either the data from --snp or the
      * –-snps file. Even if --snp is a single string it still needs to be given
      * as an ArrayList
+     * @param args Acts as flag to either include SNP(s) with matching ID (true)
+     * or exclude SNP(s) with matching ID.
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    public void SNPs(VariantContext line, List<String> snps) {
-        if (snps.contains(line.getID())) {
-            System.out.println("Line is approved based on: " + line.getID() + " since it's in " + snps);
-        } else {
-            System.out.println("Line is rejected based on: " + line.getID() + " since it's not in " + snps);
-        }
+    public void SNPs(VariantContext line, List<String> snps, boolean args) {
+        //Will include SNPs with matching ID
+        if (args == true) {
+            System.out.println("In true");
+            if (snps.contains(line.getID())) {
+                System.out.println("Line is approved based on: " + line.getID() + " since it's in " + snps);
+            } else {
+                System.out.println("Line is rejected based on: " + line.getID() + " since it's not in " + snps);
+            }
 
+        }//Will exclude SNPs with matching ID 
+        else {
+            if (snps.contains(line.getID())) {
+                System.out.println("Line is rejected based on: " + line.getID() + " since it's in " + snps);
+            } else {
+                System.out.println("Line is approved based on: " + line.getID() + " since it's not in " + snps);
+            }
+        }
     }
 
 }
