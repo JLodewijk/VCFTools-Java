@@ -37,26 +37,29 @@ public class Vcf {
 
 
     /**
-     * return every iteration
-     * @param file
+     * return next iteration
      * @return
      * @throws IOException
      */
-//    public VcfLine getNextIter(String file) throws IOException {
-//        return new VcfLine(iter.next());
-//    }
+    public VcfLine getNextIter() throws IOException {
+        return new VcfLine(iter.next());
+    }
 
-    public VariantContext getNextIter(String file) throws IOException {
+     /**
+     * return next iteration as VariantContext (to test things with)
+     * @return
+     * @throws IOException
+     */
+    public VariantContext getNextIterAsVariantContext() throws IOException {
         return iter.next();
     }
     
     /**
      * checks if next iteration exists
-     * @param file
      * @return
      * @throws IOException
      */
-    public boolean hasNextIter(String file) throws IOException {
+    public boolean hasNextIter() throws IOException {
         return iter.hasNext();
     }
 }

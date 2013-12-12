@@ -39,15 +39,15 @@ public class VcfReader {
         Vcf vcf = new Vcf(file);
 
         //while vcf file has next iteration get next iteration
-        while (vcf.hasNextIter(file)){ 
+        while (vcf.hasNextIter()){ 
             //get next line
-            VariantContext nextLine = vcf.getNextIter(file);
+            VariantContext nextLine = vcf.getNextIterAsVariantContext();
             System.out.println(nextLine.getAlternateAlleles());
-//            VariantContext nextLine2 = vcf.getNextIter(file);
-//            System.out.println(nextLine2.getAllele("C"));
-//            VariantContext nextLine3 = vcf.getNextIter(file);
-//            Genotype genotypes = nextLine.getGenotype(0);
-//            System.out.println(genotypes.getAlleles());
+            VariantContext nextLine2 = vcf.getNextIterAsVariantContext();
+            System.out.println(nextLine2.getAllele("C"));
+            VariantContext nextLine3 = vcf.getNextIterAsVariantContext();
+            Genotype genotypes = nextLine.getGenotype(0);
+            System.out.println(genotypes.getAlleles());
             
             break;
         }
