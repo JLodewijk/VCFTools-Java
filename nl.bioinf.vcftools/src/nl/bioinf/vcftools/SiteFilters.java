@@ -23,6 +23,8 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
 public class SiteFilters {
 
     /**
+     * Approve or reject chromosomes based on their CHROM, this can also be used
+     * for multiple chromosomes.
      *
      * @param line VCF snip line that will be analysed.
      * @param chromosome User defined chromosome name, is capable of supporting
@@ -53,39 +55,32 @@ public class SiteFilters {
     }
 
     /**
+     * Only sites who have position within that range will be passed. Sites
+     * outside of this range will be rejected. Also this can only be used in
+     * conjuction with –chr.
      *
      * @param line VCF snip line that will be analysed.
-     * @param bp User defined base pair number, is used for the options ToBp and
+     * @param ToBp User defined base pair number from, is used for the options
+     * ToBp.
+     * @param FromBp User defined base pair number to, is used for the options
      * FromBp.
-     * @param args Acts as a flag to activate either the FromBp (true) or the
-     * ToBp (false).
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void Bp(VariantContext line, int bp, boolean args) {
-	//Args true only if option FromBp is given.
-	if (args == true) {
-	    if (bp > line.getStart()) {
-		System.out.println("Line is rejected based on: " + line.getStart() + " since it less then " + bp);
-	    } else {
-		System.out.println("Line is approved based on: " + line.getStart() + " since it more or equal then " + bp);
-	    }
-
-	} //Else option ToBp was given.
-	else {
-	    if (bp < line.getEnd()) {
-		System.out.println("Line is rejected based on: " + line.getEnd() + " since it more then " + bp);
-	    } else {
-		System.out.println("Line is approved based on: " + line.getEnd() + " since it more or equal then " + bp);
-	    }
+    void Bp(VariantContext line, int ToBp, int FromBp) {
+	if (ToBp > line.getEnd() | FromBp < line.getStart()) {
+	    System.out.println("Line is rejected since: " + line.getEnd() + " falls outside the range of " + ToBp + " and " + FromBp);
+	} else {
+	    System.out.println("Line is passed since: " + line.getStart() + " inside the range of " + ToBp + " and " + FromBp);
 	}
     }
 
     /**
+     * Include only sites with Quality above this threshold.
      *
      * @param line VCF snip line that will be analysed.
      * @param minQ User defined minimal quality number, determines how low the
-     * quality score can be before it is being filterd.
+     * quality score can be before it is being filtered.
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
@@ -110,6 +105,7 @@ public class SiteFilters {
     }
 
     /**
+     * Include or exclude sites that contain an indel.
      *
      * @param line VCF snip line that will be analysed.
      * @param args Acts as a flag to activate either the keep-only-indels (true)
@@ -136,6 +132,10 @@ public class SiteFilters {
     }
 
     /**
+     * Include sites based on a FASTA-like file. The file needs to contain
+     * digits between 0 and 9 to indicate a position. Entries are rejected if
+     * they fail to be similar to the mask.
+     *
      *
      * @param line VCF snip line that will be analysed.
      * @param fileContent contains digits ranging from 0 to 9, indication
@@ -198,6 +198,8 @@ public class SiteFilters {
     }
 
     /**
+     * Filters sites on the basis of their FILTER flag, this FILTER flag is in
+     * the vcf file.
      *
      * @param line VCF snip line that will be analysed.
      * @param all Acts as flag to either remove all the filtered (true) or
@@ -236,6 +238,7 @@ public class SiteFilters {
     }
 
     /**
+     * Include only sites with alleles within the specified range.
      *
      * @param line VCF snip line that will be analysed.
      * @param MinAllels User defined int, determines the range of the option
