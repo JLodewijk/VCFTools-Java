@@ -20,7 +20,7 @@ public class VcfTools {
     // TODO code application logic here
 
         Cli c = new Cli();
-        c.parse(args);
+        
         Settings settings = c.getSettings();
 
         System.out.println(settings.getInputFile());
