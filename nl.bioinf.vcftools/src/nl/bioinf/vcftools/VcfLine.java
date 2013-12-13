@@ -18,6 +18,10 @@ public class VcfLine {
 
     private VariantContext vc;
 
+    /**
+     * Constructor using GATK VariantContext.
+     * @param vc 
+     */
     VcfLine(VariantContext vc) {
         this.vc = vc;
     }
@@ -110,6 +114,10 @@ public class VcfLine {
      */
     public String getAttributeAsString(String attribute) {
         return this.vc.getAttributeAsString(attribute, null);
+    }
+    
+    public VcfGenotype getGenotype(int index) {
+        return new VcfGenotype(this.vc.getGenotype(index));
     }
     
 }

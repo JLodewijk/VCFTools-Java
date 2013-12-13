@@ -25,7 +25,7 @@ public class Vcf {
     private Iterator<VariantContext> iter;
 
     /**
-     * defines reader and iterator
+     * Contstructor using VCF filename as input.
      * @param file vcf input file
      * @throws IOException
      */
@@ -37,29 +37,26 @@ public class Vcf {
 
 
     /**
-     * return next iteration
-     * @return
-     * @throws IOException
+     * Return next iteration.
+     * @return next iteration
      */
-    public VcfLine getNextIter() throws IOException {
+    public VcfLine getNextIter() {
         return new VcfLine(iter.next());
     }
 
      /**
-     * return next iteration as VariantContext (to test things with)
-     * @return
-     * @throws IOException
+     * Return next iteration as VariantContext (to test things with).
+     * @return next iteration
      */
-    public VariantContext getNextIterAsVariantContext() throws IOException {
+    public VariantContext getNextIterAsVariantContext() {
         return iter.next();
     }
     
     /**
-     * checks if next iteration exists
-     * @return
-     * @throws IOException
+     * Checks if next iteration exists.
+     * @return true if has next iteration
      */
-    public boolean hasNextIter() throws IOException {
+    public boolean hasNextIter() {
         return iter.hasNext();
     }
 }
