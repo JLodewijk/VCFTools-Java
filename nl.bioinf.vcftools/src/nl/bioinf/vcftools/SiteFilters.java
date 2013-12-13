@@ -6,6 +6,7 @@
 package nl.bioinf.vcftools;
 
 import static java.util.Arrays.asList;
+import java.util.HashMap;
 import java.util.List;
 import org.broadinstitute.variant.variantcontext.VariantContext;
 
@@ -316,4 +317,34 @@ public class SiteFilters {
         }
     }
 
+    /**
+     * Include/exclude a set of sites on the basis of a list of positions in a
+     * file.
+     *
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param pos HashMap, contains the data from the file given in the option:
+     * --positions <filename> or --exclude-positions <filename>. The key is the
+     * position and the value is the chromosome.
+     * @param args Acts as flag to either include positions (true) or exclude
+     * positions based on their position and chromosme.
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
+    public void Positions(VariantContext line, HashMap pos, boolean args) {
+        if (args == true) {
+            String position = Integer.toString(line.getStart());
+            if (pos.containsKey(position) && pos.containsValue(line.getChr())) {
+                System.out.println(line.getChr() + " and " + line.getStart() + " in " + pos + " therefore the are included.");
+            } else {
+                System.out.println(line.getChr() + " and " + line.getStart() + " not in " + pos + " therefore the are excluded.");
+            }
+        } else {
+            String position = Integer.toString(line.getStart());
+            if (pos.containsKey(position) && pos.containsValue(line.getChr())) {
+                System.out.println(line.getChr() + " and " + line.getStart() + " in " + pos + " therefore the are excluded.");
+            } else {
+                System.out.println(line.getChr() + " and " + line.getStart() + " not in " + pos + " therefore the are included.");
+            }
+        }
+    }
 }
