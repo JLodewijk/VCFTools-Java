@@ -5,6 +5,8 @@
  */
 package nl.bioinf.vcftools;
 
+import org.apache.commons.cli.ParseException;
+
 /**
  *
  * @author mhroelfes
@@ -16,14 +18,15 @@ public class VcfTools {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
     // TODO code application logic here
 
-        Cli c = new Cli();
+        Cli c = new Cli(args);
         
-        Settings settings = c.getSettings();
-
-        System.out.println(settings.getInputFile());
+        
+//        Settings settings = c.getSettings();
+//        System.out.println("bleep");
+//        System.out.println(settings.getInputFile());
 //       System.out.println(Settings.getInstance().getInputFile());
     }
 

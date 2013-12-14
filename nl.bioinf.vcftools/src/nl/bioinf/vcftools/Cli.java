@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.CommandLineParser;
@@ -27,17 +29,20 @@ public class Cli {
     private Settings settings;
     private HelpFormatter helpFormatter;
     private Options option;
-    private String msg;
     private CommandLine cmd;
     private String[] args;
 
-    public void cli(String[] args, Settings settings, HelpFormatter helpformatter, Options option, String msg, CommandLine cmd) throws ParseException {
+    Cli(String[] args) throws ParseException {
+
         this.args = args;
         this.option = defineOptions();
         this.helpFormatter = new HelpFormatter();
-        setSettings(new Settings());
+        this.settings = new Settings();
+
+        System.out.println("hoi");
         CommandLineParser parser = new BasicParser();
         this.cmd = parser.parse(this.option, args);
+        System.out.println("boob");
 
         checkOptions();
 
@@ -104,7 +109,7 @@ public class Cli {
         opt.addOption("keepIndvFile", true, "provide a file containing a list of individuals to include in subsequent analysis. Each individual ID (as defined in the VCF headerline) should be included on a separate line");
         opt.addOption("removeIndv", true, "specify an individual to be removed from the analysis. A string is expected. If --indv also used, --indv will be applied first.");
         opt.addOption("removeIndvFile", true, "provide a file containing a list of individuals to exclude in subsequent analysis. Each individual ID (as defined in the VCF headerline) should be included on a separate line If --keep also used, --keep will be applied first");
-        opt.addOption(" minIndvMeanDp", true, "calculate the mean coverage on a per-individual basis. Only individuals with coverage of a minimal thresshold specified by these options are included in subsequent analyses. A float is expected");
+//        opt.addOption(" minIndvMeanDp", true, "calculate the mean coverage on a per-individual basis. Only individuals with coverage of a minimal thresshold specified by these options are included in subsequent analyses. A float is expected");
         opt.addOption("maxIndvMeanDP", true, "calculate the mean coverage on a per-individual basis. Only individuals with coverage of a maximal thresshold specified by these options are included in subsequent analyses. A float is expected");
         opt.addOption("mind", true, "specify the minimum call rate threshold for each individual. A float is expected");
         opt.addOption("phased", true, "first excludes all individuals having all genotypes unphased, and subsequently excludes all sites with unphased genotypes. The remaining data therefore consists of phased data only");
@@ -120,27 +125,70 @@ public class Cli {
 
     public void checkOptions() {
         System.out.println("checking options....");
-       
+
         if (this.args.length < 0) {
-            // check if options are given
-        }
-        else if (cmd.hasOption("keepFilteredFile") && cmd.hasOption("removeFilteredFile")){
-            System.out.println("For the options: keepFilteredFile and removeFilteredFile"
-                    + " the -keepFilteredFile option will be executed first.");
-        }
-        else if(cmd.hasOption("keepFiltered") && cmd.hasOption("removeFiltered")){
-            System.out.println("For the options: -keepFiltered and -removeFiltered"
-                    + " the -keepFiltered option will be executed first.");
-        }
-        
-        else if(cmd.hasOption("keepInfo") && cmd.hasOption("removeInfo")){
+            usage();
+        } else if (this.cmd.hasOption("fromBp") && !(this.cmd.hasOption("chr"))) {
+            System.err.println("The options -fromBp and -toBp can only be used in conjunction with -chr");
+            System.exit(0);
+
+        } else if (this.cmd.hasOption("fromBp") && !(this.cmd.hasOption("toBp"))) {
+            System.err.println("When the option -fromBp is given the -toBp is also required");
+            usage();
+        } else if (this.cmd.hasOption("removeFilteredAll") && (this.cmd.hasOption("removeFiltered") || this.cmd.hasOption("keepFiltered"))) {
+            System.err.println("When option -removeFilteredAll is given the options -removeFilterd or -keepFilterd are not allowed");
+            System.exit(0);
+        } else if (cmd.hasOption("keepInfo") && cmd.hasOption("removeInfo")) {
             System.out.println("For the options: -keepInfo and -removeInfo"
                     + " the -keepInfo option will be executed first.");
-        }
-        
-        else if(args.length < 1){
+        } else if (cmd.hasOption("keepFilteredFile") && cmd.hasOption("removeFilteredFile")) {
+            System.out.println("For the options: keepFilteredFile and removeFilteredFile"
+                    + " the -keepFilteredFile option will be executed first.");
+        } else if (cmd.hasOption("keepFiltered") && cmd.hasOption("removeFiltered")) {
+            System.out.println("For the options: -keepFiltered and -removeFiltered"
+                    + " the -keepFiltered option will be executed first.");
+        } else if (cmd.hasOption("chr")) {
+            String pattern = "\\w";
+            Pattern patternCompiled = Pattern.compile(pattern);
+            Matcher m = patternCompiled.matcher(cmd.getOptionValue("chr"));
+            if (m.find()) {
+                System.err.println("To identify chromosome, only the identifying number is required." + "\nGiven is = " + cmd.getOptionValue("chr"));
+                System.exit(0);
+            }
+        } else if (cmd.hasOption("minMeanDP") && !(cmd.hasOption("maxMeanDP")) || cmd.hasOption("maxMeanDP") && !(cmd.hasOption("minMeanDP"))) {
+            System.err.println("It is obliged to use the options -minMeanDP and -maxMeanDP together");
+            System.exit(0);
+        } else if (cmd.hasOption("maf") && !(cmd.hasOption("maxMaf")) || cmd.hasOption("maxMaf") && !(cmd.hasOption("maf"))) {
+            System.err.println("It is obliged to use the options -maf and -maxMaf together");
+        } else if (cmd.hasOption("nonRefAf") && !(cmd.hasOption("maxNonRefAf")) || cmd.hasOption("maxNonRefAf") && !(cmd.hasOption("nonRefAf"))) {
+            System.err.println("It is obliged to use the options -nonRefAf and -maxNonRefAf together");
+            System.exit(0);
+        } else if (cmd.hasOption("mac") && !(cmd.hasOption("maxMac")) || cmd.hasOption("maxMac") && !(cmd.hasOption("mac"))) {
+            System.err.println("It is obliged to use the options -mac and -maxMac together");
+            System.exit(0);
+        } else if (cmd.hasOption("nonRefAc") && !(cmd.hasOption("maxNonRefAc")) || cmd.hasOption("maxNonRefAc") && !(cmd.hasOption("nonRefAc"))) {
+            System.err.println("It is obliged to use the options -nonRefAc and -maxNonRefAc together");
+            System.exit(0);
+        } else if (cmd.hasOption("geno")) {
+            String geno = cmd.getOptionValue("geno");
+            if (!(geno.equals("1")) || !(geno.equals("0"))) {
+                System.err.println("The option -geno only allows 1 or 0. Where 1 indicates no missing data allowed");
+                System.exit(0);
+            }
+
+        } else if (cmd.hasOption("minAlleles") && !(cmd.hasOption("maxAlleles")) || cmd.hasOption("maxAlleles") && !(cmd.hasOption("minAlleles"))) {
+            System.err.println("It is obliged to use the options -minAlleles and -maxAlleles together");
+            System.exit(0);
+        } //        
+        //        
+        //        
+        //        else if(cmd.hasOption("keepInfo")){
+        //        
+        //        }
+        else if (args.length < 1) {
 //                usages(opt);
         }
+
     }
 
     public void setSettings(Settings settings) {
@@ -151,11 +199,11 @@ public class Cli {
         return settings;
     }
 
-    public void usages() {
+    public void usage() {
         helpFormatter.printHelp("For analysing the VCF file several options can be used."
                 + "This tool supports version higher than 4.0 . This tool is also"
                 + "compatible for snp analysis in poliploid cells", this.option);
-
+        System.exit(0);
     }
 
     public void procesOptions() {
