@@ -275,12 +275,36 @@ public class SiteFilters {
         }
     }
 
-    public void FilterOnThinning(int minSnpDist) {
+    /**
+     * include snp when they are not closer then given minimal snp distance to each other
+     * @author Marco Roelfes , marcoroelfes@gmail.com
+     * @param line VCF snip line that will be analysed.
+     * @param minSnpDist minimal snp distance
+     */
+    public void FilterOnThinning(VariantContext line, int minSnpDist) {
+        //check if minsnpDist is valid
         if (minSnpDist < 0) {
-            System.out.println("Min snp distance has to be 1 or higher");
+            System.out.println("Min snp distance has to be 0 or higher");
+        } 
+        
+        int positionPrevious = 0;
+        // check if it is first line, if it is set position
+        if (positionPrevious == 0){
+            positionPrevious = line.getStart();
+        // if not first line check if positions are to close, if to close reject line, else approve line and set new position
+        }else{
+             if((line.getStart() - positionPrevious) < minSnpDist){
+                 System.out.println("This SNP is to close to the previous because:" + positionPrevious +"and"
+                                    + line.getStart() + "are less than" + minSnpDist + "basepairs apart form each other" );
+                 
+             }else{
+                 System.out.println("This SNP is is approved:" + positionPrevious +"and"
+                                    + line.getStart() + "are more than" + minSnpDist + "basepairs apart form each other" );
+                 positionPrevious = line.getStart();
+             }
+                        
         }
-
-        int positionPrevious;
+        
 
         //positionPrevious = 
     }
