@@ -277,7 +277,7 @@ public class SiteFilters {
 
     /**
      * include snp when they are not closer then given minimal snp distance to each other
-     * @author Marco Roelfes , marcoroelfes@gmail.com
+     * @author Marco Roelfes  <marcoroelfes@gmail.com>
      * @param line VCF snip line that will be analysed.
      * @param minSnpDist minimal snp distance
      */
@@ -306,7 +306,7 @@ public class SiteFilters {
         }
         
 
-        //positionPrevious = 
+        
     }
 
     /**
@@ -369,6 +369,23 @@ public class SiteFilters {
             } else {
                 System.out.println(line.getChr() + " and " + line.getStart() + " not in " + pos + " therefore the are included.");
             }
+        }
+    }
+    
+    /**
+     *Check is allele frequency is between the given range
+     * @param line VCF snip line that will be analysed.
+     * @param minAlleleFreq minimum allele frequency
+     * @param maxAlleleFreq maximum allele frequency
+     * @author Marco Roelfes <marcoroelfes@gmail.com>
+     */
+    public void AlleleFrequency(VariantContext line, float minAlleleFreq, double maxAlleleFreq){
+
+        float alleleFreq = Float.valueOf((String) line.getAttribute("AF"));
+        if(alleleFreq<maxAlleleFreq && alleleFreq>minAlleleFreq){
+            System.out.println("Line is approved allelfreq is between" +minAlleleFreq +  " and " + maxAlleleFreq);
+        }else{
+            System.out.println("Line is declined allelfreq is not between" +minAlleleFreq +  " and " + maxAlleleFreq);
         }
     }
 }
