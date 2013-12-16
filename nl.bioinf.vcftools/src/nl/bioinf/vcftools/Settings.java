@@ -22,13 +22,14 @@ public class Settings {
     /* XML input file */
     private String configFile;
     /* commons configuration XMLConfiguration */
-    private XMLConfiguration config;
+    private XMLConfiguration configRead;
+    private XMLConfiguration configCreate;
 
     /* VcfTools settings */
     /* Basic Settings */
     private String inputFile;
+    private String outputFile;
     private boolean gzipped;
-    private boolean outputFile;
 
     /* Site Filters */
     private ArrayList<String> chr;
@@ -45,28 +46,27 @@ public class Settings {
     private String excludePositionsFile;
     private boolean keepOnlyIndels;
     private boolean removeIndels;
+    private String bedFile;
     //private Bed bed;
     //private Bed exludeBed;
     private boolean removeFilteredAll;
     private ArrayList<String> removeFiltered;
-    private String removeFilteredFile;
     private ArrayList<String> keepFiltered;
-    private String keepFilteredFile;
     private ArrayList<String> removeInfo;
     private ArrayList<String> keepInfo;
-    private float minQ;
-    private float minMeanDP;
-    private float maxMeanDP;
-    private float maf;
-    private float maxMaf;
-    private float nonRefAf;
-    private float maxNonRefAf;
+    private double minQ;
+    private double minMeanDp;
+    private double maxMeanDp;
+    private double maf;
+    private double maxMaf;
+    private double nonRefAf;
+    private double maxNonRefAf;
     private int mac;
     private int maxMac;
-    private float nonRefAc;
-    private float maxNonRefAc;
-    private float hwe;
-    private float geno;
+    private double nonRefAc;
+    private double maxNonRefAc;
+    private double hwe;
+    private double geno;
     private int maxMissingCound;
     private int minAlleles;
     private int maxAlleles;
@@ -80,9 +80,9 @@ public class Settings {
     private String keepIndvFile;
     private ArrayList<String> removeIndv;
     private String removeIndvFile;
-    private float minIndvMeanDp;
-    private float maxIndvMeanDp;
-    private float mind;
+    private double minIndvMeanDp;
+    private double maxIndvMeanDp;
+    private double mind;
     private boolean phased;
     private int maxIndv;
 
@@ -123,8 +123,8 @@ public class Settings {
      */
     public void load(String filename) {
         try {
-            this.config = new XMLConfiguration(filename);
-            this.config.setAutoSave(false); // Disable auto save because we want to do this in one run.
+            this.configRead = new XMLConfiguration(filename);
+            
 
             // add other load logic here
         } catch (ConfigurationException ex) {
@@ -135,15 +135,84 @@ public class Settings {
 
     /**
      * Save settings from memory to file.
-     *
+     * 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      * @param filename Filename to save to.
      * @throws IOException
      */
     public void save(String filename) throws IOException {
         try {
-            // add other save logic here
-
-            this.config.save(filename);
+            // open config object
+            XMLConfiguration configCreate = new XMLConfiguration();
+ 
+            // set filename and autoSave (we want to write all at once)
+            configCreate.setFileName(filename);
+            configCreate.setAutoSave(false);
+            
+            // set properties
+            /* Basic Settings */
+            configCreate.addProperty("basic.inputFile", this.inputFile);
+            configCreate.addProperty("basic.outputFile", this.outputFile);
+            configCreate.addProperty("basic.gzippedFile", this.gzipped);
+            /* Site Filters */
+            configCreate.addProperty("siteFilters.chr", this.chr);
+            configCreate.addProperty("siteFilters.notChr", this.notChr);
+            configCreate.addProperty("siteFilters.fromBp", this.fromBp);
+            configCreate.addProperty("siteFilters.toBp", this.toBp);
+            configCreate.addProperty("siteFilters.snp", this.snp);
+            configCreate.addProperty("siteFilters.snpFile", this.snpFile);
+            configCreate.addProperty("siteFilters.excludeSnp", this.excludeSnp);
+            configCreate.addProperty("siteFilters.excludeSnpFile", this.excludeSnpFile);
+            configCreate.addProperty("siteFilters.positions", this.positions);
+            configCreate.addProperty("siteFilters.positionsFile", this.positionsFile);
+            configCreate.addProperty("siteFilters.excludePositions", this.excludePositions);
+            configCreate.addProperty("siteFilters.excludePositionsFile", this.excludePositionsFile);
+            configCreate.addProperty("siteFilters.keepOnlyIndels", this.keepOnlyIndels);
+            configCreate.addProperty("siteFilters.removeIndels", this.removeIndels);
+            configCreate.addProperty("siteFilters.bedFile", this.bedFile);
+            // todo: implement a way to store needed bed data to xml
+            configCreate.addProperty("siteFilters.removeFilteredAll", this.removeFilteredAll);
+            configCreate.addProperty("siteFilters.removeFiltered", this.removeFiltered);
+            configCreate.addProperty("siteFilters.keepFiltered", this.keepFiltered);
+            configCreate.addProperty("siteFilters.removeInfo", this.removeInfo);
+            configCreate.addProperty("siteFilters.keepInfo", this.keepInfo);
+            configCreate.addProperty("siteFilters.minQ", this.minQ);
+            configCreate.addProperty("siteFilters.minMeanDp", this.minMeanDp);
+            configCreate.addProperty("siteFilters.maxMeanDp", this.maxMeanDp);
+            configCreate.addProperty("siteFilters.maf", this.maf);
+            configCreate.addProperty("siteFilters.maxMaf", this.maf);
+            configCreate.addProperty("siteFilters.nonRefAf", this.nonRefAf);
+            configCreate.addProperty("siteFilters.maxNonRefAf", this.maxNonRefAf);
+            configCreate.addProperty("siteFilters.mac", this.mac);
+            configCreate.addProperty("siteFilters.maxMac", this.maxMac);
+            configCreate.addProperty("siteFilters.maxNonRefAc", this.maxNonRefAc);
+            configCreate.addProperty("siteFilters.hwe", this.hwe);
+            configCreate.addProperty("siteFilters.geno", this.geno);
+            configCreate.addProperty("siteFilters.maxMissingCount", this.maxMissingCound);
+            configCreate.addProperty("siteFilters.minAlleles", this.minAlleles);
+            configCreate.addProperty("siteFilters.maxAlleles", this.maxAlleles);
+            configCreate.addProperty("siteFilters.thin", this.thin);
+            configCreate.addProperty("siteFilters.mask", this.mask);
+            configCreate.addProperty("siteFilters.invertMask", this.invertMask);
+            configCreate.addProperty("siteFilters.maskMin", this.invertMask);
+            /* Individual filters */
+            configCreate.addProperty("individualFilters.keepIndv", this.keepIndv);
+            configCreate.addProperty("individualFilters.keepIndvFile", this.keepIndvFile);
+            configCreate.addProperty("individualFilters.removeIndv", this.removeIndv);
+            configCreate.addProperty("individualFilters.removeIndvFile", this.removeIndvFile);
+            configCreate.addProperty("individualFilters.minIndvMeanDp", this.minIndvMeanDp);
+            configCreate.addProperty("individualFilters.maxIndvMeanDp", this.maxIndvMeanDp);
+            configCreate.addProperty("individualFilters.mind", this.mind);
+            configCreate.addProperty("individualFilters.phased", this.phased);
+            configCreate.addProperty("individualFilters.maxIndv", this.maxIndv);
+            /* Statistics */
+            configCreate.addProperty("statistics.count", this.count);
+            configCreate.addProperty("statistics.freq", this.freq);
+            configCreate.addProperty("statistics.depth", this.depth);      
+            
+            // save config
+            configCreate.save();
+            
         } catch (ConfigurationException ex) {
             Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -166,11 +235,11 @@ public class Settings {
         this.gzipped = gzipped;
     }
 
-    public boolean isOutputFile() {
+    public String isOutputFile() {
         return outputFile;
     }
 
-    public void setOutputFile(boolean outputFile) {
+    public void setOutputFile(String outputFile) {
         this.outputFile = outputFile;
     }
 
@@ -302,28 +371,12 @@ public class Settings {
         this.removeFiltered = removeFiltered;
     }
 
-    public String getRemoveFilteredFile() {
-        return removeFilteredFile;
-    }
-
-    public void setRemoveFilteredFile(String removeFilteredFile) {
-        this.removeFilteredFile = removeFilteredFile;
-    }
-
     public ArrayList<String> getKeepFiltered() {
         return keepFiltered;
     }
 
     public void setKeepFiltered(ArrayList<String> keepFiltered) {
         this.keepFiltered = keepFiltered;
-    }
-
-    public String getKeepFilteredFile() {
-        return keepFilteredFile;
-    }
-
-    public void setKeepFilteredFile(String keepFilteredFile) {
-        this.keepFilteredFile = keepFilteredFile;
     }
 
     public ArrayList<String> getRemoveInfo() {
@@ -342,59 +395,59 @@ public class Settings {
         this.keepInfo = keepInfo;
     }
 
-    public float getMinQ() {
+    public double getMinQ() {
         return minQ;
     }
 
-    public void setMinQ(float minQ) {
+    public void setMinQ(double minQ) {
         this.minQ = minQ;
     }
 
-    public float getMinMeanDP() {
-        return minMeanDP;
+    public double getMinMeanDP() {
+        return minMeanDp;
     }
 
-    public void setMinMeanDP(float minMeanDP) {
-        this.minMeanDP = minMeanDP;
+    public void setMinMeanDP(double minMeanDP) {
+        this.minMeanDp = minMeanDP;
     }
 
-    public float getMaxMeanDP() {
-        return maxMeanDP;
+    public double getMaxMeanDP() {
+        return maxMeanDp;
     }
 
-    public void setMaxMeanDP(float maxMeanDP) {
-        this.maxMeanDP = maxMeanDP;
+    public void setMaxMeanDP(double maxMeanDP) {
+        this.maxMeanDp = maxMeanDP;
     }
 
-    public float getMaf() {
+    public double getMaf() {
         return maf;
     }
 
-    public void setMaf(float maf) {
+    public void setMaf(double maf) {
         this.maf = maf;
     }
 
-    public float getMaxMaf() {
+    public double getMaxMaf() {
         return maxMaf;
     }
 
-    public void setMaxMaf(float maxMaf) {
+    public void setMaxMaf(double maxMaf) {
         this.maxMaf = maxMaf;
     }
 
-    public float getNonRefAf() {
+    public double getNonRefAf() {
         return nonRefAf;
     }
 
-    public void setNonRefAf(float nonRefAf) {
+    public void setNonRefAf(double nonRefAf) {
         this.nonRefAf = nonRefAf;
     }
 
-    public float getMaxNonRefAf() {
+    public double getMaxNonRefAf() {
         return maxNonRefAf;
     }
 
-    public void setMaxNonRefAf(float maxNonRefAf) {
+    public void setMaxNonRefAf(double maxNonRefAf) {
         this.maxNonRefAf = maxNonRefAf;
     }
 
@@ -414,35 +467,35 @@ public class Settings {
         this.maxMac = maxMac;
     }
 
-    public float getNonRefAc() {
+    public double getNonRefAc() {
         return nonRefAc;
     }
 
-    public void setNonRefAc(float nonRefAc) {
+    public void setNonRefAc(double nonRefAc) {
         this.nonRefAc = nonRefAc;
     }
 
-    public float getMaxNonRefAc() {
+    public double getMaxNonRefAc() {
         return maxNonRefAc;
     }
 
-    public void setMaxNonRefAc(float maxNonRefAc) {
+    public void setMaxNonRefAc(double maxNonRefAc) {
         this.maxNonRefAc = maxNonRefAc;
     }
 
-    public float getHwe() {
+    public double getHwe() {
         return hwe;
     }
 
-    public void setHwe(float hwe) {
+    public void setHwe(double hwe) {
         this.hwe = hwe;
     }
 
-    public float getGeno() {
+    public double getGeno() {
         return geno;
     }
 
-    public void setGeno(float geno) {
+    public void setGeno(double geno) {
         this.geno = geno;
     }
 
@@ -534,27 +587,27 @@ public class Settings {
         this.removeIndvFile = removeIndvFile;
     }
 
-    public float getMinIndvMeanDp() {
+    public double getMinIndvMeanDp() {
         return minIndvMeanDp;
     }
 
-    public void setMinIndvMeanDp(float minIndvMeanDp) {
+    public void setMinIndvMeanDp(double minIndvMeanDp) {
         this.minIndvMeanDp = minIndvMeanDp;
     }
 
-    public float getMaxIndvMeanDp() {
+    public double getMaxIndvMeanDp() {
         return maxIndvMeanDp;
     }
 
-    public void setMaxIndvMeanDp(float maxIndvMeanDp) {
+    public void setMaxIndvMeanDp(double maxIndvMeanDp) {
         this.maxIndvMeanDp = maxIndvMeanDp;
     }
 
-    public float getMind() {
+    public double getMind() {
         return mind;
     }
 
-    public void setMind(float mind) {
+    public void setMind(double mind) {
         this.mind = mind;
     }
 
