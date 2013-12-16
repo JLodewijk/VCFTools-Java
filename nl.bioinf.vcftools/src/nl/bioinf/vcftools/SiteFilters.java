@@ -477,4 +477,7 @@ public class SiteFilters {
 
         }
     }
+    public void HardyWeinberg(VariantContext line, double pVal){
+        //TODO: check HWE formulas and meaning, how to implement
+    }
 }
