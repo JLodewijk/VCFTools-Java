@@ -5,6 +5,7 @@
  */
 package nl.bioinf.vcftools;
 
+import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,8 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
  * @url: http://vcftools.sourceforge.net/options.html#site_filter
  */
 public class SiteFilters {
+
+    int positionPrevious = 0;
 
     /**
      * Approve or reject chromosomes based on their CHROM, this can also be used
@@ -171,32 +174,7 @@ public class SiteFilters {
         }
     }
 
-    /**
-     *
-     * @param line VCF snip line that will be analysed.
-     * @param NIndividuals Numbers of all the VCF SNP's.
-     *
-     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
-     */
-    void MeanDept(VariantContext line, int NIndividuals) {
-        /*
-         *
-         * Note: this is based on the void
-         * variant_file::filter_sites_by_mean_depth(double min_mean_depth,
-         * double max_mean_depth) in variant_file_filters.cpp MeanDept would
-         * require a mean sum that counts all the means given in the file.
-         * Another requirement of MeanDept is it needs a Number of Individuals
-         * (lines in a file minus the header and empty lines). Once all the
-         * depts are added to the mean sum, a mean can be calculated using sum/
-         * individuals. After this each mean can be compared.
-         *
-         * Also the MinMeanDepth can not be lower than 0 and/or MaxMeanDepth can
-         * not exceed the max value of a float.
-         *
-         * Data: NIndividuals consits out of 669 lines in the regio.txt
-         *
-         */
-    }
+    
 
     /**
      * Filters sites on the basis of their FILTER flag, this FILTER flag is in
@@ -276,8 +254,10 @@ public class SiteFilters {
     }
 
     /**
-     * include snp when they are not closer then given minimal snp distance to each other
-     * @author Marco Roelfes  <marcoroelfes@gmail.com>
+     * include snp when they are not closer then given minimal snp distance to
+     * each other
+     *
+     * @author Marco Roelfes <marcoroelfes@gmail.com>
      * @param line VCF snip line that will be analysed.
      * @param minSnpDist minimal snp distance
      */
@@ -285,28 +265,25 @@ public class SiteFilters {
         //check if minsnpDist is valid
         if (minSnpDist < 0) {
             System.out.println("Min snp distance has to be 0 or higher");
-        } 
-        
-        int positionPrevious = 0;
-        // check if it is first line, if it is set position
-        if (positionPrevious == 0){
-            positionPrevious = line.getStart();
-        // if not first line check if positions are to close, if to close reject line, else approve line and set new position
-        }else{
-             if((line.getStart() - positionPrevious) < minSnpDist){
-                 System.out.println("This SNP is to close to the previous because:" + positionPrevious +"and"
-                                    + line.getStart() + "are less than" + minSnpDist + "basepairs apart form each other" );
-                 
-             }else{
-                 System.out.println("This SNP is is approved:" + positionPrevious +"and"
-                                    + line.getStart() + "are more than" + minSnpDist + "basepairs apart form each other" );
-                 positionPrevious = line.getStart();
-             }
-                        
         }
-        
 
-        
+        // check if it is first line, if it is set position
+        if (this.positionPrevious == 0) {
+            this.positionPrevious = line.getStart();
+            // if not first line check if positions are to close, if to close reject line, else approve line and set new position
+        } else {
+            if ((line.getStart() - this.positionPrevious) < minSnpDist) {
+                System.out.println("This SNP is to close to the previous because:" + this.positionPrevious + "and"
+                        + line.getStart() + "are less than" + minSnpDist + "basepairs apart form each other");
+
+            } else {
+                System.out.println("This SNP is is approved:" + this.positionPrevious + "and"
+                        + line.getStart() + "are more than" + minSnpDist + "basepairs apart form each other");
+                this.positionPrevious = line.getStart();
+            }
+
+        }
+
     }
 
     /**
@@ -371,21 +348,59 @@ public class SiteFilters {
             }
         }
     }
-    
+
     /**
-     *Check is allele frequency is between the given range
+     * Check is allele frequency is between the given range
+     *
      * @param line VCF snip line that will be analysed.
      * @param minAlleleFreq minimum allele frequency
      * @param maxAlleleFreq maximum allele frequency
      * @author Marco Roelfes <marcoroelfes@gmail.com>
      */
-    public void AlleleFrequency(VariantContext line, float minAlleleFreq, double maxAlleleFreq){
+    public void AlleleFrequency(VariantContext line, float minAlleleFreq, double maxAlleleFreq) {
+        //gets allele frequency of line
+        //alleleFreq = line.getAttribute("AF"));
 
-        float alleleFreq = Float.valueOf((String) line.getAttribute("AF"));
-        if(alleleFreq<maxAlleleFreq && alleleFreq>minAlleleFreq){
-            System.out.println("Line is approved allelfreq is between" +minAlleleFreq +  " and " + maxAlleleFreq);
-        }else{
-            System.out.println("Line is declined allelfreq is not between" +minAlleleFreq +  " and " + maxAlleleFreq);
+        //checks if allele frecuency is between given maximum and minimum
+        //if true approve snp
+        //if false decline snp
+        if (line.getAttribute("AF").getClass().getName() == "java.lang.String") {
+
+            if (line.getAttributeAsDouble("AF", 0.0) < maxAlleleFreq && line.getAttributeAsDouble("AF", 0.0) > minAlleleFreq) {
+                System.out.println("Line is approved allelfreq is between" + minAlleleFreq + " and " + maxAlleleFreq);
+            } else {
+                System.out.println("Line is declined allelfreq is not between" + minAlleleFreq + " and " + maxAlleleFreq);
+            }
+        } else {
+            //ArrayList af = line.getAttributeAsDouble("AF", 0.0);
+            //or(double af : line.getAttributeAsDouble("AF", 0.0)){
+            System.out.println("The Allele frequency is a list not a double");
+
         }
+        
+
+    }
+     /**
+     * Check if meanDepth is between given thresholds
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param minDepth minimum Depth
+     * @param maxDepth maximum Depth
+     * @author Marco Roelfes <marcoroelfes@gmail.com>
+     */
+    public void meanDepth(VariantContext line, int minDepth, int maxDepth){
+        //get total depth per site
+        int totalDepth = line.getAttributeAsInt("DP",0);
+        //get number of genotypes
+        int numberOfGt = line.getGenotypes().size();
+        //calculate meanDepth
+        float meanDepth = totalDepth/numberOfGt;
+        //if meanDepth is between threshold approve line, else decline line
+        if(meanDepth < maxDepth && meanDepth > minDepth){
+            System.out.println("line approved meanDepth is between " + minDepth + " and " + maxDepth);
+        } else{
+            System.out.println("line declined meanDepth is not between " + minDepth + " and " + maxDepth);
+        }
+       
     }
 }
