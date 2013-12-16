@@ -25,7 +25,7 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
 public class SiteFilters {
 
     private int positionPrevious = 0;
-
+     
     /**
      * Approve or reject chromosomes based on their CHROM, this can also be used
      * for multiple chromosomes.
@@ -364,9 +364,9 @@ public class SiteFilters {
             Double val = Double.valueOf((String) valObj);
             //if val is between threshold approve line, else reject line
             if (val < maxAlleleFreq && val > minAlleleFreq) {
-                System.out.println("Line is approved allelfreq is between" + minAlleleFreq + " and " + maxAlleleFreq);
+                System.out.println("Line is approved allelfreq is between " + minAlleleFreq + " and " + maxAlleleFreq);
             } else {
-                System.out.println("Line is rejected allelfreq is not between" + minAlleleFreq + " and " + maxAlleleFreq);
+                System.out.println("Line is rejected allelfreq is not between " + minAlleleFreq + " and " + maxAlleleFreq);
             }
             //System.out.println("val="+val);
         } else {
@@ -390,9 +390,9 @@ public class SiteFilters {
 
             //check if to reject or approve SNP
             if (reject == true) {
-                System.out.println("Line is rejected allelfreq is not between" + minAlleleFreq + " and " + maxAlleleFreq);
+                System.out.println("Line is rejected allelfreq is not between " + minAlleleFreq + " and " + maxAlleleFreq);
             } else {
-                System.out.println("Line is approved allelfreq is between" + minAlleleFreq + " and " + maxAlleleFreq);
+                System.out.println("Line is approved allelfreq is between " + minAlleleFreq + " and " + maxAlleleFreq);
             }
 
         }
@@ -412,9 +412,9 @@ public class SiteFilters {
             int val = Integer.parseInt((String) valObj);
             //if val is between threshold approve line, else reject line
             if (val < maxCount && val > minCount) {
-                System.out.println("Line is approved allelfreq is between" + minCount + " and " + maxCount);
+                System.out.println("Line is approved allelfreq is between " + minCount + " and " + maxCount);
             } else {
-                System.out.println("Line is rejected allelfreq is not between" + minCount + " and " + maxCount);
+                System.out.println("Line is rejected allelfreq is not between " + minCount + " and " + maxCount);
             }
             //System.out.println("val="+val);
         } else {
@@ -438,9 +438,9 @@ public class SiteFilters {
 
             //check if to reject or approve SNP
             if (reject == true) {
-                System.out.println("Line is rejected allelfreq is not between" + minCount + " and " + maxCount);
+                System.out.println("Line is rejected allelfreq is not between " + minCount + " and " + maxCount);
             } else {
-                System.out.println("Line is approved allelfreq is between" + minCount + " and " + maxCount);
+                System.out.println("Line is approved allelfreq is between " + minCount + " and " + maxCount);
             }
 
         }
@@ -454,7 +454,7 @@ public class SiteFilters {
      * @param maxDepth maximum Depth
      * @author Marco Roelfes <marcoroelfes@gmail.com>
      */
-    public void meanDepth(VariantContext line, int minDepth, int maxDepth) {
+    public void MeanDepth(VariantContext line, int minDepth, int maxDepth) {
         //get total depth per site
         int totalDepth = line.getAttributeAsInt("DP", 0);
         //get number of genotypes
@@ -496,5 +496,13 @@ public class SiteFilters {
             }
         }
 
+    }
+    public void MissingCount(VariantContext line, double maxMissing){
+        double dels = line.getAttributeAsDouble("Dels", 0.0);
+        if(dels > maxMissing){
+            System.out.println("reject line dels: " + dels + " is bigger then " + maxMissing);
+        }else{
+            System.out.println("Line is approved dels: " + dels +" is not bigger then " + maxMissing);
+        }
     }
 }
