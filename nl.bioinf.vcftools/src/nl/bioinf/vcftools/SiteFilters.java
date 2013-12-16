@@ -434,7 +434,7 @@ public class SiteFilters {
      * @param maxCount maximum allele frequency
      * @author Marco Roelfes <marcoroelfes@gmail.com>
      */
-    public void minAlleleCount(VariantContext line, int minCount, int maxCount) {
+    public void AlleleCount(VariantContext line, int minCount, int maxCount) {
         Object valObj = line.getAttribute("AC");
 
         boolean reject = false;
