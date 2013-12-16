@@ -373,33 +373,34 @@ public class SiteFilters {
             //ArrayList value
             ArrayList<String> values = (ArrayList<String>) valObj;
             List<Double> valuesDoubles = new ArrayList<Double>();
+            //set String ArrayList to Double ArrayList            
             for (String str : values) {
                 valuesDoubles.add(str != null ? Double.parseDouble(str) : null);
             }
+            //for every double in ArrayList check if between threshold
             for (double dValue : valuesDoubles) {
                 if (dValue < maxAlleleFreq && dValue > minAlleleFreq) {
                     reject = false;
                 } else {
                     reject = true;
                     break;
-                    
+
                 }
             }
-            if (reject==true){
+
+            //check if to reject or approve SNP
+            if (reject == true) {
                 System.out.println("Line is rejected allelfreq is not between" + minAlleleFreq + " and " + maxAlleleFreq);
-            }else{
+            } else {
                 System.out.println("Line is approved allelfreq is between" + minAlleleFreq + " and " + maxAlleleFreq);
             }
 
-            
         }
 
 //            tr
         //checks if allele frecuency is between given maximum and minimum
         //if true approve snp
         //if false decline snp
- 
-
     }
 
     /**
@@ -424,5 +425,56 @@ public class SiteFilters {
             System.out.println("line declined meanDepth is not between " + minDepth + " and " + maxDepth);
         }
 
+    }
+    /**
+     * Check is allele count is between the given range
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param minCount minimum allele count
+     * @param maxCount maximum allele frequency
+     * @author Marco Roelfes <marcoroelfes@gmail.com>
+     */
+    public void minAlleleCount(VariantContext line, int minCount, int maxCount) {
+        Object valObj = line.getAttribute("AC");
+
+        boolean reject = false;
+        if (valObj instanceof String) {
+            //handle single value
+            int val;
+            val = Integer.parseInt((String) valObj);
+            //if val is between threshold approve line, else reject line
+            if (val < maxCount && val > minCount) {
+                System.out.println("Line is approved allelfreq is between" + minCount + " and " + maxCount);
+            } else {
+                System.out.println("Line is rejected allelfreq is not between" + minCount + " and " + maxCount);
+            }
+            //System.out.println("val="+val);
+        } else {
+            //ArrayList value
+            ArrayList<String> values = (ArrayList<String>) valObj;
+            List<Integer> valuesInteger = new ArrayList<Integer>();
+            //set String ArrayList to Integer ArrayList            
+            for (String str : values) {
+                valuesInteger.add(str != null ? Integer.parseInt(str) : null);
+            }
+            //for every integer in ArrayList check if between threshold
+            for (double dValue : valuesInteger) {
+                if (dValue < maxCount && dValue > minCount) {
+                    reject = false;
+                } else {
+                    reject = true;
+                    break;
+
+                }
+            }
+
+            //check if to reject or approve SNP
+            if (reject == true) {
+                System.out.println("Line is rejected allelfreq is not between" + minCount + " and " + maxCount);
+            } else {
+                System.out.println("Line is approved allelfreq is between" + minCount + " and " + maxCount);
+            }
+
+        }
     }
 }

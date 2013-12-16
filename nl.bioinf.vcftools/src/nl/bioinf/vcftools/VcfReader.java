@@ -53,7 +53,7 @@ public class VcfReader {
             //System.out.println(nextLine.getAttribute("AF").getClass().getName());
             //alleleFreq;
             //alleleFreq = nextLine.getAttributeAsDouble("AF", 0.0);
-
+            System.out.println(nextLine.getAttribute("AC"));
             Object valObj = nextLine.getAttribute("AF");
             //System.out.println(valObj.getClass().getName());
 
@@ -68,7 +68,7 @@ public class VcfReader {
                 for (String str : values) {
                     valuesDoubles.add(str != null ? Double.parseDouble(str) : null);
                 }
-                System.out.println("value list=" + valuesDoubles);
+                //System.out.println("value list=" + valuesDoubles);
             }
 
 //            try{
