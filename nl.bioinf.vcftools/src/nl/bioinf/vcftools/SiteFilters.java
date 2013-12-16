@@ -24,7 +24,7 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
  */
 public class SiteFilters {
 
-    int positionPrevious = 0;
+    private int positionPrevious = 0;
 
     /**
      * Approve or reject chromosomes based on their CHROM, this can also be used
@@ -39,23 +39,23 @@ public class SiteFilters {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     void Chromosome(VariantContext line, String chromosome, boolean args) {
-        //Multiple chromosomes support. Example: "22,23" becomes [22, 23] as a array list.
-        List<String> chromosomes = asList(chromosome.split(","));
-        //If option IncludeChromosome is given then args is true.
-        if (args == true) {
-            if (chromosomes.contains(line.getChr())) {
-                System.out.println("Line is approved based on: " + line.getChr() + " since it's in " + chromosomes);
-            } else {
-                System.out.println("Line is rejected based on: " + line.getChr() + " since it's not in " + chromosomes);
-            }
-        } //Else if option ExcludeChromosome is given then args is false.
-        else {
-            if (chromosomes.contains(line.getChr())) {
-                System.out.println("Line is rejected based on: " + line.getChr() + " since it's in " + chromosomes);
-            } else {
-                System.out.println("Line is approved based on: " + line.getChr() + " since it's not in " + chromosomes);
-            }
-        }
+	//Multiple chromosomes support. Example: "22,23" becomes [22, 23] as a array list.
+	List<String> chromosomes = asList(chromosome.split(","));
+	//If option IncludeChromosome is given then args is true.
+	if (args == true) {
+	    if (chromosomes.contains(line.getChr())) {
+		System.out.println("Line is approved based on: " + line.getChr() + " since it's in " + chromosomes);
+	    } else {
+		System.out.println("Line is rejected based on: " + line.getChr() + " since it's not in " + chromosomes);
+	    }
+	} //Else if option ExcludeChromosome is given then args is false.
+	else {
+	    if (chromosomes.contains(line.getChr())) {
+		System.out.println("Line is rejected based on: " + line.getChr() + " since it's in " + chromosomes);
+	    } else {
+		System.out.println("Line is approved based on: " + line.getChr() + " since it's not in " + chromosomes);
+	    }
+	}
     }
 
     /**
@@ -72,11 +72,11 @@ public class SiteFilters {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     void Bp(VariantContext line, int ToBp, int FromBp) {
-        if (ToBp > line.getEnd() | FromBp < line.getStart()) {
-            System.out.println("Line is rejected since: " + line.getEnd() + " falls outside the range of " + ToBp + " and " + FromBp);
-        } else {
-            System.out.println("Line is passed since: " + line.getStart() + " inside the range of " + ToBp + " and " + FromBp);
-        }
+	if (ToBp > line.getEnd() | FromBp < line.getStart()) {
+	    System.out.println("Line is rejected since: " + line.getEnd() + " falls outside the range of " + ToBp + " and " + FromBp);
+	} else {
+	    System.out.println("Line is passed since: " + line.getStart() + " inside the range of " + ToBp + " and " + FromBp);
+	}
     }
 
     /**
@@ -89,22 +89,22 @@ public class SiteFilters {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     void MinimalQuality(VariantContext line, double minQ) {
-        /*
-         * To compare two doubles you need
-         * Double.compare(line.getPhredScaledQual(),minQ), after both doubles
-         * are compared then it return a int. It can be -1 if
-         * line.getPhredScaledQual() is less then minQ. Or 1 if
-         * line.getPhredScaledQual() is greater then minQ . Finally it can be 0
-         * if there are equal to each other.
-         */
-        int MinimalQuality = Double.compare((double) line.getPhredScaledQual(), minQ);
-        if (MinimalQuality > 0) {
-            System.out.println(line.getPhredScaledQual() + " is greater then " + minQ);
-        } else if (MinimalQuality < 0) {
-            System.out.println(line.getPhredScaledQual() + " is lesser then " + minQ);
-        } else {
-            System.out.println(line.getPhredScaledQual() + " are equal " + minQ);
-        }
+	/*
+	 * To compare two doubles you need
+	 * Double.compare(line.getPhredScaledQual(),minQ), after both doubles
+	 * are compared then it return a int. It can be -1 if
+	 * line.getPhredScaledQual() is less then minQ. Or 1 if
+	 * line.getPhredScaledQual() is greater then minQ . Finally it can be 0
+	 * if there are equal to each other.
+	 */
+	int MinimalQuality = Double.compare((double) line.getPhredScaledQual(), minQ);
+	if (MinimalQuality > 0) {
+	    System.out.println(line.getPhredScaledQual() + " is greater then " + minQ);
+	} else if (MinimalQuality < 0) {
+	    System.out.println(line.getPhredScaledQual() + " is lesser then " + minQ);
+	} else {
+	    System.out.println(line.getPhredScaledQual() + " are equal " + minQ);
+	}
 
     }
 
@@ -118,21 +118,21 @@ public class SiteFilters {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     void Indel(VariantContext line, boolean args) {
-        //--keep-only-indels
-        if (args == true) {
-            if (line.isIndel() == true) {
-                System.out.println("Keep " + line + " since it has a Indel. Only the lines that have a indel are processed further.");
-            } else {
-                System.out.println("Reject " + line + " since it has no a Indel. Only the lines that have a indel are processed further.");
-            }
-        } //--remove-indels
-        else {
-            if (line.isIndel() == false) {
-                System.out.println("Reject " + line + " since it has a Indel. Only the lines that have no indels are processed further.");
-            } else {
-                System.out.println("Keep " + line + " since it has no a Indel Only the lines that have no indels are processed further.");
-            }
-        }
+	//--keep-only-indels
+	if (args == true) {
+	    if (line.isIndel() == true) {
+		System.out.println("Keep " + line + " since it has a Indel. Only the lines that have a indel are processed further.");
+	    } else {
+		System.out.println("Reject " + line + " since it has no a Indel. Only the lines that have a indel are processed further.");
+	    }
+	} //--remove-indels
+	else {
+	    if (line.isIndel() == false) {
+		System.out.println("Reject " + line + " since it has a Indel. Only the lines that have no indels are processed further.");
+	    } else {
+		System.out.println("Keep " + line + " since it has no a Indel Only the lines that have no indels are processed further.");
+	    }
+	}
     }
 
     /**
@@ -152,26 +152,26 @@ public class SiteFilters {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     void mask(VariantContext line, String fileContent, String mask, boolean inverse) {
-        /*
-         * Mask needs to have a fasta file containing digits, these digits serve
-         * to mask certain entries in the chromosome (disqualify vcf line).
-         * Also mask would need at a later date a fasta file reader. This is not
-         * included yet
-         */
-        if (inverse == false) {
-            String pos = fileContent.substring(line.getStart(), line.getEnd() + 1);
-            if (!pos.equals(mask)) {
-                System.out.println("This line needs to be masked");
+	/*
+	 * Mask needs to have a fasta file containing digits, these digits serve
+	 * to mask certain entries in the chromosome (disqualify vcf line).
+	 * Also mask would need at a later date a fasta file reader. This is not
+	 * included yet
+	 */
+	if (inverse == false) {
+	    String pos = fileContent.substring(line.getStart(), line.getEnd() + 1);
+	    if (!pos.equals(mask)) {
+		System.out.println("This line needs to be masked");
 
-            }
-        } else {
-            String reverse = new StringBuffer(fileContent).reverse().toString();
-            String pos = reverse.substring(line.getStart(), line.getEnd() + 1);
-            if (!pos.equals(mask)) {
-                System.out.println("This line needs to be masked");
+	    }
+	} else {
+	    String reverse = new StringBuffer(fileContent).reverse().toString();
+	    String pos = reverse.substring(line.getStart(), line.getEnd() + 1);
+	    if (!pos.equals(mask)) {
+		System.out.println("This line needs to be masked");
 
-            }
-        }
+	    }
+	}
     }
 
     /**
@@ -189,29 +189,29 @@ public class SiteFilters {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     void FilterStatus(VariantContext line, boolean all, boolean keep, String condition) {
-        //If you would like to keep only the sites that pass all filters use the --remove-filtered-all option. 
-        if (all == true) {
-            //If a filter has not passed, flag it for removal
-            if (line.isNotFiltered() == false) {
-                System.out.println("Line: " + line + " is rejected since it has not passed: " + line.getFilters());
-            }
+	//If you would like to keep only the sites that pass all filters use the --remove-filtered-all option. 
+	if (all == true) {
+	    //If a filter has not passed, flag it for removal
+	    if (line.isNotFiltered() == false) {
+		System.out.println("Line: " + line + " is rejected since it has not passed: " + line.getFilters());
+	    }
 
-        }//User want to keep or remove a specific filter condition.
-        else {
-            //If you want to keep a certain  filter condition.
-            if (keep == true) {
-                System.out.println(line.getFilters());
-                if (!line.getFilters().contains(condition)) {
-                    System.out.println("Could not find " + condition + " in " + line.getFilters() + " as a result it is marked for removal");
-                }
+	}//User want to keep or remove a specific filter condition.
+	else {
+	    //If you want to keep a certain  filter condition.
+	    if (keep == true) {
+		System.out.println(line.getFilters());
+		if (!line.getFilters().contains(condition)) {
+		    System.out.println("Could not find " + condition + " in " + line.getFilters() + " as a result it is marked for removal");
+		}
 
-            }//Else you want to remove a certain  filter condition.
-            else {
-                if (line.getFilters().contains(condition)) {
-                    System.out.println("Found " + condition + " in " + line.getFilters() + " as a result it is marked for removal");
-                }
-            }
-        }
+	    }//Else you want to remove a certain  filter condition.
+	    else {
+		if (line.getFilters().contains(condition)) {
+		    System.out.println("Found " + condition + " in " + line.getFilters() + " as a result it is marked for removal");
+		}
+	    }
+	}
     }
 
     /**
@@ -228,27 +228,27 @@ public class SiteFilters {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     public void AlleleRanges(VariantContext line, int MinAllels, int MaxAllels) {
-        // If --min-alleles is only given as a AlleleRanges, than FilterHandler assigns MaxAllels to -1. So that only the option --min-alleles  works.
-        if (MinAllels > 0 && MaxAllels == -1) {
-            System.out.println("In MinAllels");
-            if (line.getNAlleles() < MinAllels) {
-                System.out.println("Allel " + line.getNAlleles() + " is to low. So it is marked for removal.");
-            }
-        }
-        // If --max-alleles is only given as a AlleleRanges, than FilterHandler assigns MaxAllels to -1. So that only the option --max-alleles works.
-        if (MaxAllels > 0 && MinAllels == -1) {
-            System.out.println("In MaxAllels");
-            if (line.getNAlleles() > MaxAllels) {
-                System.out.println("Allel " + line.getNAlleles() + " is to high. So it is marked for removal.");
-            }
-        }
-        // Works if both options are given.
-        if (MinAllels > 0 && MaxAllels > 0) {
-            System.out.println("In MinAllels > 0 && MaxAllels > 0");
-            if (line.getNAlleles() < MinAllels | line.getNAlleles() > MaxAllels) {
-                System.out.println("Allel " + line.getNAlleles() + " is either to small or to high. So it is marked for removal.");
-            }
-        }
+	// If --min-alleles is only given as a AlleleRanges, than FilterHandler assigns MaxAllels to -1. So that only the option --min-alleles  works.
+	if (MinAllels > 0 && MaxAllels == -1) {
+	    System.out.println("In MinAllels");
+	    if (line.getNAlleles() < MinAllels) {
+		System.out.println("Allel " + line.getNAlleles() + " is to low. So it is marked for removal.");
+	    }
+	}
+	// If --max-alleles is only given as a AlleleRanges, than FilterHandler assigns MaxAllels to -1. So that only the option --max-alleles works.
+	if (MaxAllels > 0 && MinAllels == -1) {
+	    System.out.println("In MaxAllels");
+	    if (line.getNAlleles() > MaxAllels) {
+		System.out.println("Allel " + line.getNAlleles() + " is to high. So it is marked for removal.");
+	    }
+	}
+	// Works if both options are given.
+	if (MinAllels > 0 && MaxAllels > 0) {
+	    System.out.println("In MinAllels > 0 && MaxAllels > 0");
+	    if (line.getNAlleles() < MinAllels | line.getNAlleles() > MaxAllels) {
+		System.out.println("Allel " + line.getNAlleles() + " is either to small or to high. So it is marked for removal.");
+	    }
+	}
     }
 
     /**
@@ -260,19 +260,19 @@ public class SiteFilters {
      * @param minSnpDist minimal snp distance
      */
     public void FilterOnThinning(VariantContext line, int minSnpDist) {
-        //check if minsnpDist is valid
-        if (minSnpDist < 0) {
-            System.out.println("Min snp distance has to be 0 or higher");
-        }
+	//check if minsnpDist is valid
+	if (minSnpDist < 0) {
+	    System.out.println("Min snp distance has to be 0 or higher");
+	}
 
-        // check if it is first line, if it is set position
-        if (this.positionPrevious == 0) {
-            this.positionPrevious = line.getStart();
-            // if not first line check if positions are to close, if to close reject line, else approve line and set new position
-        } else {
-            if ((line.getStart() - this.positionPrevious) < minSnpDist) {
-                System.out.println("This SNP is too close to the previous because:" + this.positionPrevious + "and"
-                        + line.getStart() + "are less than" + minSnpDist + "basepairs apart form each other");
+	// check if it is first line, if it is set position
+	if (this.positionPrevious == 0) {
+	    this.positionPrevious = line.getStart();
+	    // if not first line check if positions are to close, if to close reject line, else approve line and set new position
+	} else {
+	    if ((line.getStart() - this.positionPrevious) < minSnpDist) {
+		System.out.println("This SNP is to close to the previous because:" + this.positionPrevious + "and"
+			+ line.getStart() + "are less than" + minSnpDist + "basepairs apart form each other");
 
             } else {
                 System.out.println("This SNP is is approved:" + this.positionPrevious + "and"
@@ -280,7 +280,7 @@ public class SiteFilters {
                 this.positionPrevious = line.getStart();
             }
 
-        }
+	}
 
     }
 
@@ -297,23 +297,23 @@ public class SiteFilters {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     public void SNPs(VariantContext line, List<String> snps, boolean args) {
-        //Will include SNPs with matching ID
-        if (args == true) {
-            System.out.println("In true");
-            if (snps.contains(line.getID())) {
-                System.out.println("Line is approved based on: " + line.getID() + " since it's in " + snps);
-            } else {
-                System.out.println("Line is rejected based on: " + line.getID() + " since it's not in " + snps);
-            }
+	//Will include SNPs with matching ID
+	if (args == true) {
+	    System.out.println("In true");
+	    if (snps.contains(line.getID())) {
+		System.out.println("Line is approved based on: " + line.getID() + " since it's in " + snps);
+	    } else {
+		System.out.println("Line is rejected based on: " + line.getID() + " since it's not in " + snps);
+	    }
 
-        }//Will exclude SNPs with matching ID 
-        else {
-            if (snps.contains(line.getID())) {
-                System.out.println("Line is rejected based on: " + line.getID() + " since it's in " + snps);
-            } else {
-                System.out.println("Line is approved based on: " + line.getID() + " since it's not in " + snps);
-            }
-        }
+	}//Will exclude SNPs with matching ID 
+	else {
+	    if (snps.contains(line.getID())) {
+		System.out.println("Line is rejected based on: " + line.getID() + " since it's in " + snps);
+	    } else {
+		System.out.println("Line is approved based on: " + line.getID() + " since it's not in " + snps);
+	    }
+	}
     }
 
     /**
@@ -330,21 +330,21 @@ public class SiteFilters {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     public void Positions(VariantContext line, HashMap pos, boolean args) {
-        if (args == true) {
-            String position = Integer.toString(line.getStart());
-            if (pos.containsKey(position) && pos.containsValue(line.getChr())) {
-                System.out.println(line.getChr() + " and " + line.getStart() + " in " + pos + " therefore the are included.");
-            } else {
-                System.out.println(line.getChr() + " and " + line.getStart() + " not in " + pos + " therefore the are excluded.");
-            }
-        } else {
-            String position = Integer.toString(line.getStart());
-            if (pos.containsKey(position) && pos.containsValue(line.getChr())) {
-                System.out.println(line.getChr() + " and " + line.getStart() + " in " + pos + " therefore the are excluded.");
-            } else {
-                System.out.println(line.getChr() + " and " + line.getStart() + " not in " + pos + " therefore the are included.");
-            }
-        }
+	if (args == true) {
+	    String position = Integer.toString(line.getStart());
+	    if (pos.containsKey(position) && pos.containsValue(line.getChr())) {
+		System.out.println(line.getChr() + " and " + line.getStart() + " in " + pos + " therefore the are included.");
+	    } else {
+		System.out.println(line.getChr() + " and " + line.getStart() + " not in " + pos + " therefore the are excluded.");
+	    }
+	} else {
+	    String position = Integer.toString(line.getStart());
+	    if (pos.containsKey(position) && pos.containsValue(line.getChr())) {
+		System.out.println(line.getChr() + " and " + line.getStart() + " in " + pos + " therefore the are excluded.");
+	    } else {
+		System.out.println(line.getChr() + " and " + line.getStart() + " not in " + pos + " therefore the are included.");
+	    }
+	}
     }
 
     /**
@@ -412,72 +412,46 @@ public class SiteFilters {
      * @author Marco Roelfes <marcoroelfes@gmail.com>
      */
     public void meanDepth(VariantContext line, int minDepth, int maxDepth) {
-        //get total depth per site
-        int totalDepth = line.getAttributeAsInt("DP", 0);
-        //get number of genotypes
-        int numberOfGt = line.getGenotypes().size();
-        //calculate meanDepth
-        float meanDepth = totalDepth / numberOfGt;
-        //if meanDepth is between threshold approve line, else decline line
-        if (meanDepth < maxDepth && meanDepth > minDepth) {
-            System.out.println("line approved meanDepth is between " + minDepth + " and " + maxDepth);
-        } else {
-            System.out.println("line declined meanDepth is not between " + minDepth + " and " + maxDepth);
-        }
+	//get total depth per site
+	int totalDepth = line.getAttributeAsInt("DP", 0);
+	//get number of genotypes
+	int numberOfGt = line.getGenotypes().size();
+	//calculate meanDepth
+	float meanDepth = totalDepth / numberOfGt;
+	//if meanDepth is between threshold approve line, else decline line
+	if (meanDepth < maxDepth && meanDepth > minDepth) {
+	    System.out.println("line approved meanDepth is between " + minDepth + " and " + maxDepth);
+	} else {
+	    System.out.println("line declined meanDepth is not between " + minDepth + " and " + maxDepth);
+	}
 
     }
+
     /**
-     * Check is allele count is between the given range
+     * Filters snip line, based on a info attribute. Either will keep (args =
+     * true) or reject (args = false), a snip line based on their attributes in
+     * the info header.
      *
      * @param line VCF snip line that will be analysed.
-     * @param minCount minimum allele count
-     * @param maxCount maximum allele frequency
-     * @author Marco Roelfes <marcoroelfes@gmail.com>
+     * @param info info attribute that will be used to filter the VCF snip line.
+     * @param args Acts as flag to either --keep-INFO (true) or --remove-INFO
+     * (false)
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    public void AlleleCount(VariantContext line, int minCount, int maxCount) {
-        Object valObj = line.getAttribute("AC");
+    public void InfoFilter(VariantContext line, String info, boolean args) {
+	if (args == true) {
+	    if (line.getAttribute(info) != null) {
+		System.out.println("Keep line since it contains the info header " + info + " " + line.getAttribute(info));
+	    } else {
+		System.out.println("Reject " + line.getAttributes() + " since it does not contain " + info);
+	    }
+	} else {
+	    if (line.getAttribute(info) == null) {
+		System.out.println("Keep line since it does not contains the info header " + info + " " + line.getAttribute(info));
+	    } else {
+		System.out.println("Reject " + line.getAttributes() + " since it does contain " + info);
+	    }
+	}
 
-        boolean reject = false;
-        if (valObj instanceof String) {
-            //handle single value
-            int val;
-            val = Integer.parseInt((String) valObj);
-            //if val is between threshold approve line, else reject line
-            if (val < maxCount && val > minCount) {
-                System.out.println("Line is approved allelfreq is between" + minCount + " and " + maxCount);
-            } else {
-                System.out.println("Line is rejected allelfreq is not between" + minCount + " and " + maxCount);
-            }
-            //System.out.println("val="+val);
-        } else {
-            //ArrayList value
-            ArrayList<String> values = (ArrayList<String>) valObj;
-            List<Integer> valuesInteger = new ArrayList<Integer>();
-            //set String ArrayList to Integer ArrayList            
-            for (String str : values) {
-                valuesInteger.add(str != null ? Integer.parseInt(str) : null);
-            }
-            //for every integer in ArrayList check if between threshold
-            for (double dValue : valuesInteger) {
-                if (dValue < maxCount && dValue > minCount) {
-                    reject = false;
-                } else {
-                    reject = true;
-                    break;
-
-                }
-            }
-
-            //check if to reject or approve SNP
-            if (reject == true) {
-                System.out.println("Line is rejected allelfreq is not between" + minCount + " and " + maxCount);
-            } else {
-                System.out.println("Line is approved allelfreq is between" + minCount + " and " + maxCount);
-            }
-
-        }
-    }
-    public void HardyWeinberg(VariantContext line, double pVal){
-        //TODO: check HWE formulas and meaning, how to implement
     }
 }
