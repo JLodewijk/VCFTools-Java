@@ -174,8 +174,6 @@ public class SiteFilters {
         }
     }
 
-    
-
     /**
      * Filters sites on the basis of their FILTER flag, this FILTER flag is in
      * the vcf file.
@@ -273,12 +271,12 @@ public class SiteFilters {
             // if not first line check if positions are to close, if to close reject line, else approve line and set new position
         } else {
             if ((line.getStart() - this.positionPrevious) < minSnpDist) {
-                System.out.println("This SNP is to close to the previous because:" + this.positionPrevious + "and"
+                System.out.println("This SNP is too close to the previous because:" + this.positionPrevious + "and"
                         + line.getStart() + "are less than" + minSnpDist + "basepairs apart form each other");
 
             } else {
                 System.out.println("This SNP is is approved:" + this.positionPrevious + "and"
-                        + line.getStart() + "are more than" + minSnpDist + "basepairs apart form each other");
+                        + line.getStart() + "are more then" + minSnpDist + "basepairs apart form each other");
                 this.positionPrevious = line.getStart();
             }
 
@@ -358,29 +356,53 @@ public class SiteFilters {
      * @author Marco Roelfes <marcoroelfes@gmail.com>
      */
     public void AlleleFrequency(VariantContext line, float minAlleleFreq, double maxAlleleFreq) {
-        //gets allele frequency of line
-        //alleleFreq = line.getAttribute("AF"));
+        Object valObj = line.getAttribute("AF");
+        //System.out.println(valObj.getClass().getName());
+        boolean reject = false;
+        if (valObj instanceof String) {
+            //handle single value
+            Double val = Double.valueOf((String) valObj);
+            //if val is between threshold approve line, else reject line
+            if (val < maxAlleleFreq && val > minAlleleFreq) {
+                System.out.println("Line is approved allelfreq is between" + minAlleleFreq + " and " + maxAlleleFreq);
+            } else {
+                System.out.println("Line is rejected allelfreq is not between" + minAlleleFreq + " and " + maxAlleleFreq);
+            }
+            //System.out.println("val="+val);
+        } else {
+            //ArrayList value
+            ArrayList<String> values = (ArrayList<String>) valObj;
+            List<Double> valuesDoubles = new ArrayList<Double>();
+            for (String str : values) {
+                valuesDoubles.add(str != null ? Double.parseDouble(str) : null);
+            }
+            for (double dValue : valuesDoubles) {
+                if (dValue < maxAlleleFreq && dValue > minAlleleFreq) {
+                    reject = false;
+                } else {
+                    reject = true;
+                    break;
+                    
+                }
+            }
+            if (reject==true){
+                System.out.println("Line is rejected allelfreq is not between" + minAlleleFreq + " and " + maxAlleleFreq);
+            }else{
+                System.out.println("Line is approved allelfreq is between" + minAlleleFreq + " and " + maxAlleleFreq);
+            }
 
+            
+        }
+
+//            tr
         //checks if allele frecuency is between given maximum and minimum
         //if true approve snp
         //if false decline snp
-        if (line.getAttribute("AF").getClass().getName() == "java.lang.String") {
-
-            if (line.getAttributeAsDouble("AF", 0.0) < maxAlleleFreq && line.getAttributeAsDouble("AF", 0.0) > minAlleleFreq) {
-                System.out.println("Line is approved allelfreq is between" + minAlleleFreq + " and " + maxAlleleFreq);
-            } else {
-                System.out.println("Line is declined allelfreq is not between" + minAlleleFreq + " and " + maxAlleleFreq);
-            }
-        } else {
-            //ArrayList af = line.getAttributeAsDouble("AF", 0.0);
-            //or(double af : line.getAttributeAsDouble("AF", 0.0)){
-            System.out.println("The Allele frequency is a list not a double");
-
-        }
-        
+ 
 
     }
-     /**
+
+    /**
      * Check if meanDepth is between given thresholds
      *
      * @param line VCF snip line that will be analysed.
@@ -388,19 +410,19 @@ public class SiteFilters {
      * @param maxDepth maximum Depth
      * @author Marco Roelfes <marcoroelfes@gmail.com>
      */
-    public void meanDepth(VariantContext line, int minDepth, int maxDepth){
+    public void meanDepth(VariantContext line, int minDepth, int maxDepth) {
         //get total depth per site
-        int totalDepth = line.getAttributeAsInt("DP",0);
+        int totalDepth = line.getAttributeAsInt("DP", 0);
         //get number of genotypes
         int numberOfGt = line.getGenotypes().size();
         //calculate meanDepth
-        float meanDepth = totalDepth/numberOfGt;
+        float meanDepth = totalDepth / numberOfGt;
         //if meanDepth is between threshold approve line, else decline line
-        if(meanDepth < maxDepth && meanDepth > minDepth){
+        if (meanDepth < maxDepth && meanDepth > minDepth) {
             System.out.println("line approved meanDepth is between " + minDepth + " and " + maxDepth);
-        } else{
+        } else {
             System.out.println("line declined meanDepth is not between " + minDepth + " and " + maxDepth);
         }
-       
+
     }
 }
