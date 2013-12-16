@@ -24,7 +24,7 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
  */
 public class SiteFilters {
 
-    int positionPrevious = 0;
+    private int positionPrevious = 0;
 
     /**
      * Approve or reject chromosomes based on their CHROM, this can also be used
