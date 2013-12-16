@@ -6,6 +6,7 @@
 package nl.bioinf.vcftools;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import org.broadinstitute.variant.variantcontext.Genotype;
 import org.broadinstitute.variant.variantcontext.GenotypesContext;
 import org.broadinstitute.variant.variantcontext.VariantContext;
@@ -24,7 +25,7 @@ public class VcfReader {
     public static void main(String[] args) throws IOException {
 
         VcfReader read = new VcfReader();
-        read.readVcfLine("C://Users/Marco/Dropbox/Thema10/VCF/region.txt");
+        read.readVcfLine("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
     }
 
     /**
@@ -41,17 +42,19 @@ public class VcfReader {
         while (vcf.hasNextIter()){ 
             //get next line
             VariantContext nextLine = vcf.getNextIterAsVariantContext();
-            System.out.println(nextLine.getAlternateAlleles());
+            //System.out.println(nextLine.getAlternateAlleles());
             VariantContext nextLine2 = vcf.getNextIterAsVariantContext();
-            System.out.println(nextLine2.getAllele("C"));
+            //System.out.println(nextLine2.getAllele("C"));
             VariantContext nextLine3 = vcf.getNextIterAsVariantContext();
             Genotype genotypes = nextLine.getGenotype(0);
-            System.out.println(genotypes.getAlleles());
+            //System.out.println(genotypes.getAlleles());
+            //System.out.println(nextLine.getAttribute("AF").getClass().getName());
+            //alleleFreq;
+            //alleleFreq = nextLine.getAttributeAsDouble("AF", 0.0);
             System.out.println(nextLine.getAttribute("AF").getClass().getName());
-            String alleleFreq;
-            alleleFreq = (String) nextLine.getAttribute("AF");
-            float al = Float.valueOf(alleleFreq);
-            System.out.println(al);
+            //float al = Float.valueOf(alleleFreq);
+            //System.out.println(al);
+            //System.out.println(nextLine.getGenotypes().size());
             
         }
         

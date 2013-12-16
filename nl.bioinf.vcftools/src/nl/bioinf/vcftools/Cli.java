@@ -5,6 +5,7 @@
  */
 package nl.bioinf.vcftools;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,10 +40,10 @@ public class Cli {
         this.helpFormatter = new HelpFormatter();
         this.settings = new Settings();
 
-        System.out.println("hoi");
+        
         CommandLineParser parser = new BasicParser();
         this.cmd = parser.parse(this.option, args);
-        System.out.println("boob");
+      
 
         checkOptions();
 
@@ -179,13 +180,7 @@ public class Cli {
         } else if (cmd.hasOption("minAlleles") && !(cmd.hasOption("maxAlleles")) || cmd.hasOption("maxAlleles") && !(cmd.hasOption("minAlleles"))) {
             System.err.println("It is obliged to use the options -minAlleles and -maxAlleles together");
             System.exit(0);
-        } //        
-        //        
-        //        
-        //        else if(cmd.hasOption("keepInfo")){
-        //        
-        //        }
-        else if (args.length < 1) {
+        } else if (args.length < 1) {
 //                usages(opt);
         }
 
