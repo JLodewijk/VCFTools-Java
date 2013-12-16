@@ -40,10 +40,10 @@ public class Cli {
         this.helpFormatter = new HelpFormatter();
         this.settings = new Settings();
 
-        System.out.println("hoi");
+        
         CommandLineParser parser = new BasicParser();
         this.cmd = parser.parse(this.option, args);
-        System.out.println("boob");
+      
 
         checkOptions();
 
