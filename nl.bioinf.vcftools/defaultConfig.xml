@@ -6,7 +6,6 @@
 <siteFilters>
 <fromBp>0</fromBp>
 <toBp>0</toBp>
-<snpFile/>
 <keepOnlyIndels>false</keepOnlyIndels>
 <removeIndels>false</removeIndels>
 <removeFilteredAll>false</removeFilteredAll>
