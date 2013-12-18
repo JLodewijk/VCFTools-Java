@@ -8,6 +8,8 @@ package nl.bioinf.vcftools;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.broadinstitute.variant.variantcontext.Allele;
 import org.broadinstitute.variant.variantcontext.Genotype;
 import org.broadinstitute.variant.variantcontext.GenotypesContext;
@@ -24,11 +26,24 @@ public class VcfReader {
      * @param args
      * @throws IOException
      */
-    public static void main(String[] args) throws IOException {
-        
-        VcfReader read = new VcfReader();
-        read.readVcfLine("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
+    
+    private Settings settings;
+//    public static void main(String[] args) throws IOException {
+//
+//        VcfReader read = new VcfReader();
+//        read.readVcfLine("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
+//    }
+
+    public VcfReader(Settings settings) {
+        this.settings = settings;
+        try {
+            readVcfLines(settings.getInputFile());
+        } catch (IOException ex) {
+            Logger.getLogger(VcfReader.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    
+    
 
     /**
      * Reads VCF line for line while file has next line
@@ -37,18 +52,17 @@ public class VcfReader {
      * @return
      * @throws IOException
      */
-    public String readVcfLine(String file) throws IOException {
+    public String readVcfLines(String file) throws IOException {
         Vcf vcf = new Vcf(file);
         SiteFilters site = new SiteFilters();
         
 
         //while vcf file has next iteration get next iteration
         while (vcf.hasNextIter()) {
-            VariantContext vc = vcf.getNextIterAsVariantContext();
-            int a = vc.getGenotype(1).getPloidy();
-            System.out.println(a);
-            
-            //site.MeanDepth(vc,84,86);
+              VcfLine iteration = vcf.getNextIter();
+              FilterHandler filterHandler = new FilterHandler(this.settings, iteration);
+//            VariantContext vc = vcf.getNextIterAsVariantContext();
+//            site.MeanDepth(vc,84,86);
             
             //get next line
 //            VariantContext nextLine = vcf.getNextIterAsVariantContext();

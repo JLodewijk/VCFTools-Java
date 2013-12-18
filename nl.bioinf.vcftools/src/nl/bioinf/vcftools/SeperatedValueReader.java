@@ -15,24 +15,28 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author ashvin
+ * @author ashvin ponnudurai
  */
 public class SeperatedValueReader {
 
     private String filePath;
     private String seperator;
+    private String linesOfFile;
 
+    /**
+     * Constructor inducining file reading.
+     */
     SeperatedValueReader(String filePath, String seperator) {
         this.filePath = filePath;
         this.seperator = seperator;
+        this.readFile();
+
     }
 
     /**
-     * returns arrayList
-     *
-     * @return ArrayList<String>
+     * Reads file
      */
-    public ArrayList<String> bleep() {
+    public void readFile() {
         StringBuilder fileLines = new StringBuilder();
         try {
 
@@ -41,7 +45,6 @@ public class SeperatedValueReader {
             fr = new FileReader(this.filePath);
             br = new BufferedReader(fr);
 
-            String linesStr = "";
             String line = null;
             int lineNumber = 0;
             while ((line = br.readLine()) != null) {
@@ -58,7 +61,18 @@ public class SeperatedValueReader {
         } catch (IOException ex) {
             Logger.getLogger(SeperatedValueReader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String[] splitedFileLines = fileLines.toString().split(this.seperator);
+
+        this.linesOfFile = fileLines.toString();
+
+    }
+
+    /**
+     * returns arrayList with seperated file line elements.
+     *
+     * @return ArrayList<String>
+     */
+    public ArrayList<String> getArrayList() {
+        String[] splitedFileLines = this.linesOfFile.split(this.seperator);
         ArrayList<String> arrayListFilePathElements = new ArrayList<String>();
 
         for (String lineElement : splitedFileLines) {
@@ -66,7 +80,6 @@ public class SeperatedValueReader {
         }
 
         return arrayListFilePathElements;
-
     }
 
 }
