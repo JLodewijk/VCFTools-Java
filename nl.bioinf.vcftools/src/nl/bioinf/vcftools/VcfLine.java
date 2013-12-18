@@ -81,6 +81,23 @@ public class VcfLine {
         return this.vc.getPhredScaledQual();
     }
     
+     /**
+     * Get the depth.
+     * @return depth
+     */
+    public int getDp() {
+        return this.vc.getAttributeAsInt("DP", 0);
+    }
+    
+     /**
+     * Get the number of genotypes.
+     * @return Number of genotypes
+     */
+    public int getGenotypeNumber() {
+        return vc.getGenotypes().size();
+    }
+    
+    
     /**
      * Get an attribute as boolean of the SNP of the line.
      * @param attribute The attribute to return its value of.
