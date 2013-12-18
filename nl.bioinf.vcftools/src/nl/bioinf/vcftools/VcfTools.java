@@ -23,8 +23,9 @@ public class VcfTools {
 
 //        Cli c = new Cli(args);
         SeperatedValueReader s = new SeperatedValueReader("\\Users\\ashvin\\Desktop\\text.txt", "/");
-        s.bleep();
-        
+        s.readFile();
+        BedReader br = new BedReader("\\Users\\ashvin\\Desktop\\school stuff\\Thema10\\bedFileExample.txt");
+       
 //        Settings settings = c.getSettings();
 //        System.out.println("bleep");
 //        System.out.println(settings.getInputFile());
