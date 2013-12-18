@@ -8,6 +8,8 @@ package nl.bioinf.vcftools;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.broadinstitute.variant.variantcontext.Allele;
 import org.broadinstitute.variant.variantcontext.Genotype;
 import org.broadinstitute.variant.variantcontext.GenotypesContext;
@@ -34,6 +36,11 @@ public class VcfReader {
 
     public VcfReader(Settings settings) {
         this.settings = settings;
+        try {
+            readVcfLines(settings.getInputFile());
+        } catch (IOException ex) {
+            Logger.getLogger(VcfReader.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     
@@ -45,7 +52,7 @@ public class VcfReader {
      * @return
      * @throws IOException
      */
-    public String readVcfLine(String file) throws IOException {
+    public String readVcfLines(String file) throws IOException {
         Vcf vcf = new Vcf(file);
         SiteFilters site = new SiteFilters();
         
@@ -53,7 +60,7 @@ public class VcfReader {
         //while vcf file has next iteration get next iteration
         while (vcf.hasNextIter()) {
               VcfLine iteration = vcf.getNextIter();
-              FilterHandler filterHandler = new FilterHandler(iteration);
+              FilterHandler filterHandler = new FilterHandler(this.settings, iteration);
 //            VariantContext vc = vcf.getNextIterAsVariantContext();
 //            site.MeanDepth(vc,84,86);
             

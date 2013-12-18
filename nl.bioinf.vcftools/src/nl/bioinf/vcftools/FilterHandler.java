@@ -13,13 +13,16 @@ package nl.bioinf.vcftools;
 public class FilterHandler {
 
     private VcfLine vcfLine; 
+    private Settings settings;
     
-    public FilterHandler(VcfLine vcfLine) {
+    public FilterHandler(Settings settings, VcfLine vcfLine) {
         this.vcfLine = vcfLine;
+        this.settings = settings;
     }
     
     public boolean performFilters() {
         // perform filters
+        
         
         
         
