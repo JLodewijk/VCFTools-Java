@@ -25,7 +25,7 @@ public class VcfReader {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-
+        
         VcfReader read = new VcfReader();
         read.readVcfLine("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
     }
@@ -45,7 +45,10 @@ public class VcfReader {
         //while vcf file has next iteration get next iteration
         while (vcf.hasNextIter()) {
             VariantContext vc = vcf.getNextIterAsVariantContext();
-            site.MeanDepth(vc,84,86);
+            int a = vc.getGenotype(1).getPloidy();
+            System.out.println(a);
+            
+            //site.MeanDepth(vc,84,86);
             
             //get next line
 //            VariantContext nextLine = vcf.getNextIterAsVariantContext();
