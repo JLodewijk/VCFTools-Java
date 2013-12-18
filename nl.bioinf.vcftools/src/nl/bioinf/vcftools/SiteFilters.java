@@ -13,11 +13,12 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
 
 /**
  *
- * This Java class contains numerous test function for Site filtering. If you
- * want to run this file, than you need to call in a different program
- * (ReadVcf.java) this program. You can do this by: SiteFilters site = new
- * SiteFilters(); and site.*insert function name*( vcf.getNextIter(file),*insert
- * other parameters*);
+ * This Java class contains numerous test function for Site filtering. This testing is done to uncover the algorithm on which filters operate upon. One thing to consider is that GATK needs to stay
+ * encapsulated, so this needs to be considered.
+ *
+ * If you want to run this file, than you need to call in a different program (ReadVcf.java) this program. You can do this by: SiteFilters site = new SiteFilters(); and site.*insert function name*(
+ * vcf.getNextIter(file),*insert other parameters*);
+ *
  *
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  * @url: http://vcftools.sourceforge.net/options.html#site_filter
@@ -27,47 +28,38 @@ public class SiteFilters {
     private int positionPrevious = 0;
 
     /**
-     * Approve or reject chromosomes based on their CHROM, this can also be used
-     * for multiple chromosomes.
+     * Approve or reject chromosomes based on their CHROM, this can also be used for multiple chromosomes.
      *
      * @param line VCF snip line that will be analysed.
-     * @param chromosome User defined chromosome name, is capable of supporting
-     * multiple chromosomes.
-     * @param args Acts as a flag to activate either the IncludeChromosome
-     * (true) or the ExcludeChromosome (false).
+     * @param chromosome User defined chromosome name, is capable of supporting multiple chromosomes.
+     * @param args Acts as a flag to activate either the IncludeChromosome (true) or the ExcludeChromosome (false).
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void Chromosome(VariantContext line, String chromosome, boolean args) {
-	//Multiple chromosomes support. Example: "22,23" becomes [22, 23] as a array list.
-	List<String> chromosomes = asList(chromosome.split(","));
+    void Chromosome(VariantContext line, ArrayList GivenChromosomes, boolean args) {
 	//If option IncludeChromosome is given then args is true.
 	if (args == true) {
-	    if (chromosomes.contains(line.getChr())) {
-		System.out.println("Line is approved based on: " + line.getChr() + " since it's in " + chromosomes);
+	    if (GivenChromosomes.contains(line.getChr())) {
+		System.out.println("Line is approved based on: " + line.getChr() + " since it's in " + GivenChromosomes);
 	    } else {
-		System.out.println("Line is rejected based on: " + line.getChr() + " since it's not in " + chromosomes);
+		System.out.println("Line is rejected based on: " + line.getChr() + " since it's not in " + GivenChromosomes);
 	    }
 	} //Else if option ExcludeChromosome is given then args is false.
 	else {
-	    if (chromosomes.contains(line.getChr())) {
-		System.out.println("Line is rejected based on: " + line.getChr() + " since it's in " + chromosomes);
+	    if (GivenChromosomes.contains(line.getChr())) {
+		System.out.println("Line is rejected based on: " + line.getChr() + " since it's in " + GivenChromosomes);
 	    } else {
-		System.out.println("Line is approved based on: " + line.getChr() + " since it's not in " + chromosomes);
+		System.out.println("Line is approved based on: " + line.getChr() + " since it's not in " + GivenChromosomes);
 	    }
 	}
     }
 
     /**
-     * Only sites who have position within that range will be passed. Sites
-     * outside of this range will be rejected. Also this can only be used in
-     * conjuction with –chr.
+     * Only sites who have position within that range will be passed. Sites outside of this range will be rejected. Also this can only be used in conjuction with –chr.
      *
      * @param line VCF snip line that will be analysed.
-     * @param ToBp User defined base pair number from, is used for the options
-     * ToBp.
-     * @param FromBp User defined base pair number to, is used for the options
-     * FromBp.
+     * @param ToBp User defined base pair number from, is used for the options ToBp.
+     * @param FromBp User defined base pair number to, is used for the options FromBp.
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
@@ -83,8 +75,7 @@ public class SiteFilters {
      * Include only sites with Quality above this threshold.
      *
      * @param line VCF snip line that will be analysed.
-     * @param minQ User defined minimal quality number, determines how low the
-     * quality score can be before it is being filtered.
+     * @param minQ User defined minimal quality number, determines how low the quality score can be before it is being filtered.
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
@@ -112,8 +103,7 @@ public class SiteFilters {
      * Include or exclude sites that contain an indel.
      *
      * @param line VCF snip line that will be analysed.
-     * @param args Acts as a flag to activate either the keep-only-indels (true)
-     * or the remove-indels (false).
+     * @param args Acts as a flag to activate either the keep-only-indels (true) or the remove-indels (false).
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
@@ -136,18 +126,13 @@ public class SiteFilters {
     }
 
     /**
-     * Include sites based on a FASTA-like file. The file needs to contain
-     * digits between 0 and 9 to indicate a position. Entries are rejected if
-     * they fail to be similar to the mask.
+     * Include sites based on a FASTA-like file. The file needs to contain digits between 0 and 9 to indicate a position. Entries are rejected if they fail to be similar to the mask.
      *
      *
      * @param line VCF snip line that will be analysed.
-     * @param fileContent contains digits ranging from 0 to 9, indication
-     * positions which could be potentially masked.
-     * @param mask User defined digit which determines what position would be
-     * kept.
-     * @param inverse Acts as a flag to either inverse the fileContent (false)
-     * or leave it as it is (true).
+     * @param fileContent contains digits ranging from 0 to 9, indication positions which could be potentially masked.
+     * @param mask User defined digit which determines what position would be kept.
+     * @param inverse Acts as a flag to either inverse the fileContent (false) or leave it as it is (true).
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
@@ -175,16 +160,12 @@ public class SiteFilters {
     }
 
     /**
-     * Filters sites on the basis of their FILTER flag, this FILTER flag is in
-     * the vcf file.
+     * Filters sites on the basis of their FILTER flag, this FILTER flag is in the vcf file.
      *
      * @param line VCF snip line that will be analysed.
-     * @param all Acts as flag to either remove all the filtered (true) or
-     * remove specific filters (false).
-     * @param keep Acts as flag to either keep a certain filter condition (true)
-     * or remove a certain filter condition (false).
-     * @param condition User defined condition that either keeps or removes
-     * filters based on that condition.
+     * @param all Acts as flag to either remove all the filtered (true) or remove specific filters (false).
+     * @param keep Acts as flag to either keep a certain filter condition (true) or remove a certain filter condition (false).
+     * @param condition User defined condition that either keeps or removes filters based on that condition.
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
@@ -218,12 +199,8 @@ public class SiteFilters {
      * Include only sites with alleles within the specified range.
      *
      * @param line VCF snip line that will be analysed.
-     * @param MinAllels User defined int, determines the range of the option
-     * --min-alleles. If user does not give a value, the program will ignore the
-     * option.
-     * @param MaxAllels User defined int, determines the range of the option
-     * --max-alleles. If user does not give a value, the program will ignore the
-     * option.
+     * @param MinAllels User defined int, determines the range of the option --min-alleles. If user does not give a value, the program will ignore the option.
+     * @param MaxAllels User defined int, determines the range of the option --max-alleles. If user does not give a value, the program will ignore the option.
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
@@ -252,8 +229,7 @@ public class SiteFilters {
     }
 
     /**
-     * include snp when they are not closer then given minimal snp distance to
-     * each other
+     * include snp when they are not closer then given minimal snp distance to each other
      *
      * @author Marco Roelfes <marcoroelfes@gmail.com>
      * @param line VCF snip line that will be analysed.
@@ -285,15 +261,11 @@ public class SiteFilters {
     }
 
     /**
-     * Include a list of SNP(s) ID. Filters any ID not corresponding to the
-     * snps.
+     * Include a list of SNP(s) ID. Filters any ID not corresponding to the snps.
      *
      * @param line VCF snip line that will be analysed.
-     * @param snps List<String>, contains either the data from --snp or the
-     * –-snps file. Even if --snp is a single string it still needs to be given
-     * as an ArrayList
-     * @param args Acts as flag to either include SNP(s) with matching ID (true)
-     * or exclude SNP(s) with matching ID.
+     * @param snps List<String>, contains either the data from --snp or the –-snps file. Even if --snp is a single string it still needs to be given as an ArrayList
+     * @param args Acts as flag to either include SNP(s) with matching ID (true) or exclude SNP(s) with matching ID.
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     public void SNPs(VariantContext line, List<String> snps, boolean args) {
@@ -317,16 +289,12 @@ public class SiteFilters {
     }
 
     /**
-     * Include/exclude a set of sites on the basis of a list of positions in a
-     * file.
+     * Include/exclude a set of sites on the basis of a list of positions in a file.
      *
      *
      * @param line VCF snip line that will be analysed.
-     * @param pos HashMap, contains the data from the file given in the option:
-     * --positions <filename> or --exclude-positions <filename>. The key is the
-     * position and the value is the chromosome.
-     * @param args Acts as flag to either include positions (true) or exclude
-     * positions based on their position and chromosme.
+     * @param pos HashMap, contains the data from the file given in the option: --positions <filename> or --exclude-positions <filename>. The key is the position and the value is the chromosome.
+     * @param args Acts as flag to either include positions (true) or exclude positions based on their position and chromosme.
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     public void Positions(VariantContext line, HashMap pos, boolean args) {
@@ -348,14 +316,12 @@ public class SiteFilters {
     }
 
     /**
-     * Check is allele frequency or the non-reference allele frequency is
-     * between the given range
+     * Check is allele frequency or the non-reference allele frequency is between the given range
      *
      * @param line VCF snip line that will be analysed.
      * @param minAlleleFreq minimum allele frequency
      * @param maxAlleleFreq maximum allele frequency
-     * @param args Acts as a flag between Non-Reference Allele Frequencies and
-     * AlleleFrequencies.
+     * @param args Acts as a flag between Non-Reference Allele Frequencies and AlleleFrequencies.
      * @author Marco Roelfes <marcoroelfes@gmail.com> & Jeroen Lodewijk
      * <j.lodewijk@st.hanze.nl>
      */
@@ -515,14 +481,11 @@ public class SiteFilters {
     }
 
     /**
-     * Filters snip line, based on a info attribute. Either will keep (args =
-     * true) or reject (args = false), a snip line based on their attributes in
-     * the info header.
+     * Filters snip line, based on a info attribute. Either will keep (args = true) or reject (args = false), a snip line based on their attributes in the info header.
      *
      * @param line VCF snip line that will be analysed.
      * @param info info attribute that will be used to filter the VCF snip line.
-     * @param args Acts as flag to either --keep-INFO (true) or --remove-INFO
-     * (false)
+     * @param args Acts as flag to either --keep-INFO (true) or --remove-INFO (false)
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     public void InfoFilter(VariantContext line, String info, boolean args) {
