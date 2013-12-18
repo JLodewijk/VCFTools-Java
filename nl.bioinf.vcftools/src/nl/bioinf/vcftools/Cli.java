@@ -5,6 +5,8 @@
  */
 package nl.bioinf.vcftools;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -83,9 +85,7 @@ public class Cli {
         opt.addOption("exludeBed", true, "exclude a set of sites on the basis of a BED files");
         opt.addOption("removeFilteredAll", false, "this option removes all sites with a FILTER flag");
         opt.addOption("removeFiltered", true, "exclude sites with a specific filter flag");
-        
         opt.addOption("keepFiltered", true, "this option can be used to select sites on the basis of specific filter flags"); //check required if arg = FLAG and no INFO field value
-        
         opt.addOption("removeInfo", true, "this option can be used to exclude sites with a specific INFO flag");
         opt.addOption("keepInfo", true, "this option can be used to select sites on the basis of specific INFO flags, keepInfo is applied befor removeInfo if both are given");
         opt.addOption("minQ", true, "include only sites with Quality above this threshold. A Double is expected");
@@ -139,7 +139,6 @@ public class Cli {
         } else if (this.cmd.hasOption("fromBp") && !(this.cmd.hasOption("chr"))) {
             System.err.println("The options -fromBp and -toBp can only be used in conjunction with -chr");
             System.exit(0);
-
         } else if (this.cmd.hasOption("fromBp") && !(this.cmd.hasOption("toBp"))) {
             System.err.println("When the option -fromBp is given the -toBp is also required");
             usage();
@@ -149,7 +148,6 @@ public class Cli {
         } else if (cmd.hasOption("keepInfo") && cmd.hasOption("removeInfo")) {
             System.out.println("For the options: -keepInfo and -removeInfo"
                     + " the -keepInfo option will be executed first.");
-       
         } else if (cmd.hasOption("keepFiltered") && cmd.hasOption("removeFiltered")) {
             System.out.println("For the options: -keepFiltered and -removeFiltered"
                     + " the -keepFiltered option will be executed first.");
@@ -181,12 +179,53 @@ public class Cli {
                 System.err.println("The option -geno only allows 1 or 0. Where 1 indicates no missing data allowed");
                 System.exit(0);
             }
-
         } else if (cmd.hasOption("minAlleles") && !(cmd.hasOption("maxAlleles")) || cmd.hasOption("maxAlleles") && !(cmd.hasOption("minAlleles"))) {
             System.err.println("It is obliged to use the options -minAlleles and -maxAlleles together");
             System.exit(0);
+        } else if (cmd.hasOption("vcf")) {
+            File file = new File(cmd.getOptionValue("vcf"));
+            if (!(file.exists())) {
+                System.err.println("file " + cmd.getOptionValue("vcf") + " can not be opend");
+                System.exit(0);
+            }
+        } else if (cmd.hasOption("excludeSnpFile")) {
+            File file = new File(cmd.getOptionValue("excludeSnpFile"));
+            if (!(file.exists())) {
+                System.err.println("file " + cmd.getOptionValue("excludeSnpFile") + " can not be opend");
+                System.exit(0);
+            }
+        } else if (cmd.hasOption("positionsFile")) {
+            File file = new File(cmd.getOptionValue("positionsFile"));
+            if (!(file.exists())) {
+                System.err.println("file " + cmd.getOptionValue("positionsFile") + " can not be opend");
+                System.exit(0);
+            }
+        } else if (cmd.hasOption("excludePositionsFile")) {
+            File file = new File(cmd.getOptionValue("excludePositionsFile"));
+            if (!(file.exists())) {
+                System.err.println("file " + cmd.getOptionValue("excludePositionsFile") + " can not be opend");
+                System.exit(0);
+            }
+        } else if (cmd.hasOption("mask")) {
+            File file = new File(cmd.getOptionValue("mask"));
+            if (!(file.exists())) {
+                System.err.println("file " + cmd.getOptionValue("mask") + " can not be opend");
+                System.exit(0);
+            }
+        } else if (cmd.hasOption("keepIndvFile")) {
+            File file = new File(cmd.getOptionValue("keepIndvFile"));
+            if (!(file.exists())) {
+                System.err.println("file " + cmd.getOptionValue("keepIndvFile") + " can not be opend");
+                System.exit(0);
+            }
+        } else if (cmd.hasOption("removeIndvFile")) {
+            File file = new File(cmd.getOptionValue("removeIndvFile"));
+            if (!(file.exists())) {
+                System.err.println("file " + cmd.getOptionValue("removeIndvFile") + " can not be opend");
+                System.exit(0);
+            }
         } else if (args.length < 1) {
-                this.usage();
+            this.usage();
         }
 
     }
@@ -332,7 +371,7 @@ public class Cli {
                 arrayListRemovedFiltered.add(removedItem);
             }
             settings.setRemoveFiltered(arrayListRemovedFiltered);
-        }  else if (this.cmd.hasOption("keepFiltered")) {
+        } else if (this.cmd.hasOption("keepFiltered")) {
             String keepFiltered = this.cmd.getOptionValue("keepFiltered");
             String[] splitedKeepFiltered = keepFiltered.split(",");
             ArrayList<String> arrayListKeepFiltered = new ArrayList<String>();
@@ -341,7 +380,7 @@ public class Cli {
                 arrayListKeepFiltered.add(keepFiltered);
             }
             settings.setKeepFiltered(arrayListKeepFiltered);
-        }  else if (this.cmd.hasOption("removeInfo")) {
+        } else if (this.cmd.hasOption("removeInfo")) {
             String removeInfo = this.cmd.getOptionValue("removeInfo");
             String[] splitedRemovedInfo = removeInfo.split(",");
             ArrayList<String> arrayListRemovedInfo = new ArrayList<String>();
