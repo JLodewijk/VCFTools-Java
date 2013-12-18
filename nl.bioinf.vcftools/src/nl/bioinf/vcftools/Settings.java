@@ -67,7 +67,7 @@ public class Settings {
     private Double maxNonRefAc;
     private Double hwe;
     private Double geno;
-    private Integer maxMissingCound;
+    private Integer maxMissingCount;
     private Integer minAlleles;
     private Integer maxAlleles;
     private Integer thin;
@@ -125,87 +125,59 @@ public class Settings {
     public void load(String filename) {
         try {
             // open config object
-            this.configRead = new XMLConfiguration(filename);
-//     
-//            
-//            
-//            // get properties
-//            /* Basic Settings */
-//            this.inputFile = configRead.getString("basic.inputFile");
-//            this.outputFile = configRead.getString("basic.outputFile");
-//            this.gzipped = configRead.getBoolean("basic.gzipped", false);
-//            
-//
-//            
-//            /* Site Filters */
-//            
-//    
-//            
-//            
-//            this.chr = configRead.getList("siteFilters.chr").;
-//            this.notChr = configRead.getList("siteFilters.notChr");
-//            this.fromBp = configRead.getInt("siteFilters.fromBp");
-//            this.toBp = configRead.getInt("siteFilters.toBp");
-//            this.snp = configRead.getList("siteFilters.snp");
-//            this.snpFile = configRead.getString("siteFilters.snpFile");
-//            this.excludeSnp =configRead.getList("siteFilters.excludeSnp");
-//            this.excludeSnpFile = configRead.getString("siteFilters.excludeSnpFile");
-//            this.positions = configRead.getList("siteFilters.positions");
-//            this.positionsFile = configRead.getString("siteFilters.positionsFile");
-//            this.excludePositions = configRead.getList("siteFilters.excludePositions");
-//            this.excludePositionsFile = configRead.getString("siteFilters.excludePositionsFile");
-//
-//            configRead.getInt(mask);
-//            configRead.getDouble(mask);
-//            configRead.getString(mask);
-//            configRead.getBoolean(mask, depth);
-//            configRead.getList(mask);
-//            
-//            
-//            this.keepOnlyIndels = configRead.getBoolean("siteFilters.keepOnlyIndels", false);
-//            this.removeIndels = configRead.getBoolean("siteFilters.removeIndels", false);
-//            this.bedFile = configRead.getString("siteFilters.bedFile");
-//            
-//
-//            // todo: implement a way to store needed bed data to xml
-//            configCreate.addProperty("siteFilters.removeFilteredAll", this.removeFilteredAll);
-//            configCreate.addProperty("siteFilters.removeFiltered", this.removeFiltered);
-//            configCreate.addProperty("siteFilters.keepFiltered", this.keepFiltered);
-//            configCreate.addProperty("siteFilters.removeInfo", this.removeInfo);
-//            configCreate.addProperty("siteFilters.keepInfo", this.keepInfo);
-//            configCreate.addProperty("siteFilters.minQ", this.minQ);
-//            configCreate.addProperty("siteFilters.minMeanDp", this.minMeanDp);
-//            configCreate.addProperty("siteFilters.maxMeanDp", this.maxMeanDp);
-//            configCreate.addProperty("siteFilters.maf", this.maf);
-//            configCreate.addProperty("siteFilters.maxMaf", this.maf);
-//            configCreate.addProperty("siteFilters.nonRefAf", this.nonRefAf);
-//            configCreate.addProperty("siteFilters.maxNonRefAf", this.maxNonRefAf);
-//            configCreate.addProperty("siteFilters.mac", this.mac);
-//            configCreate.addProperty("siteFilters.maxMac", this.maxMac);
-//            configCreate.addProperty("siteFilters.maxNonRefAc", this.maxNonRefAc);
-//            configCreate.addProperty("siteFilters.hwe", this.hwe);
-//            configCreate.addProperty("siteFilters.geno", this.geno);
-//            configCreate.addProperty("siteFilters.maxMissingCount", this.maxMissingCound);
-//            configCreate.addProperty("siteFilters.minAlleles", this.minAlleles);
-//            configCreate.addProperty("siteFilters.maxAlleles", this.maxAlleles);
-//            configCreate.addProperty("siteFilters.thin", this.thin);
-//            configCreate.addProperty("siteFilters.mask", this.mask);
-//            configCreate.addProperty("siteFilters.invertMask", this.invertMask);
-//            configCreate.addProperty("siteFilters.maskMin", this.invertMask);
-//            /* Individual filters */
-//            configCreate.addProperty("individualFilters.keepIndv", this.keepIndv);
-//            configCreate.addProperty("individualFilters.keepIndvFile", this.keepIndvFile);
-//            configCreate.addProperty("individualFilters.removeIndv", this.removeIndv);
-//            configCreate.addProperty("individualFilters.removeIndvFile", this.removeIndvFile);
-//            configCreate.addProperty("individualFilters.minIndvMeanDp", this.minIndvMeanDp);
-//            configCreate.addProperty("individualFilters.maxIndvMeanDp", this.maxIndvMeanDp);
-//            configCreate.addProperty("individualFilters.mind", this.mind);
-//            configCreate.addProperty("individualFilters.phased", this.phased);
-//            configCreate.addProperty("individualFilters.maxIndv", this.maxIndv);
-//            /* Statistics */
-//            configCreate.addProperty("statistics.count", this.count);
-//            configCreate.addProperty("statistics.freq", this.freq);
-//            configCreate.addProperty("statistics.depth", this.depth);            
+            this.configRead = new XMLConfiguration(filename);   
+            
+            /* Site Filters */
+            this.chr = Misc.objListToStrArrayList(configRead.getList("siteFilters.chr"));
+            this.notChr = Misc.objListToStrArrayList(configRead.getList("siteFilters.notChr"));
+            this.fromBp = configRead.getInt("siteFilters.fromBp");
+            this.toBp = configRead.getInt("siteFilters.toBp");
+            this.snp = Misc.objListToStrArrayList(configRead.getList("siteFilters.snp"));
+            this.excludeSnp = Misc.objListToStrArrayList(configRead.getList("siteFilters.excludeSnp"));
+            this.positions = Misc.objListToIntegerArrayList(configRead.getList("siteFilters.positions"));
+            this.excludePositions = Misc.objListToIntegerArrayList(configRead.getList("siteFilters.excludePositions"));  
+            this.keepOnlyIndels = configRead.getBoolean("siteFilters.keepOnlyIndels");
+            this.removeIndels = configRead.getBoolean("siteFilters.removeIndels");
+            // todo: load bed data
+            this.removeFilteredAll = configRead.getBoolean("siteFilters.removeFilteredAll");
+            this.removeFiltered = Misc.objListToStrArrayList(configRead.getList("siteFilters.removeFiltered"));
+            this.keepFiltered = Misc.objListToStrArrayList(configRead.getList("siteFilters.keepFiltered"));
+            this.removeInfo = Misc.objListToStrArrayList(configRead.getList("siteFilters.removeInfo"));
+            this.keepInfo = Misc.objListToStrArrayList(configRead.getList("siteFilters.keepInfo"));
+            this.minQ = configRead.getDouble("siteFilters.minQ");
+            this.minMeanDp = configRead.getDouble("siteFilters.minMeanDp");
+            this.maxMeanDp = configRead.getDouble("siteFilters.maxMeanDp");
+            this.maf = configRead.getDouble("siteFilters.maf");
+            this.maxMaf = configRead.getDouble("siteFilters.maxMaf");
+            this.nonRefAf = configRead.getDouble("siteFilters.nonRefAf");
+            this.maxNonRefAf = configRead.getDouble("siteFilters.maxNonRefAf");
+            this.mac = configRead.getInt("siteFilters.mac");
+            this.maxMac = configRead.getInt("siteFilters.maxMac");
+            this.nonRefAf = configRead.getDouble("siteFilters.nonRefAf");
+            this.maxNonRefAc = configRead.getDouble("siteFilters.maxNonRefAc");
+            this.hwe = configRead.getDouble("siteFilters.hwe");
+            this.geno = configRead.getDouble("siteFilters.geno");
+            this.maxMissingCount = configRead.getInt("siteFilters.maxMissingCount");
+            this.minAlleles = configRead.getInt("siteFilters.minAlleles");
+            this.maxAlleles = configRead.getInt("siteFilters.maxAlleles");
+            this.thin = configRead.getInt("siteFilters.thin");
+            this.mask = configRead.getString("siteFilters.mask");
+            this.invertMask = configRead.getString("siteFilters.invertMask");
+            this.maskMin = configRead.getInt("siteFilters.maskMin");
+    
+            /* Individual filters */       
+            this.keepIndv = Misc.objListToStrArrayList(configRead.getList("individualFilters.keepIndv"));
+            this.removeIndv = Misc.objListToStrArrayList(configRead.getList("individualFilters.removeIndv"));
+            this.minIndvMeanDp = configRead.getDouble("individualFilters.minIndvMeanDp");
+            this.maxIndvMeanDp = configRead.getDouble("individualFilters.maxIndvMeanDp");
+            this.mind = configRead.getDouble("individualFilters.mind");
+            this.phased = configRead.getBoolean("individualFilters.phased");
+            this.maxIndv = configRead.getInt("individualFilters.maxIndv");
+       
+            /* Statistics */
+            this.count = configRead.getBoolean("statistics.count");
+            this.freq = configRead.getBoolean("statistics.freq");
+            this.depth = configRead.getBoolean("statistics.depth");            
             
         } catch (ConfigurationException ex) {
             Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
@@ -225,6 +197,13 @@ public class Settings {
      */
     public void save(String filename) throws IOException {
         try {
+            /*
+           
+            TODO: only store values to xml, not the external files itself.
+            
+            */
+            
+            
             // open config object
             XMLConfiguration configCreate = new XMLConfiguration();
  
@@ -232,28 +211,18 @@ public class Settings {
             configCreate.setFileName(filename);
             configCreate.setAutoSave(false);
             
-            // set properties
-            /* Basic Settings */
-            configCreate.addProperty("basic.inputFile", this.inputFile);
-            configCreate.addProperty("basic.outputFile", this.outputFile);
-            configCreate.addProperty("basic.gzipped", this.gzipped);
             /* Site Filters */
             configCreate.addProperty("siteFilters.chr", this.chr);
             configCreate.addProperty("siteFilters.notChr", this.notChr);
             configCreate.addProperty("siteFilters.fromBp", this.fromBp);
             configCreate.addProperty("siteFilters.toBp", this.toBp);
             configCreate.addProperty("siteFilters.snp", this.snp);
-            configCreate.addProperty("siteFilters.snpFile", this.snpFile);
             configCreate.addProperty("siteFilters.excludeSnp", this.excludeSnp);
-            configCreate.addProperty("siteFilters.excludeSnpFile", this.excludeSnpFile);
             configCreate.addProperty("siteFilters.positions", this.positions);
-            configCreate.addProperty("siteFilters.positionsFile", this.positionsFile);
             configCreate.addProperty("siteFilters.excludePositions", this.excludePositions);
-            configCreate.addProperty("siteFilters.excludePositionsFile", this.excludePositionsFile);
             configCreate.addProperty("siteFilters.keepOnlyIndels", this.keepOnlyIndels);
             configCreate.addProperty("siteFilters.removeIndels", this.removeIndels);
-            configCreate.addProperty("siteFilters.bedFile", this.bedFile);
-            // todo: implement a way to store needed bed data to xml
+            // todo: store bed data
             configCreate.addProperty("siteFilters.removeFilteredAll", this.removeFilteredAll);
             configCreate.addProperty("siteFilters.removeFiltered", this.removeFiltered);
             configCreate.addProperty("siteFilters.keepFiltered", this.keepFiltered);
@@ -271,23 +240,23 @@ public class Settings {
             configCreate.addProperty("siteFilters.maxNonRefAc", this.maxNonRefAc);
             configCreate.addProperty("siteFilters.hwe", this.hwe);
             configCreate.addProperty("siteFilters.geno", this.geno);
-            configCreate.addProperty("siteFilters.maxMissingCount", this.maxMissingCound);
+            configCreate.addProperty("siteFilters.maxMissingCount", this.maxMissingCount);
             configCreate.addProperty("siteFilters.minAlleles", this.minAlleles);
             configCreate.addProperty("siteFilters.maxAlleles", this.maxAlleles);
             configCreate.addProperty("siteFilters.thin", this.thin);
             configCreate.addProperty("siteFilters.mask", this.mask);
             configCreate.addProperty("siteFilters.invertMask", this.invertMask);
             configCreate.addProperty("siteFilters.maskMin", this.invertMask);
+            
             /* Individual filters */
             configCreate.addProperty("individualFilters.keepIndv", this.keepIndv);
-            configCreate.addProperty("individualFilters.keepIndvFile", this.keepIndvFile);
             configCreate.addProperty("individualFilters.removeIndv", this.removeIndv);
-            configCreate.addProperty("individualFilters.removeIndvFile", this.removeIndvFile);
             configCreate.addProperty("individualFilters.minIndvMeanDp", this.minIndvMeanDp);
             configCreate.addProperty("individualFilters.maxIndvMeanDp", this.maxIndvMeanDp);
             configCreate.addProperty("individualFilters.mind", this.mind);
             configCreate.addProperty("individualFilters.phased", this.phased);
             configCreate.addProperty("individualFilters.maxIndv", this.maxIndv);
+            
             /* Statistics */
             configCreate.addProperty("statistics.count", this.count);
             configCreate.addProperty("statistics.freq", this.freq);
@@ -583,11 +552,11 @@ public class Settings {
     }
 
     public Integer getMaxMissingCound() {
-        return maxMissingCound;
+        return maxMissingCount;
     }
 
     public void setMaxMissingCound(Integer maxMissingCound) {
-        this.maxMissingCound = maxMissingCound;
+        this.maxMissingCount = maxMissingCound;
     }
 
     public Integer getMinAlleles() {
