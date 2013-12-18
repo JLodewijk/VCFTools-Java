@@ -18,16 +18,21 @@ import java.util.logging.Logger;
  * @author ashvin ponnudurai
  */
 public class BedReader {
+
     private String filePath;
+    private ArrayList<String> arrayListChr;
+    private ArrayList<Integer> arrayListStartPos;
+    private ArrayList<Integer> arrayListStopPos;
 
     /**
      * Constructor starts file reading.
      *
-     * @param filePath 
+     * @param filePath
      */
     BedReader(String filePath) {
         this.filePath = filePath;
         this.fileReader();
+
     }
 
     /**
@@ -38,7 +43,6 @@ public class BedReader {
 
         FileReader fr = null;
         BufferedReader br = null;
-        ArrayList<BedLine> arrayListWithBedLine = new ArrayList<BedLine>();
 
         try {
             fr = new FileReader(this.filePath);
@@ -48,7 +52,10 @@ public class BedReader {
 
             while ((line = br.readLine()) != null) {
                 BedLine bl = new BedLine(line);
-                arrayListWithBedLine.add(bl);
+                this.arrayListChr.add(bl.getChrName());
+                this.arrayListStartPos.add(bl.getStartPos());
+                this.arrayListStopPos.add(bl.getStopPos());
+
             }
 
         } catch (FileNotFoundException ex) {
@@ -57,6 +64,38 @@ public class BedReader {
             Logger.getLogger(BedReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    /**
+     * Get the reference to the file.
+     *
+     * @return filePath
+     */
+    public String getFilePath() {
+        return filePath;
+    }
+    /**
+     * Get the arraylist with all the chromosomes.
+     * @return arrayListChr
+     */
+    public ArrayList<String> getArrayListChr() {
+        return arrayListChr;
+    }
+    
+    /**
+     * Get the arraylist with all the start position of the chromosomes.
+     * @return arrayListStartPos
+     */
+    public ArrayList<Integer> getArrayListStartPos() {
+        return arrayListStartPos;
+    }
+    
+    /**
+     * Get the arrayllist with all the stop position of the chromosomes.
+     * @return arrayListStopPos
+     */
+    public ArrayList<Integer> getArrayListStopPos() {
+        return arrayListStopPos;
     }
 
 }
