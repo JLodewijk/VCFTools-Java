@@ -268,10 +268,9 @@ public class SiteFilters {
      * @param args Acts as flag to either include SNP(s) with matching ID (true) or exclude SNP(s) with matching ID.
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    public void SNPs(VariantContext line, List<String> snps, boolean args) {
+    public void SNPs(VariantContext line, ArrayList snps, boolean args) {
 	//Will include SNPs with matching ID
 	if (args == true) {
-	    System.out.println("In true");
 	    if (snps.contains(line.getID())) {
 		System.out.println("Line is approved based on: " + line.getID() + " since it's in " + snps);
 	    } else {
