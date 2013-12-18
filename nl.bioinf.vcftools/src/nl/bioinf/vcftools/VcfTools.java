@@ -21,11 +21,10 @@ public class VcfTools {
     public static void main(String[] args) throws ParseException {
     // TODO code application logic here
 
-//        Cli c = new Cli(args);
-        SeperatedValueReader s = new SeperatedValueReader("\\Users\\ashvin\\Desktop\\text.txt", "/");
-        s.bleep();
-        
-//        Settings settings = c.getSettings();
+          Cli cli = new Cli(args);      
+          Settings settings = cli.getSettings();
+          VcfReader vcfReader = new VcfReader(settings); 
+          
 //        System.out.println("bleep");
 //        System.out.println(settings.getInputFile());
 //       System.out.println(Settings.getInstance().getInputFile());
