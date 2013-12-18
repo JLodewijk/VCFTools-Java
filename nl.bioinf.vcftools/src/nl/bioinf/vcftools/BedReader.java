@@ -34,6 +34,7 @@ public class BedReader {
      * Function which parse BED files
      *
      */
+    
     public void fileReader() {
 
         FileReader fr = null;
@@ -48,7 +49,7 @@ public class BedReader {
 
             while ((line = br.readLine()) != null) {
                 BedLine bl = new BedLine(line);
-                arrayListWithBedLine.add(bl);
+                arrayListWithBedLine.add(bl);           
             }
 
         } catch (FileNotFoundException ex) {
