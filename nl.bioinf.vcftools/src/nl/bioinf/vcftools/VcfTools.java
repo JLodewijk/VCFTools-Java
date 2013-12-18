@@ -5,6 +5,9 @@
  */
 package nl.bioinf.vcftools;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.cli.ParseException;
 
 /**
@@ -19,12 +22,20 @@ public class VcfTools {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
-    // TODO code application logic here
+        // TODO code application logic here
+        Settings settingstest = new Settings();
+        
+//        try {
+//            settingstest.save("defaultConfig.xml");
+//        } catch (IOException ex) {
+//            Logger.getLogger(VcfTools.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
+        
+        Cli cli = new Cli(args);
+        Settings settings = cli.getSettings();
+        VcfReader vcfReader = new VcfReader(settings);
 
-          Cli cli = new Cli(args);      
-          Settings settings = cli.getSettings();
-          VcfReader vcfReader = new VcfReader(settings); 
-          
 //        System.out.println("bleep");
 //        System.out.println(settings.getInputFile());
 //       System.out.println(Settings.getInstance().getInputFile());
