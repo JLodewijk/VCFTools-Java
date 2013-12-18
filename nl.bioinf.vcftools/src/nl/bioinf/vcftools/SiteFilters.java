@@ -13,14 +13,14 @@ import org.broadinstitute.variant.variantcontext.VariantContext;
 
 /**
  *
- * This Java class contains numerous test function for Site filtering. This testing is done to uncover the algorithm on which filters operate upon. One thing to consider is that GATK needs to stay
- * encapsulated, so this needs to be considered.
- *
- * If you want to run this file, than you need to call in a different program (ReadVcf.java) this program. You can do this by: SiteFilters site = new SiteFilters(); and site.*insert function name*(
- * vcf.getNextIter(file),*insert other parameters*);
- *
- *
+ * This Java class contains numerous test function for Site filtering. If you
+ * want to run this file, than you need to call in a different program
+ * (ReadVcf.java) this program. You can do this by: SiteFilters site = new
+ * SiteFilters(); and site.*insert function name*( vcf.getNextIter(file),*insert
+ * other parameters*);
+ * @author Marco Roelfes <marcoroelfes@gmail.com>
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+ * 
  * @url: http://vcftools.sourceforge.net/options.html#site_filter
  */
 public class SiteFilters {
@@ -504,13 +504,36 @@ public class SiteFilters {
 	}
 
     }
-
-    public void MissingCount(VariantContext line, double maxMissing) {
-	double dels = line.getAttributeAsDouble("Dels", 0.0);
-	if (dels > maxMissing) {
-	    System.out.println("reject line dels: " + dels + " is bigger then " + maxMissing);
-	} else {
-	    System.out.println("Line is approved dels: " + dels + " is not bigger then " + maxMissing);
-	}
+     /**
+     * Check if meanDepth is between given thresholds
+     *
+     * @param line VCF snip line that will be analysed.
+     * @param maxMissing maximum of deletions
+     * @author Marco Roelfes <marcoroelfes@gmail.com>
+     */
+    public void MissingCount(VariantContext line, double maxMissing){
+        double dels = line.getAttributeAsDouble("Dels", 0.0);
+        if(dels > maxMissing){
+            System.out.println("reject line dels: " + dels + " is bigger then " + maxMissing);
+        }else{
+            System.out.println("Line is approved dels: " + dels +" is not bigger then " + maxMissing);
+        }
+    }
+    
+    public void HardyWeinbergEquilibrium(VariantContext line, double pVal){
+        int ploidy = line.getGenotype(1).getPloidy();
+        
+        if( ploidy == 2){
+            
+            
+            
+        } else if(ploidy == 3){
+        
+        
+        
+        } else {
+            
+        }
+        
     }
 }
