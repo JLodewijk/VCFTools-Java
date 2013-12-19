@@ -35,7 +35,7 @@ public class FilterHandler {
             }
             
             
-        } else if (settings.getNotChr() != null) {
+        } if (settings.getNotChr() != null) {
             boolean exclude;
             exclude = sf.InExChromosome(vcfLine.getChr(), settings.getNotChr());
             if(exclude == false){
