@@ -67,11 +67,12 @@ public class SiteFilters {
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void Bp(VariantContext line, int ToBp, int FromBp) {
-        if (ToBp > line.getEnd() | FromBp < line.getStart()) {
-            System.out.println("Line is rejected since: " + line.getEnd() + " falls outside the range of " + ToBp + " and " + FromBp);
+    void Bp(Object Position, int ToBp, int FromBp) {
+        int pos = (int) Position;
+        if (ToBp > pos | FromBp < pos) {
+            System.out.println("Line is rejected since: " + pos + " falls outside the range of " + ToBp + " and " + FromBp);
         } else {
-            System.out.println("Line is passed since: " + line.getStart() + " inside the range of " + ToBp + " and " + FromBp);
+            System.out.println("Line is passed since: " + pos + " inside the range of " + ToBp + " and " + FromBp);
         }
     }
 

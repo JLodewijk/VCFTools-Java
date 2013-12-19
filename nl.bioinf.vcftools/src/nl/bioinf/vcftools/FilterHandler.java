@@ -30,8 +30,9 @@ public class FilterHandler {
         } else if (settings.getNotChr() != null) {
             filterAway = sf.InExChromosome(vcfLine.getChr(), settings.getNotChr());
 
-        } else if (settings.getFromBp() != 0 && settings.getToBp() != 0) {
-            sf.Bp(null, settings.getToBp(), settings.getFromBp());
+        } if (settings.getFromBp() != 0 && settings.getToBp() != 0) {
+            System.out.println(vcfLine.getPosition());
+            sf.Bp(vcfLine.getPosition(), settings.getToBp(), settings.getFromBp());
         } else if (settings.getMinQ() != null) {
             sf.MinimalQuality(null, settings.getMinQ());
         } else if (settings.isKeepOnlyIndels()) {
