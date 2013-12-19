@@ -31,7 +31,7 @@ public class VcfReader {
 //    public static void main(String[] args) throws IOException {
 //
 //        VcfReader read = new VcfReader();
-//        read.readVcfLine("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
+//        read.readVcfLines("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
 //    }
 
     public VcfReader(Settings settings) {
@@ -59,10 +59,11 @@ public class VcfReader {
 
         //while vcf file has next iteration get next iteration
         while (vcf.hasNextIter()) {
-              VcfLine iteration = vcf.getNextIter();
-              FilterHandler filterHandler = new FilterHandler(this.settings, iteration);
-//            VariantContext vc = vcf.getNextIterAsVariantContext();
-//            site.MeanDepth(vc,84,86);
+            VcfLine iteration = vcf.getNextIter();
+            FilterHandler filterHandler = new FilterHandler(this.settings, iteration);
+            //VariantContext vc = vcf.getNextIterAsVariantContext();
+            //System.out.println(vc.getChr().getClass().getName());
+            //site.MeanDepth(vc,84,86);
             
             //get next line
 //            VariantContext nextLine = vcf.getNextIterAsVariantContext();

@@ -22,11 +22,14 @@ public class FilterHandler {
 
     public boolean performFilters() {
         // perform filters
+        boolean filterAway = false;
         SiteFilters sf = new SiteFilters();
         if (settings.getChr() != null) {
-//        sf.Chromosome(null, settings.getChr(), true);
+            filterAway = sf.InExChromosome(vcfLine.getChr(), settings.getChr());
+            System.out.println(filterAway);
         } else if (settings.getNotChr() != null) {
-//        sf.Chromosome(null, settings.getNotChr(), false);
+            filterAway = sf.InExChromosome(vcfLine.getChr(), settings.getNotChr());
+
         } else if (settings.getFromBp() != 0 && settings.getToBp() != 0) {
             sf.Bp(null, settings.getToBp(), settings.getFromBp());
         } else if (settings.getMinQ() != null) {
@@ -63,16 +66,12 @@ public class FilterHandler {
             sf.SNPs(null, settings.getExcludeSnp(), false);
         } else if (settings.getExcludeSnpFile() == null) {
 //        sf.SNPs(null, settings.getExcludeSnpFile(), false);  values in file must be saved in an arrayList
-        } else if( settings.getPositionsFile() == null){
+        } else if (settings.getPositionsFile() == null) {
 //        sf.Positions(null, settings.getPositionsFile(), true); values in file must be saved in a hashmap
-        
-        } else if (settings.getExcludePositionsFile() == null){
+
+        } else if (settings.getExcludePositionsFile() == null) {
 //        sf.Positions(null, settings.getExcludePositionsFile(), false); values in file must be saved in a hashmap
-        }
-        
-        
-        
-        else if (settings.getMaf() == null || settings.getMaxMaf() == null) {
+        } else if (settings.getMaf() == null || settings.getMaxMaf() == null) {
             sf.AlleleFrequencies(null, settings.getMaf(), settings.getMaxMaf(), true); /*true AlleleFrequencies, false Non-Reference Allele Frequencies*/
 
         } else if (settings.getNonRefAf() == null || settings.getMaxNonRefAf() == null) {
