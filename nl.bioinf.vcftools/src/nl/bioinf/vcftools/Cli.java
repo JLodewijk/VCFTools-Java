@@ -151,16 +151,17 @@ public class Cli {
         } else if (cmd.hasOption("keepFiltered") && cmd.hasOption("removeFiltered")) {
             System.out.println("For the options: -keepFiltered and -removeFiltered"
                     + " the -keepFiltered option will be executed first.");
-        } else if (cmd.hasOption("chr")) {
-            System.out.println("Chromosome is ok!");
-            //String pattern = "\\w";
-            //Pattern patternCompiled = Pattern.compile(pattern);
-            //Matcher m = patternCompiled.matcher(cmd.getOptionValue("chr"));
-            //if (m.find()) {
-            //    System.err.println("To identify chromosome, only the identifying number is required." + "\nGiven is = " + cmd.getOptionValue("chr"));
-            //    System.exit(0);
-            //}
-        } else if (cmd.hasOption("minMeanDP") && !(cmd.hasOption("maxMeanDP")) || cmd.hasOption("maxMeanDP") && !(cmd.hasOption("minMeanDP"))) {
+        } 
+//            else if (cmd.hasOption("chr")) {
+//            String pattern = "\\w";
+//            Pattern patternCompiled = Pattern.compile(pattern);
+//            Matcher m = patternCompiled.matcher(cmd.getOptionValue("chr"));
+//            if (m.find()) {
+//                System.err.println("To identify chromosome, only the identifying number is required." + "\nGiven is = " + cmd.getOptionValue("chr"));
+//                System.exit(0);
+//            }
+//        } 
+        else if (cmd.hasOption("minMeanDP") && !(cmd.hasOption("maxMeanDP")) || cmd.hasOption("maxMeanDP") && !(cmd.hasOption("minMeanDP"))) {
             System.err.println("It is obliged to use the options -minMeanDP and -maxMeanDP together");
             System.exit(0);
         } else if (cmd.hasOption("maf") && !(cmd.hasOption("maxMaf")) || cmd.hasOption("maxMaf") && !(cmd.hasOption("maf"))) {
@@ -277,9 +278,9 @@ public class Cli {
 
         if (this.cmd.hasOption("gvcf")) {
             settings.setGzipped(true);
-        } else if (this.cmd.hasOption("out")) {
+        } if (this.cmd.hasOption("out")) {
 //            settings.setOutputFile(cmd.getOptionValue("out"));
-        } else if (this.cmd.hasOption("chr")) {
+        } if (this.cmd.hasOption("chr")) {
             String chrIdentifiers = this.cmd.getOptionValue("chr");
             ArrayList<String> arrayListChr = new ArrayList<String>();
 
@@ -289,7 +290,7 @@ public class Cli {
             }
 
             settings.setChr(arrayListChr);
-        } else if (this.cmd.hasOption("notChr")) {
+        } if (this.cmd.hasOption("notChr")) {
             String chrIdentifiers = this.cmd.getOptionValue("notChr");
             ArrayList<String> arrayListNotChr = new ArrayList<String>();
 
@@ -298,13 +299,13 @@ public class Cli {
                 arrayListNotChr.add(identifier);
                 settings.setNotChr(arrayListNotChr);
             }
-        } else if (this.cmd.hasOption("fromBp")) {
+        } if (this.cmd.hasOption("fromBp")) {
             int fromBp = Integer.parseInt(this.cmd.getOptionValue("fromBp"));
             settings.setFromBp(fromBp);
-        } else if (this.cmd.hasOption("toBp")) {
+        } if (this.cmd.hasOption("toBp")) {
             int toBp = Integer.parseInt(this.cmd.getOptionValue("toBp"));
             settings.setToBp(toBp);
-        } else if (this.cmd.hasOption("snp")) {
+        } if (this.cmd.hasOption("snp")) {
             String snpIdentifiers = this.cmd.getOptionValue("snp");
             ArrayList<String> arrayListSnp = new ArrayList<String>();
 
@@ -314,9 +315,9 @@ public class Cli {
 
             }
             settings.setSnp(arrayListSnp);
-        } else if (this.cmd.hasOption("snpFile")) {
+        } if (this.cmd.hasOption("snpFile")) {
             settings.setSnpFile(this.cmd.getOptionValue("snpFile"));
-        } else if (this.cmd.hasOption("excludeSnp")) {
+        } if (this.cmd.hasOption("excludeSnp")) {
             String excludeSnpIdentifiers = this.cmd.getOptionValue("excludeSnp");
             ArrayList<String> arrayListExcludeSnp = new ArrayList<String>();
 
@@ -325,9 +326,9 @@ public class Cli {
                 arrayListExcludeSnp.add(identifiers);
             }
             settings.setExcludeSnp(arrayListExcludeSnp);
-        } else if (this.cmd.hasOption("excludeSnpFile")) {
+        } if (this.cmd.hasOption("excludeSnpFile")) {
             settings.setExcludeSnpFile(this.cmd.getOptionValue("excludeSnpFile"));
-        } else if (this.cmd.hasOption("positions")) {
+        } if (this.cmd.hasOption("positions")) {
             String positions = this.cmd.getOptionValue("positions");
             String[] splitedPositions = positions.split(",");
             ArrayList<String> arrayListPosition = new ArrayList<String>();
@@ -336,9 +337,9 @@ public class Cli {
                 arrayListPosition.add(pos);
             }
             settings.setPositions(arrayListPosition);
-        } else if (this.cmd.hasOption("positionsFile")) {
+        } if (this.cmd.hasOption("positionsFile")) {
             settings.setPositionsFile(this.cmd.getOptionValue("positionsFile"));
-        } else if (this.cmd.hasOption("excludePositions")) {
+        } if (this.cmd.hasOption("excludePositions")) {
             String excludePositions = this.cmd.getOptionValue("excludePositions");
             String[] splitedExcludePositions = excludePositions.split(",");
 
@@ -349,21 +350,21 @@ public class Cli {
                 arrayListExcludePositions.add(excludePosition);
             }
             settings.setExcludePositions(arrayListExcludePositions);
-        } else if (this.cmd.hasOption("excludePositionsFile")) {
+        } if (this.cmd.hasOption("excludePositionsFile")) {
             settings.setExcludePositionsFile(this.cmd.getOptionValue("excludePositionsFile"));
-        } else if (this.cmd.hasOption("keepOnlyIndels")) {
+        } if (this.cmd.hasOption("keepOnlyIndels")) {
             settings.setKeepOnlyIndels(true);
-        } else if (this.cmd.hasOption("removeIndels")) {
+        } if (this.cmd.hasOption("removeIndels")) {
             settings.setRemoveIndels(true);
-        } else if (this.cmd.hasOption("bed")) {
+        } if (this.cmd.hasOption("bed")) {
 //      Bed bed = new Bed();
 //      settings.setBed(this.cmd.getOptionValue("bed"));
-        } else if (this.cmd.hasOption("exludeBed")) {
+        } if (this.cmd.hasOption("exludeBed")) {
 //      Bed bed = new Bed()
 //        settings.setExludeBed(this.cmd.getOptionValue("exludeBed"));
-        } else if (this.cmd.hasOption("removeFilteredAll")) {
+        } if (this.cmd.hasOption("removeFilteredAll")) {
             settings.setRemoveFilteredAll(true);
-        } else if (this.cmd.hasOption("removeFiltered")) {
+        } if (this.cmd.hasOption("removeFiltered")) {
             String removedFiltered = this.cmd.getOptionValue("removeFiltered");
             String[] splitedRemovedFiltered = removedFiltered.split(",");
             ArrayList<String> arrayListRemovedFiltered = new ArrayList<String>();
@@ -372,7 +373,7 @@ public class Cli {
                 arrayListRemovedFiltered.add(removedItem);
             }
             settings.setRemoveFiltered(arrayListRemovedFiltered);
-        } else if (this.cmd.hasOption("keepFiltered")) {
+        } if (this.cmd.hasOption("keepFiltered")) {
             String keepFiltered = this.cmd.getOptionValue("keepFiltered");
             String[] splitedKeepFiltered = keepFiltered.split(",");
             ArrayList<String> arrayListKeepFiltered = new ArrayList<String>();
@@ -381,7 +382,7 @@ public class Cli {
                 arrayListKeepFiltered.add(keepFiltered);
             }
             settings.setKeepFiltered(arrayListKeepFiltered);
-        } else if (this.cmd.hasOption("removeInfo")) {
+        } if (this.cmd.hasOption("removeInfo")) {
             String removeInfo = this.cmd.getOptionValue("removeInfo");
             String[] splitedRemovedInfo = removeInfo.split(",");
             ArrayList<String> arrayListRemovedInfo = new ArrayList<String>();
@@ -390,7 +391,7 @@ public class Cli {
                 arrayListRemovedInfo.add(removedInfoItem);
             }
             settings.setRemoveInfo(arrayListRemovedInfo);
-        } else if (this.cmd.hasOption("keepInfo")) {
+        } if (this.cmd.hasOption("keepInfo")) {
             String keepInfo = this.cmd.getOptionValue("keepInfo");
             String[] splitedKeptInfo = keepInfo.split(",");
             ArrayList<String> arrayListKeptInfo = new ArrayList<String>();
@@ -399,68 +400,68 @@ public class Cli {
                 arrayListKeptInfo.add(keptInfoItem);
             }
             settings.setKeepInfo(arrayListKeptInfo);
-        } else if (this.cmd.hasOption("minQ")) {
+        } if (this.cmd.hasOption("minQ")) {
             Double minQValue = Double.parseDouble(this.cmd.getOptionValue("minQ"));
             settings.setMinQ(minQValue);
-        } else if (this.cmd.hasOption("minMeanDP")) {
+        } if (this.cmd.hasOption("minMeanDP")) {
             Double minMeanDP = Double.parseDouble(this.cmd.getOptionValue("minMeanDP"));
             settings.setMinMeanDP(minMeanDP);
-        } else if (this.cmd.hasOption("minMeanDP")) {
+        } if (this.cmd.hasOption("minMeanDP")) {
             Double minMeanDP = Double.parseDouble(this.cmd.getOptionValue("minMeanDP"));
             settings.setMinMeanDP(minMeanDP);
-        } else if (this.cmd.hasOption("maxMeanDP")) {
+        } if (this.cmd.hasOption("maxMeanDP")) {
             Double maxMeanDP = Double.parseDouble(this.cmd.getOptionValue("maxMeanDP"));
             settings.setMaxMeanDP(maxMeanDP);
-        } else if (this.cmd.hasOption("maf")) {
+        } if (this.cmd.hasOption("maf")) {
             Double maf = Double.parseDouble(this.cmd.getOptionValue("maf"));
             settings.setMaf(maf);
-        } else if (this.cmd.hasOption("maxMaf")) {
+        } if (this.cmd.hasOption("maxMaf")) {
             Double maxMaf = Double.parseDouble(this.cmd.getOptionValue("maxMaf"));
             settings.setMaxMaf(maxMaf);
-        } else if (this.cmd.hasOption("nonRefAf")) {
+        } if (this.cmd.hasOption("nonRefAf")) {
             Double nonRefAf = Double.parseDouble(this.cmd.getOptionValue("nonRefAf"));
             settings.setNonRefAf(nonRefAf);
-        } else if (this.cmd.hasOption("maxNonRefAf")) {
+        } if (this.cmd.hasOption("maxNonRefAf")) {
             Double maxNonRefAf = Double.parseDouble(this.cmd.getOptionValue("maxNonRefAf"));
             settings.setMaxNonRefAf(maxNonRefAf);
-        } else if (this.cmd.hasOption("mac")) {
+        } if (this.cmd.hasOption("mac")) {
             int mac = Integer.parseInt(this.cmd.getOptionValue("mac"));
             settings.setMac(mac);
-        } else if (this.cmd.hasOption("maxMac")) {
+        } if (this.cmd.hasOption("maxMac")) {
             int maxMac = Integer.parseInt(this.cmd.getOptionValue("maxMac"));
             settings.setMaxMac(maxMac);
-        } else if (this.cmd.hasOption("nonRefAc")) {
+        } if (this.cmd.hasOption("nonRefAc")) {
             Double nonRefAc = Double.parseDouble(this.cmd.getOptionValue("nonRefAc"));
             settings.setNonRefAc(nonRefAc);
-        } else if (this.cmd.hasOption("maxNonRefAc")) {
+        } if (this.cmd.hasOption("maxNonRefAc")) {
             Double maxNonRefAc = Double.parseDouble(this.cmd.getOptionValue("maxNonRefAc"));
             settings.setMaxNonRefAc(maxNonRefAc);
-        } else if (this.cmd.hasOption("hwe")) {
+        } if (this.cmd.hasOption("hwe")) {
             Double hwe = Double.parseDouble(this.cmd.getOptionValue("hwe"));
             settings.setHwe(hwe);
-        } else if (this.cmd.hasOption("geno")) {
+        } if (this.cmd.hasOption("geno")) {
             Double geno = Double.parseDouble(this.cmd.getOptionValue("geno"));
             settings.setGeno(geno);
-        } else if (this.cmd.hasOption("maxMissingCount")) {
+        } if (this.cmd.hasOption("maxMissingCount")) {
             int maxMissingCount = Integer.parseInt(this.cmd.getOptionValue("maxMissingCount"));
 //      settings.setMaxMissingCount(maxMissingCount);
-        } else if (this.cmd.hasOption("minAlleles")) {
+        } if (this.cmd.hasOption("minAlleles")) {
             int minAlleles = Integer.parseInt(this.cmd.getOptionValue("minAlleles"));
             settings.setMinAlleles(minAlleles);
-        } else if (this.cmd.hasOption("maxAlleles")) {
+        } if (this.cmd.hasOption("maxAlleles")) {
             int maxAlleles = Integer.parseInt(this.cmd.getOptionValue("maxAlleles"));
             settings.setMaxAlleles(maxAlleles);
-        } else if (this.cmd.hasOption("thin")) {
+        } if (this.cmd.hasOption("thin")) {
             int thin = Integer.parseInt(this.cmd.getOptionValue("thin"));
             settings.setThin(thin);
-        } else if (this.cmd.hasOption("mask")) {
+        } if (this.cmd.hasOption("mask")) {
             settings.setMask(this.cmd.getOptionValue("mask"));
-        } else if (this.cmd.hasOption("invertMask")) {
+        } if (this.cmd.hasOption("invertMask")) {
             settings.setInvertMask(this.cmd.getOptionValue("invertMask"));
-        } else if (this.cmd.hasOption("maskMin")) {
+        } if (this.cmd.hasOption("maskMin")) {
             int maskMin = Integer.parseInt(this.cmd.getOptionValue("maskMin"));
             settings.setMaskMin(maskMin);
-        } else if (this.cmd.hasOption("keepIndv")) {
+        } if (this.cmd.hasOption("keepIndv")) {
             String keepIndv = this.cmd.getOptionValue("keepIndv");
             String[] splitedKeptIndv = this.cmd.getOptionValues("keepIndv");
 
@@ -469,9 +470,9 @@ public class Cli {
                 arrayListKeepIndv.add(keepIndvItem);
             }
             settings.setKeepIndv(arrayListKeepIndv);
-        } else if (this.cmd.hasOption("keepIndvFile")) {
+        } if (this.cmd.hasOption("keepIndvFile")) {
             settings.setKeepIndvFile(this.cmd.getOptionValue("keepIndvFile"));
-        } else if (this.cmd.hasOption("removeIndv")) {
+        } if (this.cmd.hasOption("removeIndv")) {
             String removeIndv = this.cmd.getOptionValue("removeIndv");
             String[] splitedRemovedIndv = removeIndv.split(",");
 
@@ -480,27 +481,27 @@ public class Cli {
                 arrayListRemovedIndv.add(removedIndvItem);
             }
             settings.setRemoveIndv(arrayListRemovedIndv);
-        } else if (this.cmd.hasOption("removeIndvFile")) {
+        } if (this.cmd.hasOption("removeIndvFile")) {
             settings.setRemoveIndvFile(this.cmd.getOptionValue("removeIndvFile"));
-        } else if (this.cmd.hasOption("minIndvMeanDp")) {
+        } if (this.cmd.hasOption("minIndvMeanDp")) {
             Double minIndvMeanDp = Double.parseDouble(this.cmd.getOptionValue("minIndvMeanDp"));
             settings.setMinIndvMeanDp(minIndvMeanDp);
-        } else if (this.cmd.hasOption("maxIndvMeanDp")) {
+        } if (this.cmd.hasOption("maxIndvMeanDp")) {
             Double maxIndvMeanDp = Double.parseDouble(this.cmd.getOptionValue("maxIndvMeanDp"));
             settings.setMaxIndvMeanDp(maxIndvMeanDp);
-        } else if (this.cmd.hasOption("mind")) {
+        } if (this.cmd.hasOption("mind")) {
             Double mind = Double.parseDouble(this.cmd.getOptionValue("mind"));
             settings.setMind(mind);
-        } else if (this.cmd.hasOption("phased")) {
+        } if (this.cmd.hasOption("phased")) {
             settings.setPhased(true);
-        } else if (this.cmd.hasOption("maxIndv")) {
+        } if (this.cmd.hasOption("maxIndv")) {
             int maxIndv = Integer.parseInt(this.cmd.getOptionValue("maxIndv"));
             settings.setMaxIndv(maxIndv);
-        } else if (this.cmd.hasOption("count")) {
+        } if (this.cmd.hasOption("count")) {
             settings.setCount(true);
-        } else if (this.cmd.hasOption("freq")) {
+        } if (this.cmd.hasOption("freq")) {
             settings.setFreq(true);
-        } else if (this.cmd.hasOption("depth")) {
+        } if (this.cmd.hasOption("depth")) {
             settings.setDepth(true);
         } else {
 //            helpFormatter.printHelp("Please use the following options ", opt);
