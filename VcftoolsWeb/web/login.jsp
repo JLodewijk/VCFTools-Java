@@ -1,6 +1,6 @@
 <%-- 
     Document   : login
-    Created on : Dec 19, 2013, 2:36:14 PM
+    Created on : Dec 19, 2013, 2:45:17 PM
     Author     : jlodewijk
 --%>
 
@@ -12,12 +12,12 @@
         <title>Login Page</title>
     </head>
     <body>
-        <h2>Login</h2>
+        <h2>Sign in please</h2>
         <h3>${requestScope.error}</h3>
         <form method="post" action="login.do">
             <input type="text" name="username" />
             <input type="password" name="password" />
             <input type="submit" value="log in"/>
-        </form>      
+        </form>     
     </body>
 </html>
