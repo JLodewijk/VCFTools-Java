@@ -25,14 +25,27 @@ public class FilterHandler {
         boolean filterAway = false;
         SiteFilters sf = new SiteFilters();
         if (settings.getChr() != null) {
-            filterAway = sf.InExChromosome(vcfLine.getChr(), settings.getChr());
-            System.out.println(filterAway);
-        } else if (settings.getNotChr() != null) {
-            filterAway = sf.InExChromosome(vcfLine.getChr(), settings.getNotChr());
-
-        } if (settings.getFromBp() != 0 && settings.getToBp() != 0) {
-            System.out.println(vcfLine.getPosition());
-            sf.Bp(vcfLine.getPosition(), settings.getToBp(), settings.getFromBp());
+            boolean include;
+            include = sf.InExChromosome(vcfLine.getChr(), settings.getChr());
+            if(include == true){
+                filterAway = true;
+                return true;
+            } else{
+                filterAway = false;
+            }
+            
+            
+        } if (settings.getNotChr() != null) {
+            boolean exclude;
+            exclude = sf.InExChromosome(vcfLine.getChr(), settings.getNotChr());
+            if(exclude == false){
+                filterAway = true;
+                return true;
+            }else{
+                filterAway = false;
+            }
+        } else if (settings.getFromBp() != 0 && settings.getToBp() != 0) {
+            sf.Bp(null, settings.getToBp(), settings.getFromBp());
         } else if (settings.getMinQ() != null) {
             sf.MinimalQuality(null, settings.getMinQ());
         } else if (settings.isKeepOnlyIndels()) {
@@ -96,7 +109,7 @@ public class FilterHandler {
             sf.MissingCount(null, settings.getMaxMissingCound());
         }
 
-        return true;
+        return filterAway;
 
     }
 
