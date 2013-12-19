@@ -40,7 +40,7 @@ public class SiteFilters {
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    boolean InExChromosome(String chromosome, ArrayList givenChromosomes) {
+    public boolean InExChromosome(String chromosome, ArrayList givenChromosomes) {
 	//If option IncludeChromosome is given then args is true.
 
         if (givenChromosomes.contains(chromosome)) {
@@ -67,7 +67,7 @@ public class SiteFilters {
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void Bp(Object Position, int ToBp, int FromBp) {
+    public void Bp(Object Position, int ToBp, int FromBp) {
         int pos = (int) Position;
         if (ToBp > pos | FromBp < pos) {
             System.out.println("Line is rejected since: " + pos + " falls outside the range of " + ToBp + " and " + FromBp);
@@ -85,7 +85,7 @@ public class SiteFilters {
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void MinimalQuality(VariantContext line, double minQ) {
+    public void MinimalQuality(VariantContext line, double minQ) {
         /*
          * To compare two doubles you need
          * Double.compare(line.getPhredScaledQual(),minQ), after both doubles
@@ -114,7 +114,7 @@ public class SiteFilters {
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void Indel(VariantContext line, boolean args) {
+    public void Indel(VariantContext line, boolean args) {
         //--keep-only-indels
         if (args == true) {
             if (line.isIndel() == true) {
@@ -148,7 +148,7 @@ public class SiteFilters {
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void mask(VariantContext line, String fileContent, String mask, boolean inverse) {
+    public void mask(VariantContext line, String fileContent, String mask, boolean inverse) {
         /*
          * Mask needs to have a fasta file containing digits, these digits serve
          * to mask certain entries in the chromosome (disqualify vcf line).
@@ -185,7 +185,7 @@ public class SiteFilters {
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void FilterStatus(VariantContext line, boolean all, boolean keep, String condition) {
+    public void FilterStatus(VariantContext line, boolean all, boolean keep, String condition) {
         //If you would like to keep only the sites that pass all filters use the --remove-filtered-all option. 
         if (all == true) {
             //If a filter has not passed, flag it for removal
