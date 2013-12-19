@@ -25,11 +25,25 @@ public class FilterHandler {
         boolean filterAway = false;
         SiteFilters sf = new SiteFilters();
         if (settings.getChr() != null) {
-            filterAway = sf.InExChromosome(vcfLine.getChr(), settings.getChr());
-            System.out.println(filterAway);
+            boolean include;
+            include = sf.InExChromosome(vcfLine.getChr(), settings.getChr());
+            if(include == true){
+                filterAway = true;
+                return true;
+            } else{
+                filterAway = false;
+            }
+            
+            
         } else if (settings.getNotChr() != null) {
-            filterAway = sf.InExChromosome(vcfLine.getChr(), settings.getNotChr());
-
+            boolean exclude;
+            exclude = sf.InExChromosome(vcfLine.getChr(), settings.getNotChr());
+            if(exclude == false){
+                filterAway = true;
+                return true;
+            }else{
+                filterAway = false;
+            }
         } else if (settings.getFromBp() != 0 && settings.getToBp() != 0) {
             sf.Bp(null, settings.getToBp(), settings.getFromBp());
         } else if (settings.getMinQ() != null) {
@@ -95,7 +109,7 @@ public class FilterHandler {
             sf.MissingCount(null, settings.getMaxMissingCound());
         }
 
-        return true;
+        return filterAway;
 
     }
 
