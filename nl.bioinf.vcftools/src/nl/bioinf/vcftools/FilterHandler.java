@@ -44,8 +44,8 @@ public class FilterHandler {
             }else{
                 filterAway = false;
             }
-        } else if (settings.getFromBp() != 0 && settings.getToBp() != 0) {
-            sf.Bp(null, settings.getToBp(), settings.getFromBp());
+        } if (settings.getFromBp() != 0 && settings.getToBp() != 0) {
+            sf.Bp(vcfLine.getPosition(), settings.getToBp(), settings.getFromBp());
         } else if (settings.getMinQ() != null) {
             sf.MinimalQuality(null, settings.getMinQ());
         } else if (settings.isKeepOnlyIndels()) {
