@@ -33,10 +33,9 @@ public class SiteFilters {
      * for multiple chromosomes.
      *
      * @param chromosome Chromosomes in vcf
-     * @param chromosome User defined chromosome name, is capable of supporting
+     * @param givenChromosomes User defined chromosome name, is capable of supporting
      * multiple chromosomes.
-     * @param args Acts as a flag to activate either the IncludeChromosome
-     * (true) or the ExcludeChromosome (false).
+     * 
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
@@ -59,20 +58,23 @@ public class SiteFilters {
      * outside of this range will be rejected. Also this can only be used in
      * conjuction with –chr.
      *
-     * @param line VCF snip line that will be analysed.
+     * @param Position position of snp on the chromosome
      * @param ToBp User defined base pair number from, is used for the options
      * ToBp.
      * @param FromBp User defined base pair number to, is used for the options
      * FromBp.
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     * @return 
      */
-    public void Bp(Object Position, int ToBp, int FromBp) {
-        int pos = (int) Position;
-        if (ToBp > pos | FromBp < pos) {
-            System.out.println("Line is rejected since: " + pos + " falls outside the range of " + ToBp + " and " + FromBp);
+    public boolean Bp(int Position, int ToBp, int FromBp) {
+        
+        if (Position > FromBp && Position < ToBp) {
+            //System.out.println("Line is rejected since: " + pos + " falls outside the range of " + ToBp + " and " + FromBp);
+            return true;
         } else {
-            System.out.println("Line is passed since: " + pos + " inside the range of " + ToBp + " and " + FromBp);
+           // System.out.println("Line is passed since: " + pos + " inside the range of " + ToBp + " and " + FromBp);
+            return false;
         }
     }
 
