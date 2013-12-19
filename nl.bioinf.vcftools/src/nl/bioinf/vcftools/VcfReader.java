@@ -59,11 +59,16 @@ public class VcfReader {
 
         //while vcf file has next iteration get next iteration
         while (vcf.hasNextIter()) {
-            VcfLine iteration = vcf.getNextIter();
-            FilterHandler filterHandler = new FilterHandler(this.settings, iteration);
-            //VariantContext vc = vcf.getNextIterAsVariantContext();
-            //System.out.println(vc.getChr().getClass().getName());
-            //site.MeanDepth(vc,84,86);
+              VcfLine iteration = vcf.getNextIter();
+              FilterHandler filterHandler = new FilterHandler(this.settings, iteration);
+              if (filterHandler.performFilters() == true) {
+                System.out.println("Removed:" + iteration.toString());
+              }
+              else {
+                System.out.println("Kept:" + iteration.toString());
+              }
+//            VariantContext vc = vcf.getNextIterAsVariantContext();
+//            site.MeanDepth(vc,84,86);
             
             //get next line
 //            VariantContext nextLine = vcf.getNextIterAsVariantContext();

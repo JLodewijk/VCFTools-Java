@@ -25,6 +25,14 @@ public class VcfLine {
     VcfLine(VariantContext vc) {
         this.vc = vc;
     }
+
+    @Override
+    public String toString() {
+        return "VcfLine{" + "vc=" + vc + '}';
+    }
+    
+    
+    
     
     /**
      * Get the identifier of the SNP of the line.
