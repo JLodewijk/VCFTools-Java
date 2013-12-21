@@ -31,7 +31,7 @@ public class VcfReader {
 //    public static void main(String[] args) throws IOException {
 //
 //        VcfReader read = new VcfReader();
-//        read.readVcfLine("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
+//        read.readVcfLines("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
 //    }
 
     public VcfReader(Settings settings) {
