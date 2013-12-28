@@ -33,14 +33,13 @@ public class SiteFilters {
      * for multiple chromosomes.
      *
      * @param chromosome Chromosomes in vcf
-     * @param chromosome User defined chromosome name, is capable of supporting
+     * @param givenChromosomes User defined chromosome name, is capable of supporting
      * multiple chromosomes.
-     * @param args Acts as a flag to activate either the IncludeChromosome
-     * (true) or the ExcludeChromosome (false).
+     * 
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    boolean InExChromosome(String chromosome, ArrayList givenChromosomes) {
+    public boolean InExChromosome(String chromosome, ArrayList givenChromosomes) {
 	//If option IncludeChromosome is given then args is true.
 
         if (givenChromosomes.contains(chromosome)) {
@@ -59,20 +58,23 @@ public class SiteFilters {
      * outside of this range will be rejected. Also this can only be used in
      * conjuction with –chr.
      *
-     * @param line VCF snip line that will be analysed.
+     * @param Position position of snp on the chromosome
      * @param ToBp User defined base pair number from, is used for the options
      * ToBp.
      * @param FromBp User defined base pair number to, is used for the options
      * FromBp.
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     * @return 
      */
-    void Bp(Object Position, int ToBp, int FromBp) {
-        int pos = (int) Position;
-        if (ToBp > pos | FromBp < pos) {
-            System.out.println("Line is rejected since: " + pos + " falls outside the range of " + ToBp + " and " + FromBp);
+    public boolean Bp(int Position, int ToBp, int FromBp) {
+        
+        if (Position > FromBp && Position < ToBp) {
+            //System.out.println("Line is rejected since: " + pos + " falls outside the range of " + ToBp + " and " + FromBp);
+            return true;
         } else {
-            System.out.println("Line is passed since: " + pos + " inside the range of " + ToBp + " and " + FromBp);
+           // System.out.println("Line is passed since: " + pos + " inside the range of " + ToBp + " and " + FromBp);
+            return false;
         }
     }
 
@@ -85,7 +87,7 @@ public class SiteFilters {
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void MinimalQuality(VariantContext line, double minQ) {
+    public void MinimalQuality(VariantContext line, double minQ) {
         /*
          * To compare two doubles you need
          * Double.compare(line.getPhredScaledQual(),minQ), after both doubles
@@ -114,7 +116,7 @@ public class SiteFilters {
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void Indel(VariantContext line, boolean args) {
+    public void Indel(VariantContext line, boolean args) {
         //--keep-only-indels
         if (args == true) {
             if (line.isIndel() == true) {
@@ -148,7 +150,7 @@ public class SiteFilters {
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void mask(VariantContext line, String fileContent, String mask, boolean inverse) {
+    public void mask(VariantContext line, String fileContent, String mask, boolean inverse) {
         /*
          * Mask needs to have a fasta file containing digits, these digits serve
          * to mask certain entries in the chromosome (disqualify vcf line).
@@ -185,7 +187,7 @@ public class SiteFilters {
      *
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    void FilterStatus(VariantContext line, boolean all, boolean keep, String condition) {
+    public void FilterStatus(VariantContext line, boolean all, boolean keep, String condition) {
         //If you would like to keep only the sites that pass all filters use the --remove-filtered-all option. 
         if (all == true) {
             //If a filter has not passed, flag it for removal

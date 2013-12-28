@@ -20,9 +20,7 @@ import java.util.logging.Logger;
 public class BedReader {
 
     private String filePath;
-    private ArrayList<String> arrayListChr;
-    private ArrayList<Integer> arrayListStartPos;
-    private ArrayList<Integer> arrayListStopPos;
+    private ArrayList<BedLine> arrayListWithBedLinesObjects;
 
     /**
      * Constructor starts file reading.
@@ -48,14 +46,12 @@ public class BedReader {
         try {
             fr = new FileReader(this.filePath);
             br = new BufferedReader(fr);
-
+            this.arrayListWithBedLinesObjects = new ArrayList<BedLine>();
             String line = null;
 
             while ((line = br.readLine()) != null) {
                 BedLine bl = new BedLine(line);
-                this.arrayListChr.add(bl.getChrName());
-                this.arrayListStartPos.add(bl.getStartPos());
-                this.arrayListStopPos.add(bl.getStopPos());
+                this.arrayListWithBedLinesObjects.add(bl);
 
             }
 
@@ -67,6 +63,14 @@ public class BedReader {
 
     }
 
+/**
+     * Get the arrayllist with all the bed line objects.
+     * @return arrayListWithBedLinesObjects
+     */
+    public ArrayList<BedLine> getArrayListWithBedLinesObjects() {
+        return arrayListWithBedLinesObjects;
+    }
+
     /**
      * Get the reference to the file.
      *
@@ -75,28 +79,9 @@ public class BedReader {
     public String getFilePath() {
         return filePath;
     }
-    /**
-     * Get the arraylist with all the chromosomes.
-     * @return arrayListChr
-     */
-    public ArrayList<String> getArrayListChr() {
-        return arrayListChr;
-    }
+   
     
-    /**
-     * Get the arraylist with all the start position of the chromosomes.
-     * @return arrayListStartPos
-     */
-    public ArrayList<Integer> getArrayListStartPos() {
-        return arrayListStartPos;
-    }
+   
     
-    /**
-     * Get the arrayllist with all the stop position of the chromosomes.
-     * @return arrayListStopPos
-     */
-    public ArrayList<Integer> getArrayListStopPos() {
-        return arrayListStopPos;
-    }
-
+    
 }
