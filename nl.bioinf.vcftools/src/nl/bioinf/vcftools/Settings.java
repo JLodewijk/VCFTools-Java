@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.collections4.MultiMap;
+import org.apache.commons.collections4.map.MultiValueMap;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 
@@ -21,9 +23,6 @@ public class Settings {
     /* Variables for basic functioning of the Settings class */
     /* XML input file */
     private String configFile;
-    /* commons configuration XMLConfiguration */
-    private XMLConfiguration configRead;
-    private XMLConfiguration configCreate;
 
     /* VcfTools settings */
     /* Basic Settings */
@@ -40,13 +39,14 @@ public class Settings {
     private String snpFile;
     private ArrayList<String> excludeSnp;
     private String excludeSnpFile;
-    private ArrayList<Integer> positions;
+    private MultiMap positions;
     private String positionsFile;
-    private ArrayList<Integer> excludePositions;
+    private MultiMap excludePositions;
     private String excludePositionsFile;
     private Boolean keepOnlyIndels;
     private Boolean removeIndels;
     private String bedFile;
+    private String exludeBedFile;
     //private Bed bed;
     //private Bed exludeBed;
     private Boolean removeFilteredAll;
@@ -96,17 +96,20 @@ public class Settings {
      */
     public Settings() {
         this.configFile = "defaultConfig.xml";
-        //this.load();
-    }
-
-    /**
-     * This constructor set the given filename as configuration and load it.
-     *
-     * @param filename Filename to set as configuration source
-     */
-    public Settings(String filename) {
-        this.configFile = filename;
-        //this.load();
+        
+        // Build empty datasets for variables that assume an instance in their add functions
+        this.chr = new ArrayList<>();
+        this.notChr = new ArrayList<>();
+        this.snp = new ArrayList<>();
+        this.excludeSnp = new ArrayList<>();
+        this.positions = new MultiValueMap();
+        this.excludePositions = new MultiValueMap();
+        this.removeFiltered = new ArrayList<>();
+        this.keepFiltered = new ArrayList<>();
+        this.removeInfo = new ArrayList<>();
+        this.keepInfo = new ArrayList<>();
+        this.keepIndv = new ArrayList<>();
+        this.removeIndv = new ArrayList<>();
     }
 
     /**
@@ -125,7 +128,7 @@ public class Settings {
     public void load(String filename) {
         try {
             // open config object
-            this.configRead = new XMLConfiguration(filename);   
+            XMLConfiguration configRead = new XMLConfiguration(filename);   
             
             /* Site Filters */
             this.chr = Misc.objListToStrArrayList(configRead.getList("siteFilters.chr"));
@@ -134,8 +137,8 @@ public class Settings {
             this.toBp = configRead.getInt("siteFilters.toBp");
             this.snp = Misc.objListToStrArrayList(configRead.getList("siteFilters.snp"));
             this.excludeSnp = Misc.objListToStrArrayList(configRead.getList("siteFilters.excludeSnp"));
-            this.positions = Misc.objListToIntegerArrayList(configRead.getList("siteFilters.positions"));
-            this.excludePositions = Misc.objListToIntegerArrayList(configRead.getList("siteFilters.excludePositions"));  
+            // this.positions = Misc.objListToIntegerArrayList(configRead.getList("siteFilters.positions")); // fix for multimap needed
+            // this.excludePositions = Misc.objListToIntegerArrayList(configRead.getList("siteFilters.excludePositions"));  // multimap fix
             this.keepOnlyIndels = configRead.getBoolean("siteFilters.keepOnlyIndels");
             this.removeIndels = configRead.getBoolean("siteFilters.removeIndels");
             // todo: load bed data
@@ -271,12 +274,28 @@ public class Settings {
     }
 
     /* Getters and setters for the VCFTools settings */
+    public String getConfigFile() {
+        return configFile;
+    }
+
+    public void setConfigFile(String configFile) {
+        this.configFile = configFile;
+    }
+
     public String getInputFile() {
         return inputFile;
     }
 
     public void setInputFile(String inputFile) {
         this.inputFile = inputFile;
+    }
+
+    public String getOutputFile() {
+        return outputFile;
+    }
+
+    public void setOutputFile(String outputFile) {
+        this.outputFile = outputFile;
     }
 
     public Boolean isGzipped() {
@@ -287,14 +306,6 @@ public class Settings {
         this.gzipped = gzipped;
     }
 
-    public String isOutputFile() {
-        return outputFile;
-    }
-
-    public void setOutputFile(String outputFile) {
-        this.outputFile = outputFile;
-    }
-
     public ArrayList<String> getChr() {
         return chr;
     }
@@ -303,6 +314,14 @@ public class Settings {
         this.chr = chr;
     }
 
+    public void addChr(ArrayList<String> chr) {
+        this.chr.addAll(chr);
+    }   
+    
+    public void addChr(String chr) {
+        this.chr.add(chr);
+    }
+    
     public ArrayList<String> getNotChr() {
         return notChr;
     }
@@ -311,6 +330,14 @@ public class Settings {
         this.notChr = notChr;
     }
 
+    public void addNotChr(ArrayList<String> notChr) {
+        this.notChr.addAll(notChr);
+    }    
+    
+    public void addNotChr(String notChr) {
+        this.notChr.add(notChr);
+    }
+    
     public Integer getFromBp() {
         return fromBp;
     }
@@ -335,6 +362,14 @@ public class Settings {
         this.snp = snp;
     }
 
+    public void addSnp(ArrayList<String> snp) {
+        this.snp.addAll(snp);
+    }    
+    
+    public void addSnp(String snp) {
+        this.snp.add(snp);
+    }    
+    
     public String getSnpFile() {
         return snpFile;
     }
@@ -351,6 +386,14 @@ public class Settings {
         this.excludeSnp = excludeSnp;
     }
 
+    public void addExcludeSnp(ArrayList<String> excludeSnp) {
+        this.excludeSnp.addAll(excludeSnp);
+    }   
+    
+    public void addExcludeSnp(String excludeSnp) {
+        this.excludeSnp.add(excludeSnp);
+    } 
+    
     public String getExcludeSnpFile() {
         return excludeSnpFile;
     }
@@ -359,14 +402,18 @@ public class Settings {
         this.excludeSnpFile = excludeSnpFile;
     }
 
-    public ArrayList getPositions() {
+    public MultiMap getPositions() {
         return positions;
     }
 
-    public void setPositions(ArrayList positions) {
+    public void setPositions(MultiMap positions) {
         this.positions = positions;
     }
 
+    public void addPositions(String key, Integer value) {
+        this.positions.put(key, value);
+    }
+    
     public String getPositionsFile() {
         return positionsFile;
     }
@@ -375,14 +422,18 @@ public class Settings {
         this.positionsFile = positionsFile;
     }
 
-    public ArrayList<Integer> getExcludePositions() {
+    public MultiMap getExcludePositions() {
         return excludePositions;
     }
 
-    public void setExcludePositions(ArrayList<Integer> excludePositions) {
+    public void setExcludePositions(MultiMap excludePositions) {
         this.excludePositions = excludePositions;
     }
 
+    public void addExcludePositions(String key, Integer value) {
+        this.excludePositions.put(key, value);
+    }    
+    
     public String getExcludePositionsFile() {
         return excludePositionsFile;
     }
@@ -407,6 +458,22 @@ public class Settings {
         this.removeIndels = removeIndels;
     }
 
+    public String getBedFile() {
+        return bedFile;
+    }
+
+    public void setBedFile(String bedFile) {
+        this.bedFile = bedFile;
+    }
+
+    public String getExludeBedFile() {
+        return exludeBedFile;
+    }
+
+    public void setExludeBedFile(String exludeBedFile) {
+        this.exludeBedFile = exludeBedFile;
+    }
+
     public Boolean isRemoveFilteredAll() {
         return removeFilteredAll;
     }
@@ -423,6 +490,14 @@ public class Settings {
         this.removeFiltered = removeFiltered;
     }
 
+    public void addRemoveFiltered(ArrayList<String> removeFiltered) {
+        this.removeFiltered.addAll(removeFiltered);
+    }    
+    
+    public void addRemoveFiltered(String removeFiltered) {
+        this.removeFiltered.add(removeFiltered);
+    }    
+    
     public ArrayList<String> getKeepFiltered() {
         return keepFiltered;
     }
@@ -431,6 +506,14 @@ public class Settings {
         this.keepFiltered = keepFiltered;
     }
 
+    public void addKeepFiltered(ArrayList<String> keepFiltered) {
+        this.keepFiltered.addAll(keepFiltered);
+    }    
+    
+    public void addKeepFiltered(String keepFiltered) {
+        this.keepFiltered.add(keepFiltered);
+    }    
+    
     public ArrayList<String> getRemoveInfo() {
         return removeInfo;
     }
@@ -439,6 +522,14 @@ public class Settings {
         this.removeInfo = removeInfo;
     }
 
+    public void addRemoveInfo(ArrayList<String> removeInfo) {
+        this.removeInfo.addAll(removeInfo);
+    }    
+    
+    public void addRemoveInfo(String removeInfo) {
+        this.removeInfo.add(removeInfo);
+    }    
+    
     public ArrayList<String> getKeepInfo() {
         return keepInfo;
     }
@@ -447,6 +538,14 @@ public class Settings {
         this.keepInfo = keepInfo;
     }
 
+    public void addKeepInfo(ArrayList<String> keepInfo) {
+        this.keepInfo.addAll(keepInfo);
+    }
+    
+    public void addKeepInfo(String keepInfo) {
+        this.keepInfo.add(keepInfo);
+    }   
+    
     public Double getMinQ() {
         return minQ;
     }
@@ -455,20 +554,20 @@ public class Settings {
         this.minQ = minQ;
     }
 
-    public Double getMinMeanDP() {
+    public Double getMinMeanDp() {
         return minMeanDp;
     }
 
-    public void setMinMeanDP(Double minMeanDP) {
-        this.minMeanDp = minMeanDP;
+    public void setMinMeanDp(Double minMeanDp) {
+        this.minMeanDp = minMeanDp;
     }
 
-    public Double getMaxMeanDP() {
+    public Double getMaxMeanDp() {
         return maxMeanDp;
     }
 
-    public void setMaxMeanDP(Double maxMeanDP) {
-        this.maxMeanDp = maxMeanDP;
+    public void setMaxMeanDp(Double maxMeanDp) {
+        this.maxMeanDp = maxMeanDp;
     }
 
     public Double getMaf() {
@@ -551,12 +650,12 @@ public class Settings {
         this.geno = geno;
     }
 
-    public Integer getMaxMissingCound() {
+    public Integer getMaxMissingCount() {
         return maxMissingCount;
     }
 
-    public void setMaxMissingCound(Integer maxMissingCound) {
-        this.maxMissingCount = maxMissingCound;
+    public void setMaxMissingCount(Integer maxMissingCount) {
+        this.maxMissingCount = maxMissingCount;
     }
 
     public Integer getMinAlleles() {
@@ -615,6 +714,14 @@ public class Settings {
         this.keepIndv = keepIndv;
     }
 
+    public void addKeepIndv(ArrayList<String> keepIndv) {
+        this.keepIndv.addAll(keepIndv);
+    }
+    
+    public void addKeepIndv(String keepIndv) {
+        this.keepIndv.add(keepIndv);
+    }    
+    
     public String getKeepIndvFile() {
         return keepIndvFile;
     }
@@ -631,6 +738,15 @@ public class Settings {
         this.removeIndv = removeIndv;
     }
 
+    public void addRemoveIndv(ArrayList<String> removeIndv) {
+        this.removeIndv.addAll(removeIndv);
+    }
+    
+    public void addRemoveIndv(String removeIndv) {
+        this.removeIndv.add(removeIndv);
+    }    
+
+    
     public String getRemoveIndvFile() {
         return removeIndvFile;
     }
@@ -702,5 +818,6 @@ public class Settings {
     public void setDepth(Boolean depth) {
         this.depth = depth;
     }
+
 
 }
