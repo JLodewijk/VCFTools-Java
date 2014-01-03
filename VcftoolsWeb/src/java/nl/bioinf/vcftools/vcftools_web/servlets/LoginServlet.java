@@ -12,6 +12,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Get user information
         String name = request.getParameter("username");
         String pass = request.getParameter("password");
         if (ValidateUser.checkUserInformation(name, pass)) {
