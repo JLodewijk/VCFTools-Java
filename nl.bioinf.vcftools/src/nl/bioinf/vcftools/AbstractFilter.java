@@ -12,14 +12,14 @@ package nl.bioinf.vcftools;
  */
 public abstract class AbstractFilter {
     int count;
-    Object Settings;
 
     /**
      * 
-     * @param VCFLine
+     * @param vcfLine
+     * @param settings
      * @return
      */
-    public abstract boolean Filter(Object VCFLine);
+    public abstract boolean Filter(VcfLine vcfLine, Settings settings);
     @Override
     public abstract String toString();
 }
