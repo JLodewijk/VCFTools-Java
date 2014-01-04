@@ -17,7 +17,8 @@
         <form method="post" action="login.do">
             <input type="text" name="username" />
             <input type="password" name="password" />
-            <input type="submit" value="log in"/>
+            <input type="submit" name="userinput" value="Login"/>
+            <input type="submit" name="userinput" value="Register"/>
         </form>     
     </body>
 </html>
