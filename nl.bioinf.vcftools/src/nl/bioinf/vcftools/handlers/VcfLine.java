@@ -144,5 +144,10 @@ public class VcfLine {
     public VcfGenotype getGenotype(int index) {
         return new VcfGenotype(this.vc.getGenotype(index));
     }
+     
+    public double getPhredScaledQual() {
+        return this.vc.getPhredScaledQual();
+    }   
+
     
 }
