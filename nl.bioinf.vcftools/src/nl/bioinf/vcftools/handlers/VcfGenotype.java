@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package nl.bioinf.vcftools;
+package nl.bioinf.vcftools.handlers;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,7 +6,7 @@
 
 package nl.bioinf.vcftools.filters;
 import nl.bioinf.vcftools.Settings;
-import nl.bioinf.vcftools.VcfLine;
+import nl.bioinf.vcftools.handlers.VcfLine;
 
 
 /**
