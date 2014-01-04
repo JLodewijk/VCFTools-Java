@@ -35,27 +35,21 @@ public class SeparatedValueReader {
 
     /**
      * Reads file
+     * @author ashvin ponnudurai
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public void readFile() {
         StringBuilder fileLines = new StringBuilder();
         try {
 
-            FileReader fr = null;
-            BufferedReader br = null;
-            fr = new FileReader(this.filePath);
-            br = new BufferedReader(fr);
+            FileReader fr = new FileReader(this.filePath);
+            BufferedReader br = new BufferedReader(fr);
 
-            String line = null;
-            int lineNumber = 0;
-            while ((line = br.readLine()) != null) {
-                lineNumber++;
-                if (!(line.startsWith("#"))) {
-
-                    fileLines.append(line + "\\n");
-                }
-
+            String line = br.readLine();
+            while (line != null) {
+                if (!(line.startsWith("#"))) { fileLines.append(line).append("\\n"); }
+                line = br.readLine();
             }
-
         } catch (FileNotFoundException ex) {
             System.err.println("FileNotFoundException: " + ex.getMessage());
         } catch (IOException ex) {
