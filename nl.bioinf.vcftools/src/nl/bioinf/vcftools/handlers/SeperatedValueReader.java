@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.bioinf.vcftools;
+package nl.bioinf.vcftools.handlers;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
