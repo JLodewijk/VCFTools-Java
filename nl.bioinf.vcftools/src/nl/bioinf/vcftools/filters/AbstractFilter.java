@@ -1,4 +1,7 @@
-package nl.bioinf.vcftools;
+package nl.bioinf.vcftools.filters;
+import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.VcfLine;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
