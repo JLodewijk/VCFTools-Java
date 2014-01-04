@@ -10,11 +10,11 @@ import nl.bioinf.vcftools.handlers.VcfLine;
 
 
 /**
- * Abstract class for context dependant filters.
+ * Abstract class for context dependent filters.
  * 
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  */
-public abstract class AbstractContextDependantFilter extends AbstractFilter{
+public abstract class AbstractContextDependentFilter extends AbstractFilter{
 
     /**
      * 
