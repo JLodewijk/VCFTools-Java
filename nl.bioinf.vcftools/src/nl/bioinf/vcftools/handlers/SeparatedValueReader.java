@@ -17,16 +17,16 @@ import java.util.logging.Logger;
  *
  * @author ashvin ponnudurai
  */
-public class SeperatedValueReader {
+public class SeparatedValueReader {
 
     private String filePath;
     private String seperator;
     private String linesOfFile;
 
     /**
-     * Constructor inducining file reading.
+     * Constructor inducing file reading.
      */
-    SeperatedValueReader(String filePath, String seperator) {
+    SeparatedValueReader(String filePath, String seperator) {
         this.filePath = filePath;
         this.seperator = seperator;
         this.readFile();
@@ -59,7 +59,7 @@ public class SeperatedValueReader {
         } catch (FileNotFoundException ex) {
             System.err.println("FileNotFoundException: " + ex.getMessage());
         } catch (IOException ex) {
-            Logger.getLogger(SeperatedValueReader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SeparatedValueReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         this.linesOfFile = fileLines.toString();
@@ -67,7 +67,7 @@ public class SeperatedValueReader {
     }
 
     /**
-     * returns arrayList with seperated file line elements.
+     * returns arrayList with separated file line elements.
      *
      * @return ArrayList<String>
      */
