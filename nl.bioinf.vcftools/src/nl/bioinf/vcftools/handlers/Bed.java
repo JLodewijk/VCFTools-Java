@@ -29,30 +29,29 @@ public class Bed {
      */
     Bed(String filePath) {
         this.filePath = filePath;
-        this.fileReader();
+        this.readFile();
 
     }
 
     /**
      * Function which parse BED files
-     *
+     * @author ashvin ponnudurai
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     
-    public void fileReader() {
-
-        FileReader fr = null;
-        BufferedReader br = null;
+    public void readFile() {
 
         try {
-            fr = new FileReader(this.filePath);
-            br = new BufferedReader(fr);
+            FileReader fr = new FileReader(this.filePath);
+            BufferedReader br = new BufferedReader(fr);
+            
             this.arrayListWithBedLinesObjects = new ArrayList<BedLine>();
-            String line = null;
+            String line = br.readLine();
 
-            while ((line = br.readLine()) != null) {
+            while (line != null) {
                 BedLine bl = new BedLine(line);
                 this.arrayListWithBedLinesObjects.add(bl);
-
+                line = br.readLine();
             }
 
         } catch (FileNotFoundException ex) {
