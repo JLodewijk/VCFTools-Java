@@ -5,6 +5,8 @@
  */
 package nl.bioinf.vcftools;
 
+import nl.bioinf.vcftools.handlers.VcfLine;
+
 /**
  *
  * @author aponnudurai
