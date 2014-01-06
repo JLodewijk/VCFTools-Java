@@ -69,7 +69,7 @@ public class VcfLine {
         for (Object object : allelesObjects) {
             allelesStrings.add(object != null ? object.toString() : null);
         }
-        // return list of strings
+        // Return list of strings
         return allelesStrings;
     }
     
@@ -103,6 +103,13 @@ public class VcfLine {
      */
     public int getGenotypeNumber() {
         return vc.getGenotypes().size();
+    }
+     /**
+     * Get if a indel is present.
+     * @return boolean
+     */
+    public boolean getIndel(){
+	return vc.isIndel();
     }
     
     
