@@ -11,14 +11,13 @@ import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
  *
- * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+ * @author mhroelfes
  */
-public class IncludeChromosome extends AbstractSimpleFilter{
+public class ExcludeSnp extends AbstractSimpleFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-	return settings.getChr().containsKey(vcfLine.getChr());
-	
+        return settings.getExcludeSnp().contains(vcfLine.getId());
     }
     
 }

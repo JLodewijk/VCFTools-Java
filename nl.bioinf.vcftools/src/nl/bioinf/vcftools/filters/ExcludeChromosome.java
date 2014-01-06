@@ -17,7 +17,7 @@ public class ExcludeChromosome extends AbstractSimpleFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-	return settings.getNotChr().contains(vcfLine.getChr());
+	return settings.getNotChr().containsKey(vcfLine.getChr());
     }
     
 }

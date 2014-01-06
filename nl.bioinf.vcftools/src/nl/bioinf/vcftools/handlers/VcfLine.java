@@ -7,6 +7,7 @@ package nl.bioinf.vcftools.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.broadinstitute.variant.variantcontext.Allele;
 import org.broadinstitute.variant.variantcontext.VariantContext;
 
@@ -104,15 +105,37 @@ public class VcfLine {
     public int getGenotypeNumber() {
         return vc.getGenotypes().size();
     }
-     /**
-     * Get if a indel is present.
+
+    /**
+     * Get if an indel is present.
+     *
      * @return boolean
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    public boolean getIndel(){
+    public boolean getIndel() {
 	return vc.isIndel();
     }
-    
-    
+
+    /**
+     * Get if it is not filtered.
+     *
+     * @return boolean
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
+    public boolean getNotFiltered() {
+	return vc.isNotFiltered();
+    }
+
+    /**
+     * Get the specific filter status.
+     *
+     * @return Set<String> containing the filter status.
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
+    public Set<String> getSpecificFilter() {
+	return vc.getFilters();
+    }
+
     /**
      * Get an attribute as boolean of the SNP of the line.
      * @param attribute The attribute to return its value of.
