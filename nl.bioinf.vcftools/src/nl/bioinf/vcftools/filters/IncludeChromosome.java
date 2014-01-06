@@ -17,7 +17,7 @@ public class IncludeChromosome extends AbstractSimpleFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-	return settings.getChr().contains(vcfLine.getChr());
+	return settings.getChr().containsKey(vcfLine.getChr());
 	
     }
     
