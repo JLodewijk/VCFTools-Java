@@ -16,6 +16,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.ParseException;
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.handlers.SeparatedValueReader;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.UnrecognizedOptionException;
 
@@ -42,15 +43,14 @@ public class Cli {
         this.option = defineOptions();
         this.helpFormatter = new HelpFormatter();
         this.settings = new Settings();
-        
-        try{
-        CommandLineParser parser = new BasicParser();
-        this.cmd = parser.parse(this.option, args);
-        } catch(ParseException e){
+
+        try {
+            CommandLineParser parser = new BasicParser();
+            this.cmd = parser.parse(this.option, args);
+        } catch (ParseException e) {
             System.err.println(e.getLocalizedMessage());
             System.exit(0);
         }
-       
 
         checkOptions();
 
@@ -76,8 +76,8 @@ public class Cli {
 //         Site Filters 
         opt.addOption("chr", true, "chromosome identifiers can be used more than once to include multiple chromosomes. Seperate the identifiers with ',' if mulitiple identifiers are given");
         opt.addOption("notChr", true, "chromosome identifiers can be used more than once to exlude multiple chromosomes. Seperate the identifiers with ',' if mulitiple identifiers are given");
-        opt.addOption("fromBp", true, "this option defines the physical start position of site will be processed. A integer is expected");
-        opt.addOption("toBp", true, "this option defines the physical stop position of site will be processed. A integer is expected");
+        opt.addOption("fromBp", true, "this option defines the physical start position of site will be processed. A integer is expected. This option must be used in right after -chr");
+        opt.addOption("toBp", true, "this option defines the physical stop position of site will be processed. A integer is expected. This option must be used in right after -toBp");
         opt.addOption("snp", true, "this option defines a snp which will be processed. A string is excepted");
         opt.addOption("snpFile", true, "include a list of SNPs given in a file, with one ID per line");
         opt.addOption("excludeSnp", true, "exclude SNPs which are given by the user. Seperate the snps with a ',' if mulitple snp are given");
@@ -140,11 +140,11 @@ public class Cli {
      */
     public void checkOptions() {
         System.out.println("checking options....");
-        
+
         if (this.args.length < 1) {
             usage();
         }
-        
+
         if (this.cmd.hasOption("fromBp") && !(this.cmd.hasOption("chr"))) {
             System.err.println("The options -fromBp and -toBp can only be used in conjunction with -chr");
             System.exit(0);
@@ -260,6 +260,8 @@ public class Cli {
 
     /**
      * Set settings object
+     *
+     * @param settings
      */
     public void setSettings(Settings settings) {
         this.settings = settings;
@@ -275,9 +277,8 @@ public class Cli {
     }
 
     /**
-     * Usage, for when errors occur in programm
+     * Usage, for when errors occur in program
      *
-     * @return opt
      */
     public void usage() {
         helpFormatter.printHelp("For analysing the VCF file several options can be used."
@@ -309,94 +310,89 @@ public class Cli {
 //            settings.setOutputFile(cmd.getOptionValue("out"));
         }
         if (this.cmd.hasOption("chr")) {
-            String chrIdentifiers = this.cmd.getOptionValue("chr");
-            ArrayList<String> arrayListChr = new ArrayList<String>();
 
-            String[] splitedchrIdentifiers = chrIdentifiers.split(",");
-            for (String identifier : splitedchrIdentifiers) {
-                arrayListChr.add(identifier);
+            for (int pointer = 0; pointer < this.args.length; pointer++) {
+                if (this.args[pointer].equals("-chr")) {
+
+                    int fromValuePointer = pointer + 2;
+                    int toValueFactor = pointer + 4;
+
+                    if (pointer + 2 == this.args.length) {
+                        break;
+                    }
+                    if (this.args[fromValuePointer].equals("-from") && this.args[toValueFactor].equals("-to")) {
+                        int fromBp = Integer.parseInt(this.args[fromValuePointer + 1]);
+                        int toBp = Integer.parseInt(this.args[toValueFactor + 1]);
+                        settings.addChr(null, fromBp, toBp);
+
+                    } else {
+                        settings.addChr(this.args[pointer + 1]);
+                    }
+                }
+
             }
-
-            settings.setChr(arrayListChr);
         }
         if (this.cmd.hasOption("notChr")) {
-            String chrIdentifiers = this.cmd.getOptionValue("notChr");
-            ArrayList<String> arrayListNotChr = new ArrayList<String>();
+            for (int pointer = 0; pointer < this.args.length; pointer++) {
+                if (this.args[pointer].equals("-notChr")) {
+//                    System.out.println(args[c]);
+                    int fromValuePointer = pointer + 2;
+                    int toValueFactor = pointer + 4;
 
-            String[] splitedchrIdentifiers = chrIdentifiers.split(",");
-            for (String identifier : splitedchrIdentifiers) {
-                arrayListNotChr.add(identifier);
-                settings.setNotChr(arrayListNotChr);
+                    if (pointer + 2 == this.args.length) {
+                        break;
+                    }
+                    if (this.args[fromValuePointer].equals("-from") && this.args[toValueFactor].equals("-to")) {
+                        int fromBp = Integer.parseInt(this.args[fromValuePointer + 1]);
+                        int toBp = Integer.parseInt(this.args[toValueFactor + 1]);
+                        settings.addNotChr(this.args[pointer + 1], fromBp, toBp);
+
+                    } else {
+                        settings.addNotChr(this.args[pointer + 1]);
+                    }
+                }
+
             }
         }
-        if (this.cmd.hasOption("fromBp")) {
-            int fromBp = Integer.parseInt(this.cmd.getOptionValue("fromBp"));
-            settings.setFromBp(fromBp);
-        }
-        if (this.cmd.hasOption("toBp")) {
-            int toBp = Integer.parseInt(this.cmd.getOptionValue("toBp"));
-            settings.setToBp(toBp);
-        }
+
         if (this.cmd.hasOption("snp")) {
             String snpIdentifiers = this.cmd.getOptionValue("snp");
-            ArrayList<String> arrayListSnp = new ArrayList<String>();
 
             String[] splitedSnpIdentifiers = snpIdentifiers.split(",");
             for (String identifier : splitedSnpIdentifiers) {
-                arrayListSnp.add(identifier);
+                settings.addSnp(identifier);
 
             }
-            settings.setSnp(arrayListSnp);
+
         }
         if (this.cmd.hasOption("snpFile")) {
             settings.setSnpFile(this.cmd.getOptionValue("snpFile"));
         }
         if (this.cmd.hasOption("excludeSnp")) {
             String excludeSnpIdentifiers = this.cmd.getOptionValue("excludeSnp");
-            ArrayList<String> arrayListExcludeSnp = new ArrayList<String>();
 
             String[] splitedExcludedIdentifiers = excludeSnpIdentifiers.split(",");
             for (String identifiers : splitedExcludedIdentifiers) {
-                arrayListExcludeSnp.add(identifiers);
+                settings.addExcludeSnp(identifiers);
             }
-            settings.setExcludeSnp(arrayListExcludeSnp);
+
         }
         if (this.cmd.hasOption("excludeSnpFile")) {
             settings.setExcludeSnpFile(this.cmd.getOptionValue("excludeSnpFile"));
         }
-        if (this.cmd.hasOption("positions")) {
-            String positions = this.cmd.getOptionValue("positions");
-            String[] splitedPositions = positions.split(",");
-            ArrayList<String> arrayListPosition = new ArrayList<String>();
-
-            for (String pos : splitedPositions) {
-                arrayListPosition.add(pos);
-            }
-            settings.setPositions(arrayListPosition);
-        }
+       
         if (this.cmd.hasOption("positionsFile")) {
             settings.setPositionsFile(this.cmd.getOptionValue("positionsFile"));
         }
-        if (this.cmd.hasOption("excludePositions")) {
-            String excludePositions = this.cmd.getOptionValue("excludePositions");
-            String[] splitedExcludePositions = excludePositions.split(",");
-
-            ArrayList<Integer> arrayListExcludePositions = new ArrayList<Integer>();
-
-            for (String exPos : splitedExcludePositions) {
-                int excludePosition = Integer.parseInt(exPos);
-                arrayListExcludePositions.add(excludePosition);
-            }
-            settings.setExcludePositions(arrayListExcludePositions);
-        }
+      
         if (this.cmd.hasOption("excludePositionsFile")) {
             settings.setExcludePositionsFile(this.cmd.getOptionValue("excludePositionsFile"));
         }
         if (this.cmd.hasOption("keepOnlyIndels")) {
-            settings.setKeepOnlyIndels(true);
+            settings.setKeepIndels(true);
         }
         if (this.cmd.hasOption("removeIndels")) {
-            settings.setRemoveIndels(true);
+            settings.setKeepIndels(false);
         }
         if (this.cmd.hasOption("bed")) {
 //      Bed bed = new Bed();
@@ -412,58 +408,53 @@ public class Cli {
         if (this.cmd.hasOption("removeFiltered")) {
             String removedFiltered = this.cmd.getOptionValue("removeFiltered");
             String[] splitedRemovedFiltered = removedFiltered.split(",");
-            ArrayList<String> arrayListRemovedFiltered = new ArrayList<String>();
 
             for (String removedItem : splitedRemovedFiltered) {
-                arrayListRemovedFiltered.add(removedItem);
+                settings.addRemoveFiltered(removedItem);
             }
-            settings.setRemoveFiltered(arrayListRemovedFiltered);
+            settings.setRemoveFiltered(settings.getRemoveFiltered());
         }
         if (this.cmd.hasOption("keepFiltered")) {
             String keepFiltered = this.cmd.getOptionValue("keepFiltered");
             String[] splitedKeepFiltered = keepFiltered.split(",");
-            ArrayList<String> arrayListKeepFiltered = new ArrayList<String>();
 
             for (String keepFilteredItem : splitedKeepFiltered) {
-                arrayListKeepFiltered.add(keepFiltered);
+                settings.addKeepFiltered(keepFilteredItem);
             }
-            settings.setKeepFiltered(arrayListKeepFiltered);
+            settings.setKeepFiltered(settings.getKeepFiltered());
         }
         if (this.cmd.hasOption("removeInfo")) {
             String removeInfo = this.cmd.getOptionValue("removeInfo");
             String[] splitedRemovedInfo = removeInfo.split(",");
-            ArrayList<String> arrayListRemovedInfo = new ArrayList<String>();
 
             for (String removedInfoItem : splitedRemovedInfo) {
-                arrayListRemovedInfo.add(removedInfoItem);
+                settings.addRemoveInfo(removedInfoItem);
             }
-            settings.setRemoveInfo(arrayListRemovedInfo);
+
         }
         if (this.cmd.hasOption("keepInfo")) {
             String keepInfo = this.cmd.getOptionValue("keepInfo");
             String[] splitedKeptInfo = keepInfo.split(",");
-            ArrayList<String> arrayListKeptInfo = new ArrayList<String>();
 
             for (String keptInfoItem : splitedKeptInfo) {
-                arrayListKeptInfo.add(keptInfoItem);
+                settings.addKeepInfo(keepInfo);
+
             }
-            settings.setKeepInfo(arrayListKeptInfo);
+            settings.setKeepInfo(settings.getKeepInfo());
         }
         if (this.cmd.hasOption("minQ")) {
             Double minQValue = Double.parseDouble(this.cmd.getOptionValue("minQ"));
             settings.setMinQ(minQValue);
         }
+
         if (this.cmd.hasOption("minMeanDP")) {
             Double minMeanDP = Double.parseDouble(this.cmd.getOptionValue("minMeanDP"));
-            settings.setMinMeanDP(minMeanDP);
-        }
-        if (this.cmd.hasOption("minMeanDP")) {
-            Double minMeanDP = Double.parseDouble(this.cmd.getOptionValue("minMeanDP"));
-            settings.setMinMeanDP(minMeanDP);
+            settings.setMinMeanDp(minMeanDP);
         }
         if (this.cmd.hasOption("maxMeanDP")) {
             Double maxMeanDP = Double.parseDouble(this.cmd.getOptionValue("maxMeanDP"));
-            settings.setMaxMeanDP(maxMeanDP);
+            settings.setMaxMeanDp(maxMeanDP);
+
         }
         if (this.cmd.hasOption("maf")) {
             Double maf = Double.parseDouble(this.cmd.getOptionValue("maf"));
@@ -535,11 +526,11 @@ public class Cli {
             String keepIndv = this.cmd.getOptionValue("keepIndv");
             String[] splitedKeptIndv = this.cmd.getOptionValues("keepIndv");
 
-            ArrayList<String> arrayListKeepIndv = new ArrayList<String>();
             for (String keepIndvItem : splitedKeptIndv) {
-                arrayListKeepIndv.add(keepIndvItem);
+                settings.addKeepIndv(keepIndvItem);
+
             }
-            settings.setKeepIndv(arrayListKeepIndv);
+
         }
         if (this.cmd.hasOption("keepIndvFile")) {
             settings.setKeepIndvFile(this.cmd.getOptionValue("keepIndvFile"));
@@ -548,11 +539,10 @@ public class Cli {
             String removeIndv = this.cmd.getOptionValue("removeIndv");
             String[] splitedRemovedIndv = removeIndv.split(",");
 
-            ArrayList<String> arrayListRemovedIndv = new ArrayList<String>();
             for (String removedIndvItem : splitedRemovedIndv) {
-                arrayListRemovedIndv.add(removedIndvItem);
+                settings.addRemoveIndv(removedIndvItem);
             }
-            settings.setRemoveIndv(arrayListRemovedIndv);
+
         }
         if (this.cmd.hasOption("removeIndvFile")) {
             settings.setRemoveIndvFile(this.cmd.getOptionValue("removeIndvFile"));
@@ -584,9 +574,7 @@ public class Cli {
         }
         if (this.cmd.hasOption("depth")) {
             settings.setDepth(true);
-        } 
-        
-        
+        }
 
     }
 
