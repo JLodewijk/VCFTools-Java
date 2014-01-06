@@ -10,23 +10,18 @@ import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
  *
- * @author mhroelfes <marcoroelfes@gmail.com>
+ * @author mhroelfes <macoroelfes@gmail.com>
  */
-public class KeepInfo extends AbstractSimpleFilter {
+public class RemoveInfo extends AbstractSimpleFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         for (String i : settings.getKeepInfo()) {
-            if (vcfLine.getAttributeAsString(i) == null){
+            if (vcfLine.getAttributeAsString(i) != null) {
                 return false;
             }
         }
         return true;
-    
-
-
     }
 
-
-    
 }
