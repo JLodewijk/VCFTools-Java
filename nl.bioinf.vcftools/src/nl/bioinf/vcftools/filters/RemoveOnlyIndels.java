@@ -17,7 +17,7 @@ public class RemoveOnlyIndels extends AbstractSimpleFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-	return vcfLine.getIndel() == settings.isRemoveIndels();
+	return vcfLine.getIndel();
     }
     
 }
