@@ -17,7 +17,7 @@ public class ExcludePositions extends AbstractSimpleFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        return ! settings.containsExcludePositions(vcfLine.getChr(), vcfLine.getPosition());
+        return !settings.containsExcludePositions(vcfLine.getChr(), vcfLine.getPosition());
     }
     
 }
