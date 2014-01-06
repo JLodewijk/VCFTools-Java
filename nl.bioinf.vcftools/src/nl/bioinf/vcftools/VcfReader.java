@@ -5,21 +5,12 @@
  */
 package nl.bioinf.vcftools;
 
-import nl.bioinf.vcftools.handlers.Vcf;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.bioinf.vcftools.filters.FilterHandler;
-import nl.bioinf.vcftools.Settings;
-import nl.bioinf.vcftools.SiteFilters;
 import nl.bioinf.vcftools.handlers.Vcf;
 import nl.bioinf.vcftools.handlers.VcfLine;
-import org.broadinstitute.variant.variantcontext.Allele;
-import org.broadinstitute.variant.variantcontext.Genotype;
-import org.broadinstitute.variant.variantcontext.GenotypesContext;
-import org.broadinstitute.variant.variantcontext.VariantContext;
 
 /**
  *
