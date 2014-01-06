@@ -20,7 +20,7 @@ public class IncludePositions extends AbstractSimpleFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-            return settings.containsPostitions(vcfLine.getChr(), vcfLine.getPosition());
+            return settings.containsPositions(vcfLine.getChr(), vcfLine.getPosition());
     }
 
     
