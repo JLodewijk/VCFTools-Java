@@ -13,7 +13,7 @@ import nl.bioinf.vcftools.handlers.VcfLine;
  *
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  */
-public class RemoveIndels extends AbstractSimpleFilter {
+public class KeepOnlyIndels extends AbstractSimpleFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
