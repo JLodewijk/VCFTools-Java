@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package nl.bioinf.vcftools.filters;
 
 import nl.bioinf.vcftools.Settings;
@@ -12,11 +13,11 @@ import nl.bioinf.vcftools.handlers.VcfLine;
  *
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  */
-public class ToBp extends AbstractSimpleFilter {
+public class RemoveFiltered extends AbstractSimpleFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-	return vcfLine.getPosition() < settings.getToBp();
+	return vcfLine
     }
-
+    
 }
