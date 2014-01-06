@@ -3,58 +3,67 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.bioinf.vcftools;
+package nl.bioinf.vcftools.filters;
 
+import java.util.ArrayList;
+import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filters.FilterFactory;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
  *
- * @author aponnudurai
+ * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class FilterHandler {
 
     private VcfLine vcfLine;
     private Settings settings;
+    private ArrayList<AbstractSimpleFilter> simpleFilters;
 
     public FilterHandler(Settings settings, VcfLine vcfLine) {
         this.vcfLine = vcfLine;
         this.settings = settings;
+        FilterFactory filterFactory = new FilterFactory(this.settings);
+        this.simpleFilters = filterFactory.getSimpleFilters();
 
     }
 
     public boolean performFilters() {
         // perform filters
-        boolean filterAway = false;
-        SiteFilters sf = new SiteFilters();
-
-        if (settings.getChr() != null) {
-
-            if (sf.InExChromosome(vcfLine.getChr(), settings.getChr()) == true) {
-                filterAway = false;
-            } else {
-                filterAway = true;
-            }
-
-        }
-
-        if (settings.getNotChr() != null) {
-
-            if (sf.InExChromosome(vcfLine.getChr(), settings.getNotChr()) == true) {
-                filterAway = true;
-            } else {
-                filterAway = false;
-            }
-
-        }
-        if (settings.getFromBp() != null && settings.getToBp() != null) {
-
-            if (sf.Bp(vcfLine.getPosition(), settings.getToBp(), settings.getFromBp()) == false) {
-                
-                filterAway = true;
-            } else {
-                filterAway = false;
-            }
-        }
+        
+        
+        
+//        boolean filterAway = false;
+//        SiteFilters sf = new SiteFilters();
+//
+//        if (settings.getChr() != null) {
+//
+//            if (sf.InExChromosome(vcfLine.getChr(), settings.getChr()) == true) {
+//                filterAway = false;
+//            } else {
+//                filterAway = true;
+//            }
+//
+//        }
+//
+//        if (settings.getNotChr() != null) {
+//
+//            if (sf.InExChromosome(vcfLine.getChr(), settings.getNotChr()) == true) {
+//                filterAway = true;
+//            } else {
+//                filterAway = false;
+//            }
+//
+//        }
+//        if (settings.getFromBp() != null && settings.getToBp() != null) {
+//
+//            if (sf.Bp(vcfLine.getPosition(), settings.getToBp(), settings.getFromBp()) == false) {
+//                
+//                filterAway = true;
+//            } else {
+//                filterAway = false;
+//            }
+//        }
 
 //        if (settings.getMinQ() != null) {
 //            sf.MinimalQuality(null, settings.getMinQ());
@@ -118,7 +127,7 @@ public class FilterHandler {
 //        } else if (settings.getMaxMissingCound() == null) {
 //            sf.MissingCount(null, settings.getMaxMissingCound());
 //        }
-        return filterAway;
+        return false;
     }
 
 }
