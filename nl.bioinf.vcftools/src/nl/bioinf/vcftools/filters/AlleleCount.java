@@ -21,20 +21,20 @@ public class AlleleCount extends AbstractSimpleFilter {
     public boolean filter(VcfLine vcfLine, Settings settings) {
         Object valObj = vcfLine.getAttributeAsDouble("AC");
         //System.out.println(valObj.getClass().getName());
-        boolean keep = true;
         if (valObj instanceof String) {
             //handle single value
             int val = Integer.parseInt((String) valObj);
             //if val is between threshold approve line, else reject line
             if (val < settings.getMaxAlleles() && val > settings.getMinAlleles()) {
-                keep = true;
+                return true;
                 
             } else {
-                keep = false;
+                return false;
                
             }
             //System.out.println("val="+val);
         } else {
+            boolean keep = true;
             //ArrayList value
             ArrayList<String> values = (ArrayList<String>) valObj;
             List<Integer> valuesInteger = new ArrayList<Integer>();
@@ -45,19 +45,20 @@ public class AlleleCount extends AbstractSimpleFilter {
             //for every double in ArrayList check if between threshold
             for (double dValue : valuesInteger) {
                 if (dValue < settings.getMaxAlleles() && dValue > settings.getMinAlleles()) {
-                    keep = true;
+                    keep =  true;
                 } else {
-                    keep = false;
+                    keep=  false;
                     break;
 
                 }
+              
             }
-
+            return keep;  
             //return if line has to be kept or not
            
 
         }
-        return keep;
+        
     }
     
 }
