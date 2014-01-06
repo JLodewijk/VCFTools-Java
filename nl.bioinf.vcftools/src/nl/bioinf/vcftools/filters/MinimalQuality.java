@@ -11,7 +11,7 @@ import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
  *
- * 
+ * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class MinimalQuality extends AbstractSimpleFilter{
