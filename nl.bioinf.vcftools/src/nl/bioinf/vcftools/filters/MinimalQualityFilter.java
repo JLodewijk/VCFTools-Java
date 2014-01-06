@@ -11,18 +11,14 @@ import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
  *
+ * 
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class MinimalQualityFilter extends AbstractSimpleFilter{
 
     @Override
-    public boolean Filter(VcfLine vcfLine, Settings settings) {
+    public boolean filter(VcfLine vcfLine, Settings settings) {
         return vcfLine.getPhredScaledQual() >= settings.getMinQ();
-    }
-
-    @Override
-    public String toString() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

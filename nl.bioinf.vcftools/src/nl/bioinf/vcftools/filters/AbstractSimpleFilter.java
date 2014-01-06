@@ -15,4 +15,6 @@ import nl.bioinf.vcftools.filters.AbstractFilter;
  */
 public abstract class AbstractSimpleFilter extends AbstractFilter{
     
+
+    
 }

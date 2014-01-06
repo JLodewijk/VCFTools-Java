@@ -20,8 +20,8 @@ public abstract class AbstractContextDependentFilter extends AbstractFilter{
      * 
      * @param vcfLine
      * @param settings
-     * @param FilterDependancies
+     * @param FilterDependencies
      * @return
      */
-    public abstract boolean Filter(VcfLine vcfLine, Settings settings, Object filterDependancies);
+    public abstract boolean filter(VcfLine vcfLine, Settings settings, Object filterDependencies);
 }

@@ -22,7 +22,9 @@ public abstract class AbstractFilter {
      * @param settings
      * @return
      */
-    public abstract boolean Filter(VcfLine vcfLine, Settings settings);
-    @Override
-    public abstract String toString();
+    public abstract boolean filter(VcfLine vcfLine, Settings settings);
+        
+    public String toString() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
