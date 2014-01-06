@@ -26,7 +26,7 @@ public class FilterFactory {
         this.simpleFilters = new ArrayList<>();
         if (this.settings.getMinQ() != null) { this.simpleFilters.add(new MinimalQuality()); }
         if (this.settings.getKeepInfo() != null) { this.simpleFilters.add(new KeepInfo()); }
-        if (this.settings.isKeepIndels() != true) { this.simpleFilters.add(new KeepOnlyIndels()); }
+        if (this.settings.isKeepIndels() != true) { this.simpleFilters.add(new KeepIndels()); }
     }
 
     public ArrayList<AbstractSimpleFilter> getSimpleFilters() {
