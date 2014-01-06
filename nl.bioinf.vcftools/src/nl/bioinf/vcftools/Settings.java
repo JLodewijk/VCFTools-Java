@@ -395,6 +395,17 @@ public class Settings {
         this.positions.put(key, value);
     }
     
+    /**
+     * Returns if chromosome contains position
+     * @param chr
+     * @param position
+     * @return 
+     */
+    public boolean containsPositions(String chr, int position) {
+        ArrayList chrPos = (ArrayList) this.positions.get(chr);
+        return chrPos.contains(position);
+    }
+    
     public String getPositionsFile() {
         return positionsFile;
     }
@@ -413,6 +424,17 @@ public class Settings {
 
     public void addExcludePositions(String key, Integer value) {
         this.excludePositions.put(key, value);
+    }    
+
+    /**
+     * Returns if chromosome contains position
+     * @param chr
+     * @param position
+     * @return 
+     */
+    public boolean containsExcludePositions(String chr, int position) {
+        ArrayList chrPos = (ArrayList) this.excludePositions.get(chr);
+        return chrPos.contains(position);
     }    
     
     public String getExcludePositionsFile() {
