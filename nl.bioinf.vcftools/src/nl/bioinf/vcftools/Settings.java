@@ -7,6 +7,7 @@ package nl.bioinf.vcftools;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.collections4.MultiMap;
@@ -31,10 +32,9 @@ public class Settings {
     private Boolean gzipped;
 
     /* Site Filters */
-    private ArrayList<String> chr;
-    private ArrayList<String> notChr;
-    private Integer fromBp;
-    private Integer toBp;
+    private MultiMap chr;
+    private MultiMap notChr;
+
     private ArrayList<String> snp;
     private String snpFile;
     private ArrayList<String> excludeSnp;
@@ -43,8 +43,7 @@ public class Settings {
     private String positionsFile;
     private MultiMap excludePositions;
     private String excludePositionsFile;
-    private Boolean keepOnlyIndels;
-    private Boolean removeIndels;
+    private Boolean keepIndels;
     private String bedFile;
     private String exludeBedFile;
     //private Bed bed;
@@ -98,8 +97,8 @@ public class Settings {
         this.configFile = "defaultConfig.xml";
         
         // Build empty datasets for variables that assume an instance in their add functions
-        this.chr = new ArrayList<>();
-        this.notChr = new ArrayList<>();
+        this.chr = new MultiValueMap();
+        this.notChr = new MultiValueMap();
         this.snp = new ArrayList<>();
         this.excludeSnp = new ArrayList<>();
         this.positions = new MultiValueMap();
@@ -131,16 +130,14 @@ public class Settings {
             XMLConfiguration configRead = new XMLConfiguration(filename);   
             
             /* Site Filters */
-            this.chr = Misc.objListToStrArrayList(configRead.getList("siteFilters.chr"));
-            this.notChr = Misc.objListToStrArrayList(configRead.getList("siteFilters.notChr"));
-            this.fromBp = configRead.getInt("siteFilters.fromBp");
-            this.toBp = configRead.getInt("siteFilters.toBp");
+//            this.chr = Misc.objListToStrArrayList(configRead.getList("siteFilters.chr"));
+//            this.notChr = Misc.objListToStrArrayList(configRead.getList("siteFilters.notChr"));
             this.snp = Misc.objListToStrArrayList(configRead.getList("siteFilters.snp"));
             this.excludeSnp = Misc.objListToStrArrayList(configRead.getList("siteFilters.excludeSnp"));
             // this.positions = Misc.objListToIntegerArrayList(configRead.getList("siteFilters.positions")); // fix for multimap needed
             // this.excludePositions = Misc.objListToIntegerArrayList(configRead.getList("siteFilters.excludePositions"));  // multimap fix
-            this.keepOnlyIndels = configRead.getBoolean("siteFilters.keepOnlyIndels");
-            this.removeIndels = configRead.getBoolean("siteFilters.removeIndels");
+//            this.keepOnlyIndels = configRead.getBoolean("siteFilters.keepOnlyIndels");
+//            this.removeIndels = configRead.getBoolean("siteFilters.removeIndels");
             // todo: load bed data
             this.removeFilteredAll = configRead.getBoolean("siteFilters.removeFilteredAll");
             this.removeFiltered = Misc.objListToStrArrayList(configRead.getList("siteFilters.removeFiltered"));
@@ -215,16 +212,16 @@ public class Settings {
             configCreate.setAutoSave(false);
             
             /* Site Filters */
-            configCreate.addProperty("siteFilters.chr", this.chr);
-            configCreate.addProperty("siteFilters.notChr", this.notChr);
-            configCreate.addProperty("siteFilters.fromBp", this.fromBp);
-            configCreate.addProperty("siteFilters.toBp", this.toBp);
+//            configCreate.addProperty("siteFilters.chr", this.chr);
+//            configCreate.addProperty("siteFilters.notChr", this.notChr);
+//            configCreate.addProperty("siteFilters.fromBp", this.fromBp);
+//            configCreate.addProperty("siteFilters.toBp", this.toBp);
             configCreate.addProperty("siteFilters.snp", this.snp);
             configCreate.addProperty("siteFilters.excludeSnp", this.excludeSnp);
             configCreate.addProperty("siteFilters.positions", this.positions);
             configCreate.addProperty("siteFilters.excludePositions", this.excludePositions);
-            configCreate.addProperty("siteFilters.keepOnlyIndels", this.keepOnlyIndels);
-            configCreate.addProperty("siteFilters.removeIndels", this.removeIndels);
+//            configCreate.addProperty("siteFilters.keepOnlyIndels", this.keepOnlyIndels);
+//            configCreate.addProperty("siteFilters.removeIndels", this.removeIndels);
             // todo: store bed data
             configCreate.addProperty("siteFilters.removeFilteredAll", this.removeFilteredAll);
             configCreate.addProperty("siteFilters.removeFiltered", this.removeFiltered);
@@ -306,53 +303,37 @@ public class Settings {
         this.gzipped = gzipped;
     }
 
-    public ArrayList<String> getChr() {
+    public MultiMap getChr() {
         return chr;
     }
 
-    public void setChr(ArrayList<String> chr) {
+    public void setChr(MultiMap chr) {
         this.chr = chr;
     }
 
-    public void addChr(ArrayList<String> chr) {
-        this.chr.addAll(chr);
-    }   
-    
     public void addChr(String chr) {
-        this.chr.add(chr);
-    }
+        this.chr.put(chr, null);
+    }    
+
+    public void addChr(String chr, int fromBp, int toBp) {
+        this.chr.put(chr, Arrays.asList(fromBp, toBp));
+    } 
     
-    public ArrayList<String> getNotChr() {
+    public MultiMap getNotChr() {
         return notChr;
     }
 
-    public void setNotChr(ArrayList<String> notChr) {
+    public void setNotChr(MultiMap notChr) {
         this.notChr = notChr;
     }
 
-    public void addNotChr(ArrayList<String> notChr) {
-        this.notChr.addAll(notChr);
+    public void addNotChr(String chr) {
+        this.notChr.put(chr, null);
     }    
-    
-    public void addNotChr(String notChr) {
-        this.notChr.add(notChr);
-    }
-    
-    public Integer getFromBp() {
-        return fromBp;
-    }
 
-    public void setFromBp(Integer fromBp) {
-        this.fromBp = fromBp;
-    }
-
-    public Integer getToBp() {
-        return toBp;
-    }
-
-    public void setToBp(Integer toBp) {
-        this.toBp = toBp;
-    }
+    public void addNotChr(String chr, int fromBp, int toBp) {
+        this.notChr.put(chr, Arrays.asList(fromBp, toBp));
+    } 
 
     public ArrayList<String> getSnp() {
         return snp;
@@ -442,20 +423,12 @@ public class Settings {
         this.excludePositionsFile = excludePositionsFile;
     }
 
-    public Boolean isKeepOnlyIndels() {
-        return keepOnlyIndels;
+    public Boolean isKeepIndels() {
+        return keepIndels;
     }
 
-    public void setKeepOnlyIndels(Boolean keepOnlyIndels) {
-        this.keepOnlyIndels = keepOnlyIndels;
-    }
-
-    public Boolean isRemoveIndels() {
-        return removeIndels;
-    }
-
-    public void setRemoveIndels(Boolean removeIndels) {
-        this.removeIndels = removeIndels;
+    public void setKeepIndels(Boolean keepIndels) {
+        this.keepIndels = keepIndels;
     }
 
     public String getBedFile() {
