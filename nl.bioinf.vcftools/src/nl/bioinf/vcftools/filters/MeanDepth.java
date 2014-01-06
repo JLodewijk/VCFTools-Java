@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package nl.bioinf.vcftools.filters;
 
 import nl.bioinf.vcftools.Settings;
@@ -12,21 +13,12 @@ import nl.bioinf.vcftools.handlers.VcfLine;
  *
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
-public class KeepInfo extends AbstractSimpleFilter {
+public class MeanDepth extends AbstractSimpleFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        for (String i : settings.getKeepInfo()) {
-            if (vcfLine.getAttributeAsString(i) == null){
-                return false;
-            }
-        }
-        return true;
-    
-
-
+        return vcfLine.getDp()/vcfLine.getGenotypeNumber()> settings.getMinMeanDp() && vcfLine.getDp()/vcfLine.getGenotypeNumber() < settings.getMaxMeanDp();
+     
     }
-
-
     
 }
