@@ -14,7 +14,7 @@ import nl.bioinf.vcftools.handlers.VcfLine;
  * 
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
-public class MinimalQualityFilter extends AbstractSimpleFilter{
+public class MinimalQuality extends AbstractSimpleFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
