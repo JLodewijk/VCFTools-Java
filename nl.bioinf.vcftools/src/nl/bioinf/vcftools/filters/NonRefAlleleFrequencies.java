@@ -15,47 +15,51 @@ import nl.bioinf.vcftools.handlers.VcfLine;
  *
  * @author mhroelfes
  */
-public class AlleleFrequencies extends AbstractSimpleFilter{
+public class NonRefAlleleFrequencies extends AbstractSimpleFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-            Object valObj = vcfLine.getAttributeAsDouble("AF");
-            //System.out.println(valObj.getClass().getName());
-            
+        
+            Object valObj = vcfLine.getAttributeAsDouble("MLEAF");
+            boolean reject = false;
+            //If MLEAF contains only one value then perform this segment. 
             if (valObj instanceof String) {
-                //handle single value
+                //Handles a single val
                 Double val = Double.valueOf((String) valObj);
-                //if val is between threshold approve line, else reject line
-                if (val < settings.getMaxMaf() && val > settings.getMaf()) {
-                    return true;
+                //if val is between threshold (minRefAlleleFreq and maxRefAlleleFreq) approve line, else reject line.
+                if (val < settings.getMaxNonRefAf()&& val > settings.getNonRefAf()) {
+                   return true;
                 } else {
                     return false;
                 }
-                //System.out.println("val="+val);
-            } else {
+            } //Sometimes a MLEAF contains multipule MLEAF values instead of one
+            else {
                 boolean keep = true;
-                //ArrayList value
+//ArrayList value.
+                
                 ArrayList<String> values = (ArrayList<String>) valObj;
                 List<Double> valuesDoubles = new ArrayList<Double>();
-                //set String ArrayList to Double ArrayList            
+                //set String ArrayList to Double ArrayList.      
                 for (String str : values) {
                     valuesDoubles.add(str != null ? Double.parseDouble(str) : null);
                 }
-                //for every double in ArrayList check if between threshold
+                //for every double in ArrayList check if between threshold. If it falls between the thresholds then reject = false
                 for (double dValue : valuesDoubles) {
-                    if (dValue < settings.getMaxMaf() && dValue > settings.getMaf()) {
+                    if (dValue < settings.getMaxNonRefAf() && dValue > settings.getNonRefAf()) {
                         keep = true;
                     } else {
+                        //Does not fall between the thresholds, so break out of loop. Since the SNP is rejected anyway
                         keep = false;
                         break;
 
                     }
                 }
-                
-                return keep;
 
-              
+                //check if to reject or approve SNP
+                return keep;
             }
+        
+        
     }
     
 }
