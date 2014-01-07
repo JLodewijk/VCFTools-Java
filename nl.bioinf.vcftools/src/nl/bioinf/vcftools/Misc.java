@@ -19,6 +19,7 @@ public class Misc {
     /**
      * Makes a list of strings from a list of objects.
      * 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      * @param objectList
      * @return list of strings
      */
@@ -29,7 +30,14 @@ public class Misc {
         }
         return stringList;
     }
-    
+
+     /**
+     * Makes a list of integers from a list of objects.
+     * 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
+     * @param objectList
+     * @return list of strings
+     */
     public static ArrayList<Integer> objListToIntegerArrayList(List<Object> objectList) {
         ArrayList<Integer> stringList = new ArrayList<>();
         for (Object object : objectList) {

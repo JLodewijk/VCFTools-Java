@@ -18,7 +18,7 @@ public class MinimalQuality extends AbstractSimpleFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        return vcfLine.getPhredScaledQual() >= settings.getMinQ();
+        return vcfLine.getQual() >= settings.getMinQ();
     }
     
 }

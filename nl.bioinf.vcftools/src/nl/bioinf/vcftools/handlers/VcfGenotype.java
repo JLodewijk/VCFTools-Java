@@ -20,7 +20,9 @@ public class VcfGenotype {
 
     /**
      * Constructor using GATK Genotype.
+     * 
      * @param genotype 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public VcfGenotype(Genotype genotype) {
         this.gt = genotype;
@@ -28,7 +30,9 @@ public class VcfGenotype {
     
     /**
      * Get the alleles.
+     * 
      * @return Alleles 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public List<String> getAlleles() {
         // convert list of objects to list of strings
@@ -43,7 +47,9 @@ public class VcfGenotype {
     
     /**
      * Get allele depth field.
+     * 
      * @return allele depth
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int[] getAd() {
         return this.gt.getAD();
@@ -51,7 +57,9 @@ public class VcfGenotype {
     
     /**
      * Get depth field.
+     * 
      * @return depth
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int getDp () {
         return this.gt.getDP();
@@ -59,7 +67,9 @@ public class VcfGenotype {
     
     /**
      * Get quality field.
+     * 
      * @return quality
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int getGq () {
         return this.gt.getGQ();
@@ -67,7 +77,9 @@ public class VcfGenotype {
     
     /**
      * Get pl field.
+     * 
      * @return pl
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int[] getPl() {
         return this.gt.getPL();
@@ -75,7 +87,9 @@ public class VcfGenotype {
     
     /**
      * Get ploidy.
+     * 
      * @return ploidy number
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int getPloidy() {
         return this.gt.getPloidy();
@@ -83,7 +97,9 @@ public class VcfGenotype {
     
     /**
      * Check if phased.
+     * 
      * @return true when phased, false when not.
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public boolean isPhased() {
         return this.gt.isPhased();
