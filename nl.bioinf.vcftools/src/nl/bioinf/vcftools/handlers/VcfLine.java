@@ -150,7 +150,17 @@ public class VcfLine {
     public Set<String> getSpecificFilter() {
 	return vc.getFilters();
     }
-
+    
+     /**
+     * Get the amount of allels.
+     *
+     * @return int
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
+    public int getNAllels(){
+     return vc.getNAlleles();
+    }
+    
     /**
      * Get an attribute as boolean of the SNP of the line.
      * 
