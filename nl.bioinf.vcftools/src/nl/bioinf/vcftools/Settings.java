@@ -46,8 +46,8 @@ public class Settings {
     private Boolean keepIndels;
     private String bedFile;
     private String exludeBedFile;
-    //private Bed bed;
-    //private Bed exludeBed;
+    private MultiMap bed;
+    private MultiMap exludeBed;
     private Boolean removeFilteredAll;
     private ArrayList<String> removeFiltered;
     private ArrayList<String> keepFiltered;
@@ -103,6 +103,8 @@ public class Settings {
         this.excludeSnp = new ArrayList<>();
         this.positions = new MultiValueMap();
         this.excludePositions = new MultiValueMap();
+        this.bed = new MultiValueMap();
+        this.exludeBed = new MultiValueMap();
         this.removeFiltered = new ArrayList<>();
         this.keepFiltered = new ArrayList<>();
         this.removeInfo = new ArrayList<>();
