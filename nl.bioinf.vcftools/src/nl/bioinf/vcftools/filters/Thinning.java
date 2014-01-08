@@ -12,7 +12,7 @@ import nl.bioinf.vcftools.handlers.VcfLine;
  * This class filters a vcf line based on position of the SNP, if a SNP is too close to another it returns false and the line is rejected.
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
-public class FilterOnThinning extends AbstractSimpleFilter {
+public class Thinning extends AbstractSimpleFilter {
 
     int positionPreviousSnp;
 
