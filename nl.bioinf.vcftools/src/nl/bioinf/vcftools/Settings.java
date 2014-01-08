@@ -624,6 +624,40 @@ public class Settings {
     }
 
     /**
+     * Get the bed data as multimap
+     * @return 
+     */
+    public MultiMap getBed() {
+        return bed;
+    }
+
+    /**
+     * Set the bed data as multimap
+     * @param bed 
+     */
+    public void setBed(MultiMap bed) {
+        this.bed = bed;
+    }  
+    
+    /**
+     * Get the exclude bed data as multimap
+     * @return 
+     */
+    public MultiMap getExludeBed() {
+        return exludeBed;
+    }
+    
+    /**
+     * Set the exclude bed data as multimap
+     * @param exludeBed 
+     */
+    public void setExludeBed(MultiMap exludeBed) {
+        this.exludeBed = exludeBed;
+    }
+    
+    
+    
+    /**
      *
      * @return
      */
