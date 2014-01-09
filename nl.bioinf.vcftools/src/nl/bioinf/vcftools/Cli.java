@@ -388,7 +388,7 @@ public class Cli {
         }
         if (this.cmd.hasOption("bed")) {
 //      Bed bed = new Bed();
-//      settings.setBed(this.cmd.getOptionValue("bed"));
+      settings.setBedFile(this.cmd.getOptionValue("bed"));
         }
         if (this.cmd.hasOption("exludeBed")) {
 //      Bed bed = new Bed()
@@ -505,10 +505,10 @@ public class Cli {
             settings.setThin(thin);
         }
         if (this.cmd.hasOption("mask")) {
-            settings.setMask(this.cmd.getOptionValue("mask"));
+            settings.setMaskFile(this.cmd.getOptionValue("mask"));
         }
         if (this.cmd.hasOption("invertMask")) {
-            settings.setInvertMask(this.cmd.getOptionValue("invertMask"));
+            settings.setInvertMaskFile(this.cmd.getOptionValue("invertMask"));
         }
         if (this.cmd.hasOption("maskMin")) {
             int maskMin = Integer.parseInt(this.cmd.getOptionValue("maskMin"));

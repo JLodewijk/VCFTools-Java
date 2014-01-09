@@ -45,8 +45,8 @@ public class SeparatedValueReader {
             FileReader fr = new FileReader(this.filePath);
             BufferedReader br = new BufferedReader(fr);
 
-            String line = br.readLine();
-            while (line != null) {
+            String line = null;
+            while((line = br.readLine()) != null){
                 if (!(line.startsWith("#"))) { fileLines.append(line).append("\\n"); }
                 line = br.readLine();
             }

@@ -36,9 +36,10 @@ public class BedLine {
         int startPosition = Integer.parseInt(splitedBedLine[1]);
         int stopPosition = Integer.parseInt(splitedBedLine[2]);
         
-        setChrName(splitedBedLine[0]);
-        setStartPos(startPosition);
-        setStopPos(stopPosition);
+        this.chrName = splitedBedLine[0];
+        this.startPos = startPosition;
+        this.stopPos = stopPosition;
+       
 
     }
 
