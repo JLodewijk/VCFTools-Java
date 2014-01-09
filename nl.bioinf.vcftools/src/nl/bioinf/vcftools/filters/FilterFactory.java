@@ -6,6 +6,24 @@
 
 package nl.bioinf.vcftools.filters;
 
+import nl.bioinf.vcftools.filters.site.KeepInfo;
+import nl.bioinf.vcftools.filters.site.MinimalQuality;
+import nl.bioinf.vcftools.filters.site.RemoveInfo;
+import nl.bioinf.vcftools.filters.site.AlleleCount;
+import nl.bioinf.vcftools.filters.site.MeanDepth;
+import nl.bioinf.vcftools.filters.site.RemoveSpecificFilter;
+import nl.bioinf.vcftools.filters.site.AlleleFrequencies;
+import nl.bioinf.vcftools.filters.site.KeepSpecificFilter;
+import nl.bioinf.vcftools.filters.site.KeepIndels;
+import nl.bioinf.vcftools.filters.site.RemoveIndels;
+import nl.bioinf.vcftools.filters.site.ExcludeChromosome;
+import nl.bioinf.vcftools.filters.site.Thinning;
+import nl.bioinf.vcftools.filters.site.IncludePositions;
+import nl.bioinf.vcftools.filters.site.IncludeChromosome;
+import nl.bioinf.vcftools.filters.site.IncludeSnp;
+import nl.bioinf.vcftools.filters.site.MissingCount;
+import nl.bioinf.vcftools.filters.site.RemoveFiltered;
+import nl.bioinf.vcftools.filters.site.NonRefAlleleFrequencies;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;

@@ -4,20 +4,22 @@
  * and open the template in the editor.
  */
 
-package nl.bioinf.vcftools.filters;
+package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
- *
- * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+ *This class can include a specific snp on their ID, returns false if line has to be removed.
+ * @author mhroelfes <marcoroelfes@gmail.com>
  */
-public class KeepIndels extends AbstractSimpleFilter {
+public class IncludeSnp extends AbstractSimpleFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-	return vcfLine.getIndel();
+          return settings.getSnp().contains(vcfLine.getId());
+          
     }
     
 }

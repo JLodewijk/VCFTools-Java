@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.bioinf.vcftools.filters;
+package nl.bioinf.vcftools.filters.site;
 
 import java.util.ArrayList;
 import java.util.List;
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**

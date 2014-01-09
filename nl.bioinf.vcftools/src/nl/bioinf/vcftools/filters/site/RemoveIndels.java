@@ -4,24 +4,21 @@
  * and open the template in the editor.
  */
 
-package nl.bioinf.vcftools.filters;
+package nl.bioinf.vcftools.filters.site;
 
-import java.util.ArrayList;
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
 import nl.bioinf.vcftools.handlers.VcfLine;
-import org.apache.commons.collections4.MultiMap;
-import org.apache.commons.collections4.map.MultiValueMap;
 
 /**
  *
- * @author mhroelfes <marcoroelfes@gmail.com>
+ * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  */
-public class IncludePositions extends AbstractSimpleFilter{
+public class RemoveIndels extends AbstractSimpleFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-            return settings.containsPositions(vcfLine.getChr(), vcfLine.getPosition());
+	return vcfLine.getIndel();
     }
-
     
 }

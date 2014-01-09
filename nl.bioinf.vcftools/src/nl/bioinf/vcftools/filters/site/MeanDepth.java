@@ -4,22 +4,22 @@
  * and open the template in the editor.
  */
 
-package nl.bioinf.vcftools.filters;
+package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
  *
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
-public class MissingCount extends AbstractSimpleFilter{
+public class MeanDepth extends AbstractSimpleFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        return vcfLine.getAttributeAsDouble("Dels") < settings.getMaxMissingCount();
+        return vcfLine.getDp()/vcfLine.getGenotypeNumber()> settings.getMinMeanDp() && vcfLine.getDp()/vcfLine.getGenotypeNumber() < settings.getMaxMeanDp();
+     
     }
     
-
-  
 }

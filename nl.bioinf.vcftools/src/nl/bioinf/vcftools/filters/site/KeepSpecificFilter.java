@@ -3,30 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.bioinf.vcftools.filters;
+package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
  *
- * @author mhroelfes <marcoroelfes@gmail.com>
+ * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  */
-public class KeepInfo extends AbstractSimpleFilter {
+public class KeepSpecificFilter extends AbstractSimpleFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        for (String i : settings.getKeepInfo()) {
-            if (vcfLine.getAttributeAsString(i) == null){
-                return false;
-            }
+        for (String filterSatus : vcfLine.getSpecificFilter()) {
+            return settings.getKeepFiltered().contains(filterSatus);
         }
-        return true;
-    
-
-
+        return false;
     }
 
-
-    
 }

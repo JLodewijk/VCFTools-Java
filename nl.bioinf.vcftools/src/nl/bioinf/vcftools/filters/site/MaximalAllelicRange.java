@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 
-package nl.bioinf.vcftools.filters;
+package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**

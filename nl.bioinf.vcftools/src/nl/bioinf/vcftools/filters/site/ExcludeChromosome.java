@@ -3,23 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.bioinf.vcftools.filters;
+
+package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
  *
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  */
-public class KeepSpecificFilter extends AbstractSimpleFilter {
+public class ExcludeChromosome extends AbstractSimpleFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        for (String filterSatus : vcfLine.getSpecificFilter()) {
-            return settings.getKeepFiltered().contains(filterSatus);
-        }
-        return false;
+	return settings.getNotChr().containsKey(vcfLine.getChr());
     }
-
+    
 }
