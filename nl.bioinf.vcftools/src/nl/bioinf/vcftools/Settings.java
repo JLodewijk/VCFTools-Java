@@ -70,8 +70,10 @@ public class Settings {
     private Integer minAlleles;
     private Integer maxAlleles;
     private Integer thin;
-    private String mask;
-    private String invertMask;
+    private String maskFile;
+    private MultiMap mask;
+    private String invertMaskFile;
+    private MultiMap invertMask;
     private Integer maskMin;
 
     /* Individual filters */
@@ -109,6 +111,8 @@ public class Settings {
         this.keepFiltered = new ArrayList<>();
         this.removeInfo = new ArrayList<>();
         this.keepInfo = new ArrayList<>();
+        this.mask = new MultiValueMap();
+        this.invertMask = new MultiValueMap();
         this.keepIndv = new ArrayList<>();
         this.removeIndv = new ArrayList<>();
     }
@@ -163,8 +167,8 @@ public class Settings {
             this.minAlleles = configRead.getInt("siteFilters.minAlleles");
             this.maxAlleles = configRead.getInt("siteFilters.maxAlleles");
             this.thin = configRead.getInt("siteFilters.thin");
-            this.mask = configRead.getString("siteFilters.mask");
-            this.invertMask = configRead.getString("siteFilters.invertMask");
+//            this.mask = configRead.getString("siteFilters.mask");
+//            this.invertMask = configRead.getString("siteFilters.invertMask");
             this.maskMin = configRead.getInt("siteFilters.maskMin");
     
             /* Individual filters */       
@@ -1109,7 +1113,23 @@ public class Settings {
      *
      * @return
      */
-    public String getMask() {
+    public String getMaskFile() {
+        return maskFile;
+    }
+
+    /**
+     *
+     * @param maskFile
+     */
+    public void setMaskFile(String maskFile) {
+        this.maskFile = maskFile;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public MultiMap getMask() {
         return mask;
     }
 
@@ -1117,15 +1137,40 @@ public class Settings {
      *
      * @param mask
      */
-    public void setMask(String mask) {
+    public void setMask(MultiMap mask) {
         this.mask = mask;
+    }
+
+    /**
+     *
+     * @param key
+     * @param value
+     */
+    public void addMask(String key, int value) {
+        this.mask.put(key, value);
     }
 
     /**
      *
      * @return
      */
-    public String getInvertMask() {
+    public String getInvertMaskFile() {
+        return invertMaskFile;
+    }
+
+    /**
+     *
+     * @param invertMaskFile
+     */
+    public void setInvertMaskFile(String invertMaskFile) {
+        this.invertMaskFile = invertMaskFile;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public MultiMap getInvertMask() {
         return invertMask;
     }
 
@@ -1133,10 +1178,19 @@ public class Settings {
      *
      * @param invertMask
      */
-    public void setInvertMask(String invertMask) {
+    public void setInvertMask(MultiMap invertMask) {
         this.invertMask = invertMask;
     }
 
+    /**
+     *
+     * @param key
+     * @param value
+     */
+    public void addInvertMask(String key, int value) {
+        this.invertMask.put(key, value);
+    }    
+    
     /**
      *
      * @return
