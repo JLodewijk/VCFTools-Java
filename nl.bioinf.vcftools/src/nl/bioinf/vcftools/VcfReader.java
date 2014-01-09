@@ -53,12 +53,12 @@ public class VcfReader {
         Vcf vcf = new Vcf(file);
         SiteFilters site = new SiteFilters();
         
-
+        FilterHandler filterHandler = new FilterHandler(this.settings);
         //while vcf file has next iteration get next iteration
         while (vcf.hasNextIter()) {
               VcfLine iteration = vcf.getNextIter();
-              FilterHandler filterHandler = new FilterHandler(this.settings, iteration);
-              if (filterHandler.performFilters() == true) {
+              
+              if (filterHandler.performFilters(iteration) == false) {
                 System.out.println("Removed:" + iteration.toString());
               }
               else {
