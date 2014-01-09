@@ -10,14 +10,14 @@ import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
- *
- * @author mhroelfes
+ * This class can exclude a specific snp on their ID, returns false if line has to be removed.
+ * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class ExcludeSnp extends AbstractSimpleFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        return settings.getExcludeSnp().contains(vcfLine.getId());
+        return !settings.getExcludeSnp().contains(vcfLine.getId());
     }
     
 }

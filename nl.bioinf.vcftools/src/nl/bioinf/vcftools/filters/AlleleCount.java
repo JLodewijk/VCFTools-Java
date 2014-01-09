@@ -12,11 +12,11 @@ import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
- *
- * @author mhroelfes
+ * this class filters a vcf line on allele count, returns true if line has to be kept, returns false if line is rejected
+ * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class AlleleCount extends AbstractSimpleFilter {
-
+    
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         Object valObj = vcfLine.getAttributeAsDouble("AC");

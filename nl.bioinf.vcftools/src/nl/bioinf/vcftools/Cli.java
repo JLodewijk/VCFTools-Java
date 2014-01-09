@@ -165,15 +165,7 @@ public class Cli {
             System.out.println("For the options: -keepFiltered and -removeFiltered"
                     + " the -keepFiltered option will be executed first.");
         }
-        if (cmd.hasOption("chr")) {
-            String pattern = "\\w";
-            Pattern patternCompiled = Pattern.compile(pattern);
-            Matcher m = patternCompiled.matcher(cmd.getOptionValue("chr"));
-            if (m.find()) {
-                System.err.println("To identify chromosome, only the identifying number is required." + "\nGiven is = " + cmd.getOptionValue("chr"));
-                System.exit(0);
-            }
-        }
+
         if (cmd.hasOption("minMeanDP") && !(cmd.hasOption("maxMeanDP")) || cmd.hasOption("maxMeanDP") && !(cmd.hasOption("minMeanDP"))) {
             System.err.println("It is obliged to use the options -minMeanDP and -maxMeanDP together");
             System.exit(0);

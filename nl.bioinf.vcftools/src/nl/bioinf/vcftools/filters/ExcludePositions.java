@@ -10,8 +10,8 @@ import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
- *
- * @author mhroelfes
+ * 
+ * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class ExcludePositions extends AbstractSimpleFilter{
 

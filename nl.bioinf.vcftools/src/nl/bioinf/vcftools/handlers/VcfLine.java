@@ -21,7 +21,9 @@ public class VcfLine {
 
     /**
      * Constructor using GATK VariantContext.
+     * 
      * @param vc 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     VcfLine(VariantContext vc) {
         this.vc = vc;
@@ -32,12 +34,11 @@ public class VcfLine {
         return "VcfLine{" + "vc=" + vc + '}';
     }
     
-    
-    
-    
     /**
      * Get the identifier of the SNP of the line.
+     * 
      * @return Identifier
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public String getId() {
         return vc.getID();
@@ -45,7 +46,9 @@ public class VcfLine {
     
     /**
      * Get the chromosome of the SNP of the line.
+     * 
      * @return Chromosome
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public String getChr() {
         return vc.getChr();
@@ -53,7 +56,9 @@ public class VcfLine {
     
     /**
      * Get the reference of the SNP of the line.
+     * 
      * @return Allele
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public String getReferenceAllele() {
         return vc.getReference().toString();
@@ -61,7 +66,9 @@ public class VcfLine {
     
     /**
      * Get the alt alleles of the SNP of the line.
+     * 
      * @return Alleles
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public List<String> getAltAlleles() {
         // convert list of objects to list of strings
@@ -76,7 +83,9 @@ public class VcfLine {
     
     /**
      * Get the position of the SNP of the line.
+     * 
      * @return Position
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int getPosition() {
         return this.vc.getStart();
@@ -84,7 +93,9 @@ public class VcfLine {
     
     /**
      * Get the Quality of the SNP of the line.
+     * 
      * @return Quality
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public double getQual() {
         return this.vc.getPhredScaledQual();
@@ -92,7 +103,9 @@ public class VcfLine {
     
      /**
      * Get the depth.
+     * 
      * @return depth
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int getDp() {
         return this.vc.getAttributeAsInt("DP", 0);
@@ -100,7 +113,9 @@ public class VcfLine {
     
      /**
      * Get the number of genotypes.
+     * 
      * @return Number of genotypes
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int getGenotypeNumber() {
         return vc.getGenotypes().size();
@@ -135,11 +150,23 @@ public class VcfLine {
     public Set<String> getSpecificFilter() {
 	return vc.getFilters();
     }
-
+    
+     /**
+     * Get the amount of allels.
+     *
+     * @return int
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
+    public int getNAllels(){
+     return vc.getNAlleles();
+    }
+    
     /**
      * Get an attribute as boolean of the SNP of the line.
+     * 
      * @param attribute The attribute to return its value of.
      * @return Attribute value
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public boolean getAttributeAsBoolean(String attribute) {
         return this.vc.getAttributeAsBoolean(attribute, false);
@@ -149,6 +176,7 @@ public class VcfLine {
      * Get an attribute as double of the SNP of the line.
      * @param attribute The attribute to return its value of.
      * @return Attribute value
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public double getAttributeAsDouble(String attribute) {
         return this.vc.getAttributeAsDouble(attribute, 0.0);
@@ -157,6 +185,7 @@ public class VcfLine {
      * Get an attribute as int of the SNP of the line.
      * @param attribute The attribute to return its value of.
      * @return  Attribute value
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int getAttributeAsInt(String attribute) {
         return this.vc.getAttributeAsInt(attribute, 0);
@@ -166,18 +195,21 @@ public class VcfLine {
      * Get an attribute as string of the SNP of the line.
      * @param attribute The attribute to return its value of.
      * @return Attribute value
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public String getAttributeAsString(String attribute) {
         return this.vc.getAttributeAsString(attribute, null);
     }
     
+    /**
+     * Get the genotype using the specified index number
+     * @param index
+     * @return 
+     */
     public VcfGenotype getGenotype(int index) {
         return new VcfGenotype(this.vc.getGenotype(index));
     }
      
-    public double getPhredScaledQual() {
-        return this.vc.getPhredScaledQual();
-    }   
 
     
 }

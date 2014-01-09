@@ -10,8 +10,8 @@ import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
- *
- * @author mhroelfes
+ *This class can include a specific snp on their ID, returns false if line has to be removed.
+ * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class IncludeSnp extends AbstractSimpleFilter{
 

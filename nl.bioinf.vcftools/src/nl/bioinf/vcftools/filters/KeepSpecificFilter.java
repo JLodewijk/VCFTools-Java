@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.bioinf.vcftools.filters;
 
 import nl.bioinf.vcftools.Settings;
@@ -17,7 +16,10 @@ public class KeepSpecificFilter extends AbstractSimpleFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-	return vcfLine.getSpecificFilter().contains(settings.getKeepFiltered());
+        for (String filterSatus : vcfLine.getSpecificFilter()) {
+            return settings.getKeepFiltered().contains(filterSatus);
+        }
+        return false;
     }
-    
+
 }
