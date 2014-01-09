@@ -15,13 +15,10 @@ import nl.bioinf.vcftools.handlers.VcfLine;
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class FilterHandler {
-
-    private VcfLine vcfLine;
     private Settings settings;
     private ArrayList<AbstractSimpleFilter> simpleFilters;
 
-    public FilterHandler(Settings settings, VcfLine vcfLine) {
-        this.vcfLine = vcfLine;
+    public FilterHandler(Settings settings) {
         this.settings = settings;
         FilterFactory filterFactory = new FilterFactory(this.settings);
         this.simpleFilters = filterFactory.getSimpleFilters();
@@ -30,7 +27,7 @@ public class FilterHandler {
 
     }
 
-    public boolean performFilters() {
+    public boolean performFilters(VcfLine vcfLine) {
         // perform filters
         
        for (AbstractSimpleFilter i : this.simpleFilters) {
