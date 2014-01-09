@@ -34,7 +34,7 @@ public class Thinning extends AbstractSimpleFilter {
 
             } else {
 
-                this.positionPreviousSnp = settings.getThin();
+                this.positionPreviousSnp = vcfLine.getPosition();
                 return true;
             }
 
