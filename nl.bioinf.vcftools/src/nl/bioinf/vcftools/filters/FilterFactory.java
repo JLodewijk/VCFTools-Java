@@ -7,6 +7,8 @@
 package nl.bioinf.vcftools.filters;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import nl.bioinf.vcftools.Settings;
 
 /**
@@ -29,21 +31,31 @@ public class FilterFactory {
         if (!this.settings.getSnp().isEmpty()) { this.simpleFilters.add(new IncludeSnp()); }
         if (!this.settings.getPositions().isEmpty()) { this.simpleFilters.add(new IncludePositions()); }
         if (this.settings.getKeepInfo() != null) { this.simpleFilters.add(new KeepInfo()); }
-        if (this.settings.isKeepIndels() == true) { this.simpleFilters.add(new KeepIndels()); }
-        if (this.settings.isKeepIndels() == false) { this.simpleFilters.add(new RemoveIndels()); }
+        if (this.settings.isKeepIndels() != null) {
+            if (this.settings.isKeepIndels() == true) { this.simpleFilters.add(new KeepIndels()); }
+            if (this.settings.isKeepIndels() == false) { this.simpleFilters.add(new RemoveIndels()); }
+        }
         if (!this.settings.getBed().isEmpty()) { /* bed incl chromosome implementation */ }
         if (!this.settings.getExludeBed().isEmpty()) { /* bed incl chromosome implementation */ }
-        if (this.settings.isRemoveFilteredAll() == true) { this.simpleFilters.add(new RemoveFiltered()); }
+        if (this.settings.isRemoveFilteredAll() != null) {
+            if (this.settings.isRemoveFilteredAll() == true) { this.simpleFilters.add(new RemoveFiltered()); }
+        }
         if (!this.settings.getRemoveFiltered().isEmpty()) { this.simpleFilters.add(new RemoveSpecificFilter()); }
         if (!this.settings.getKeepFiltered().isEmpty()) { this.simpleFilters.add(new KeepSpecificFilter()); }
         if (!this.settings.getRemoveInfo().isEmpty()) { this.simpleFilters.add(new RemoveInfo()); }
         if (!this.settings.getKeepInfo().isEmpty()) { this.simpleFilters.add(new KeepInfo()); }
         if (this.settings.getMinQ() != null) { this.simpleFilters.add(new MinimalQuality()); }
         if ((this.settings.getMinMeanDp() != null) && (this.settings.getMaxMeanDp() != null)) { this.simpleFilters.add(new MeanDepth()); }
-        // filter
-        
-        
-
+        if ((this.settings.getMaf() != null) && (this.settings.getMaxMaf() != null)) { this.simpleFilters.add(new AlleleFrequencies()); }
+        if ((this.settings.getNonRefAf() != null) && (this.settings.getMaxNonRefAf() != null)) { this.simpleFilters.add(new NonRefAlleleFrequencies()); }
+        if ((this.settings.getMac() != null) && (this.settings.getMaxMac() != null)) {  }
+        if ((this.settings.getNonRefAc() != null) && (this.settings.getMaxNonRefAc() != null)) { /* NonRefAlleleCount() */ }
+        if (this.settings.getHwe() != null) { /* Hardy() */ }
+        if (this.settings.getGeno() != null) { /* ?? */ }
+        if (this.settings.getMaxMissingCount() != null) { this.simpleFilters.add(new MissingCount()); }
+        if ((this.settings.getMinAlleles() != null) && (this.settings.getMaxAlleles() != null)) { this.simpleFilters.add(new AlleleCount()); }
+        if (this.settings.getThin() != null) { this.simpleFilters.add(new Thinning()); }
+        // to do add mask
     }
 
     public ArrayList<AbstractSimpleFilter> getSimpleFilters() {
