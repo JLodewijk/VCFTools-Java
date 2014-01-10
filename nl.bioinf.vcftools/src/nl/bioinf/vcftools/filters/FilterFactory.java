@@ -9,7 +9,7 @@ package nl.bioinf.vcftools.filters;
 import nl.bioinf.vcftools.filters.site.KeepInfo;
 import nl.bioinf.vcftools.filters.site.MinimalQuality;
 import nl.bioinf.vcftools.filters.site.RemoveInfo;
-import nl.bioinf.vcftools.filters.site.AlleleCount;
+import nl.bioinf.vcftools.filters.site.MinorAlleleCount;
 import nl.bioinf.vcftools.filters.site.MeanDepth;
 import nl.bioinf.vcftools.filters.site.RemoveSpecificFilter;
 import nl.bioinf.vcftools.filters.site.AlleleFrequencies;
@@ -71,7 +71,7 @@ public class FilterFactory {
         if (this.settings.getHwe() != null) { /* Hardy() */ }
         if (this.settings.getGeno() != null) { /* ?? */ }
         if (this.settings.getMaxMissingCount() != null) { this.simpleFilters.add(new MissingCount()); }
-        if ((this.settings.getMinAlleles() != null) && (this.settings.getMaxAlleles() != null)) { this.simpleFilters.add(new AlleleCount()); }
+        if ((this.settings.getMinAlleles() != null) && (this.settings.getMaxAlleles() != null)) { this.simpleFilters.add(new MinorAlleleCount()); }
         if (this.settings.getThin() != null) { this.simpleFilters.add(new Thinning()); }
         // to do add mask
     }
