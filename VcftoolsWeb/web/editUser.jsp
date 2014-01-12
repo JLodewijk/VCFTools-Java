@@ -15,7 +15,7 @@
     </head>
     <body>
 
-        <form method="POST" action='TableServlet' name="frmAddUser">
+        <form method="POST" action='UserServlet' name="frmAddUser">
             Username : <input type="text" readonly="readonly" name="name"
                               value="<c:out value="${user.name}" />" /> <br /> 
             Password: <input

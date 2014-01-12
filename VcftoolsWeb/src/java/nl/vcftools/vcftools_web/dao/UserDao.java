@@ -16,21 +16,21 @@ import nl.bioinf.vcftools.vcftools_web.pojo.UserModel;
  *
  * @author Jeroen
  */
-public class TableDao {
+public class UserDao {
 
     private Connection connection;
 
     /**
      * Makes contact with the database.
      */
-    public TableDao() {
+    public UserDao() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/thema10", "jl", "hallo");
         } catch (SQLException ex) {
-            Logger.getLogger(TableDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TableDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -49,7 +49,7 @@ public class TableDao {
             ps.setString(3, user.getRole());
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(TableDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -67,7 +67,7 @@ public class TableDao {
             ps.executeUpdate();
 
         } catch (SQLException ex) {
-            Logger.getLogger(TableDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -85,7 +85,7 @@ public class TableDao {
             ps.setString(3, user.getName());
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(TableDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

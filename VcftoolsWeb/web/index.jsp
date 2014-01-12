@@ -12,6 +12,6 @@
         <title>Insert title here</title>
     </head>
     <body>
-        <jsp:forward page="/TableServlet?action=listUser" />
+        <jsp:forward page="/UserServlet?action=listUser" />
     </body>
 </html>

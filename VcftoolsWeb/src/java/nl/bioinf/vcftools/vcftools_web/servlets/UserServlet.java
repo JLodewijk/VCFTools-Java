@@ -7,27 +7,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.vcftools.vcftools_web.dao.TableDao;
+import nl.vcftools.vcftools_web.dao.UserDao;
 import nl.bioinf.vcftools.vcftools_web.pojo.UserModel;
 
 /**
  *
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  */
-public class TableServlet extends HttpServlet {
+public class UserServlet extends HttpServlet {
 
     private static final String insertUser = "/user.jsp";
     private static final String editUser = "/editUser.jsp";
     private static final String allUsers = "/listUser.jsp";
     private static String action;
-    private final TableDao dao;
+    private final UserDao dao;
 
     /**
-     * Calls the TableDao to make contact and getting information out of the
-     * database.
+     * Calls the UserDao to make contact and getting information out of the
+ database.
      */
-    public TableServlet() {
-        dao = new TableDao();
+    public UserServlet() {
+        dao = new UserDao();
     }
 
     /**
@@ -44,26 +44,26 @@ public class TableServlet extends HttpServlet {
         if (button.equalsIgnoreCase("delete")) {
             String name = request.getParameter("name");
             dao.deleteUser(name);
-            TableServlet.action = allUsers;
+            UserServlet.action = allUsers;
             request.setAttribute("users", dao.getAllUsers());
         } else if (button.equalsIgnoreCase("edit")) {
-            TableServlet.action = editUser;
+            UserServlet.action = editUser;
             String name = request.getParameter("name");
             UserModel user = dao.getName(name);
             request.setAttribute("user", user);
         } else if (button.equalsIgnoreCase("listUser")) {
-            TableServlet.action = allUsers;
+            UserServlet.action = allUsers;
             request.setAttribute("users", dao.getAllUsers());
         } else {
-            TableServlet.action = insertUser;
+            UserServlet.action = insertUser;
         }
 
-        RequestDispatcher view = request.getRequestDispatcher(TableServlet.action);
+        RequestDispatcher view = request.getRequestDispatcher(UserServlet.action);
         view.forward(request, response);
     }
 
     /**
-     * Gets form information and sents it to the TableDao.
+     * Gets form information and sents it to the UserDao.
      *
      * @param request
      * @param response
@@ -76,7 +76,7 @@ public class TableServlet extends HttpServlet {
         user.setPassword(request.getParameter("password"));
         user.setRole(request.getParameter("role"));
         String name = request.getParameter("name");
-        if (TableServlet.action.equalsIgnoreCase(insertUser)) {
+        if (UserServlet.action.equalsIgnoreCase(insertUser)) {
             user.setName(name);
             dao.addUser(user);
         } else {

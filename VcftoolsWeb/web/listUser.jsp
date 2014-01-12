@@ -30,12 +30,12 @@
                         <td><c:out value="${user.name}" /></td>
                         <td><c:out value="${user.password}" /></td>
                         <td><c:out value="${user.role}" /></td>
-                        <td><a href="TableServlet?action=edit&name=<c:out value="${user.name}"/>">Update</a></td>
-                        <td><a href="TableServlet?action=delete&name=<c:out value="${user.name}"/>">Delete</a></td>
+                        <td><a href="UserServlet?action=edit&name=<c:out value="${user.name}"/>">Update</a></td>
+                        <td><a href="UserServlet?action=delete&name=<c:out value="${user.name}"/>">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
-        <p><a href="TableServlet?action=insert&name=<c:out value="${user.name}"/>">Add User</a></p>
+        <p><a href="UserServlet?action=insert&name=<c:out value="${user.name}"/>">Add User</a></p>
     </body>
 </html>

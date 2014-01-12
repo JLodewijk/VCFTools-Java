@@ -4,14 +4,14 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     <servlet>
-        <description></description>
-        <display-name>TableServlet</display-name>
-        <servlet-name>TableServlet</servlet-name>
-        <servlet-class>nl.bioinf.vcftools.vcftools_web.servlets.TableServlet</servlet-class>
+        <description/>
+        <display-name>UserServlet</display-name>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>nl.bioinf.vcftools.vcftools_web.servlets.UserServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>TableServlet</servlet-name>
-        <url-pattern>/TableServlet</url-pattern>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/UserServlet</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
