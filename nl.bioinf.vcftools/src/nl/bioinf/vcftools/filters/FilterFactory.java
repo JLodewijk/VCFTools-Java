@@ -25,8 +25,6 @@ import nl.bioinf.vcftools.filters.site.MissingCount;
 import nl.bioinf.vcftools.filters.site.RemoveFiltered;
 import nl.bioinf.vcftools.filters.site.NonRefAlleleFrequencies;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import nl.bioinf.vcftools.Settings;
 
 /**
