@@ -16,9 +16,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.ParseException;
 import nl.bioinf.vcftools.Settings;
-import nl.bioinf.vcftools.handlers.SeparatedValueReader;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.UnrecognizedOptionException;
 
 /**
  *
@@ -121,7 +119,7 @@ public class Cli {
         opt.addOption("keepIndvFile", true, "provide a file containing a list of individuals to include in subsequent analysis. Each individual ID (as defined in the VCF headerline) should be included on a separate line");
         opt.addOption("removeIndv", true, "specify an individual to be removed from the analysis. A string is expected. If --indv also used, --indv will be applied first.");
         opt.addOption("removeIndvFile", true, "provide a file containing a list of individuals to exclude in subsequent analysis. Each individual ID (as defined in the VCF headerline) should be included on a separate line If --keep also used, --keep will be applied first");
-//        opt.addOption(" minIndvMeanDp", true, "calculate the mean coverage on a per-individual basis. Only individuals with coverage of a minimal thresshold specified by these options are included in subsequent analyses. A Double is expected");
+        opt.addOption("minIndvMeanDp", true, "calculate the mean coverage on a per-individual basis. Only individuals with coverage of a minimal thresshold specified by these options are included in subsequent analyses. A Double is expected");
         opt.addOption("maxIndvMeanDP", true, "calculate the mean coverage on a per-individual basis. Only individuals with coverage of a maximal thresshold specified by these options are included in subsequent analyses. A Double is expected");
         opt.addOption("mind", true, "specify the minimum call rate threshold for each individual. A Double is expected");
         opt.addOption("phased", true, "first excludes all individuals having all genotypes unphased, and subsequently excludes all sites with unphased genotypes. The remaining data therefore consists of phased data only");
@@ -149,8 +147,8 @@ public class Cli {
             System.err.println("The options -fromBp and -toBp can only be used in conjunction with -chr");
             System.exit(0);
         }
-        if (this.cmd.hasOption("fromBp") && !(this.cmd.hasOption("toBp"))) {
-            System.err.println("When the option -fromBp is given the -toBp is also required");
+        if (this.cmd.hasOption("fromBp") && !(this.cmd.hasOption("toBp") || this.cmd.hasOption("toBp") && !(this.cmd.hasOption("fromBp")))) {
+            System.err.println("When the option -fromBp is given the -toBp is also required and vice-versa");
             usage();
         }
         if (this.cmd.hasOption("removeFilteredAll") && (this.cmd.hasOption("removeFiltered") || this.cmd.hasOption("keepFiltered"))) {
@@ -193,9 +191,15 @@ public class Cli {
             }
         }
         if (cmd.hasOption("minAlleles") && !(cmd.hasOption("maxAlleles")) || cmd.hasOption("maxAlleles") && !(cmd.hasOption("minAlleles"))) {
-            System.err.println("It is obliged to use the options -minAlleles and -maxAlleles together");
+            System.err.println("It is obliged to use the options -minAlleles and -maxAlleles together and vice-versa");
             System.exit(0);
         }
+
+        if (this.cmd.hasOption("minIndvMeanDp") && !(this.cmd.hasOption("maxIndvMeanDP")) || this.cmd.hasOption("maxIndvMeanDP") && !(this.cmd.hasOption("minIndvMeanDp"))) {
+            System.err.println("It is obliged to use the options -minIndvMeanDp and -maxIndvMeanDP together and vice-versa");
+            System.exit(0);
+        }
+
         if (cmd.hasOption("vcf")) {
             File file = new File(cmd.getOptionValue("vcf"));
             if (!(file.exists())) {
@@ -303,23 +307,27 @@ public class Cli {
         }
         if (this.cmd.hasOption("chr")) {
 
-            for (int pointer = 0; pointer < this.args.length; pointer++) {
+            for (int pointer = 0; pointer < this.args.length;pointer++) {
                 if (this.args[pointer].equals("-chr")) {
-
+                   
                     int fromValuePointer = pointer + 2;
                     int toValueFactor = pointer + 4;
-
+                    
                     if (pointer + 2 == this.args.length) {
+                        
+                        settings.addChr(this.args[pointer+1]);
                         break;
                     }
-                    if (this.args[fromValuePointer].equals("-from") && this.args[toValueFactor].equals("-to")) {
+                    if (this.args[fromValuePointer].equals("-fromBp") && this.args[toValueFactor].equals("-toBp")) {
                         int fromBp = Integer.parseInt(this.args[fromValuePointer + 1]);
                         int toBp = Integer.parseInt(this.args[toValueFactor + 1]);
-                        settings.addChr(null, fromBp, toBp);
-
-                    } else {
-                        settings.addChr(this.args[pointer + 1]);
+                        settings.addChr(this.args[pointer+1], fromBp, toBp);
                     }
+
+//                    } else {
+//                       
+//                        settings.addChr(this.args[pointer + 1]);
+//                    }
                 }
 
             }
@@ -372,11 +380,11 @@ public class Cli {
         if (this.cmd.hasOption("excludeSnpFile")) {
             settings.setExcludeSnpFile(this.cmd.getOptionValue("excludeSnpFile"));
         }
-       
+
         if (this.cmd.hasOption("positionsFile")) {
             settings.setPositionsFile(this.cmd.getOptionValue("positionsFile"));
         }
-      
+
         if (this.cmd.hasOption("excludePositionsFile")) {
             settings.setExcludePositionsFile(this.cmd.getOptionValue("excludePositionsFile"));
         }
@@ -388,7 +396,7 @@ public class Cli {
         }
         if (this.cmd.hasOption("bed")) {
 //      Bed bed = new Bed();
-      settings.setBedFile(this.cmd.getOptionValue("bed"));
+            settings.setBedFile(this.cmd.getOptionValue("bed"));
         }
         if (this.cmd.hasOption("exludeBed")) {
 //      Bed bed = new Bed()

@@ -23,7 +23,13 @@ public class PositionFileReader {
 
     private MultiMap chrPositionMap;
     private String filePath;
-
+    
+    /**
+     * Constructor sets position file to create a MultiMap with the chromosomes and the 
+     * start and stop position.
+     * 
+     * @param filePath position file to do chromosome filtering
+     */
     public PositionFileReader(String filePath) {
         this.chrPositionMap = new MultiValueMap();
         this.filePath = filePath;
@@ -32,15 +38,18 @@ public class PositionFileReader {
         
 
     }
-
-    public void fileReader() {
+    /**
+    * fileReader reads position file and makes a MultiMap of the position file content
+    * 
+    *@exception FileNotFoundException, IOException
+    */
+    private void fileReader() {
         try {
 
             FileReader fr = new FileReader(this.filePath);
             BufferedReader br = new BufferedReader(fr);
             String line = null;
 
-//           System.out.println("Start reading file....");
             while ((line = br.readLine()) != null) {
                 if (!line.startsWith("#")) {
                     String[] chrStartPosStopPos = line.split("\t");
@@ -58,7 +67,9 @@ public class PositionFileReader {
         }
 
     }
-
+    /**
+     * @return position file MultiMap 
+     */
     public MultiMap getChrPositionMap() {
         return chrPositionMap;
     }

@@ -38,7 +38,6 @@ public class MaskFileReader {
     /**
     * fileReader reads mask file and makes a MultiMap of the mask file content
     * 
-    * 
     *@exception FileNotFoundException, IOException
     */
     private void fileReader(){
@@ -53,7 +52,7 @@ public class MaskFileReader {
             if(line.startsWith(">")){
                 chr = line.substring(1, line.length());
             } else{
-                for(int i = 0; i < line.length();i++){
+                for(int i = 0; i < line.length();i++){                          // loop to iterate over sequence of digit string
                     this.maskMap.put(chr, Character.getNumericValue(line.charAt(i)));
                 }
             }
@@ -65,9 +64,6 @@ public class MaskFileReader {
         } catch (IOException ex) {
             Logger.getLogger(MaskFileReader.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-    
-    
     }
     /**
      * @return mask MultiMap 
