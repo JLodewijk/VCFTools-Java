@@ -307,52 +307,56 @@ public class Cli {
         }
         if (this.cmd.hasOption("chr")) {
 
-            for (int pointer = 0; pointer < this.args.length;pointer++) {
+            for (int pointer = 0; pointer < this.args.length; pointer++) {
                 if (this.args[pointer].equals("-chr")) {
-                   
+
                     int fromValuePointer = pointer + 2;
                     int toValueFactor = pointer + 4;
-                    
+
                     if (pointer + 2 == this.args.length) {
-                        
-                        settings.addChr(this.args[pointer+1]);
+
+                        settings.addChr(this.args[pointer + 1]);
                         break;
                     }
                     if (this.args[fromValuePointer].equals("-fromBp") && this.args[toValueFactor].equals("-toBp")) {
                         int fromBp = Integer.parseInt(this.args[fromValuePointer + 1]);
                         int toBp = Integer.parseInt(this.args[toValueFactor + 1]);
-                        settings.addChr(this.args[pointer+1], fromBp, toBp);
+                        settings.addChr(this.args[pointer + 1], fromBp, toBp);
+                    } else {
+
+                        settings.addChr(this.args[pointer + 1]);
                     }
 
-//                    } else {
-//                       
-//                        settings.addChr(this.args[pointer + 1]);
-//                    }
                 }
-
             }
+
         }
+
         if (this.cmd.hasOption("notChr")) {
+
             for (int pointer = 0; pointer < this.args.length; pointer++) {
-                if (this.args[pointer].equals("-notChr")) {
-//                    System.out.println(args[c]);
+                if (this.args[pointer].equals("-chr")) {
+
                     int fromValuePointer = pointer + 2;
                     int toValueFactor = pointer + 4;
 
                     if (pointer + 2 == this.args.length) {
+
+                        settings.addChr(this.args[pointer + 1]);
                         break;
                     }
-                    if (this.args[fromValuePointer].equals("-from") && this.args[toValueFactor].equals("-to")) {
+                    if (this.args[fromValuePointer].equals("-fromBp") && this.args[toValueFactor].equals("-toBp")) {
                         int fromBp = Integer.parseInt(this.args[fromValuePointer + 1]);
                         int toBp = Integer.parseInt(this.args[toValueFactor + 1]);
-                        settings.addNotChr(this.args[pointer + 1], fromBp, toBp);
-
+                        settings.addChr(this.args[pointer + 1], fromBp, toBp);
                     } else {
-                        settings.addNotChr(this.args[pointer + 1]);
-                    }
-                }
 
+                        settings.addChr(this.args[pointer + 1]);
+                    }
+
+                }
             }
+
         }
 
         if (this.cmd.hasOption("snp")) {
