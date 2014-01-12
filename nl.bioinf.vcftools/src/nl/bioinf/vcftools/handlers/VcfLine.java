@@ -151,14 +151,24 @@ public class VcfLine {
 	return vc.getFilters();
     }
     
-     /**
+    /**
      * Get the amount of allels.
      *
      * @return int
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
-    public int getNAllels(){
-     return vc.getNAlleles();
+    public int getNAllels() {
+        return vc.getNAlleles();
+    }
+    
+    /**
+     * Get the minor allele count.
+     *
+     * @return double
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
+    public double getMinorAlleleCount() {
+        return (double) vc.getAttribute("AC");
     }
     
     /**

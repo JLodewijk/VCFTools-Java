@@ -16,7 +16,7 @@ import nl.bioinf.vcftools.handlers.VcfLine;
  * this class filters a vcf line on allele count, returns true if line has to be kept, returns false if line is rejected
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
-public class AlleleCount extends AbstractSimpleFilter {
+public class MinorAlleleCount extends AbstractSimpleFilter {
     
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
@@ -25,15 +25,7 @@ public class AlleleCount extends AbstractSimpleFilter {
         if (valObj instanceof String) {
             //handle single value
             int val = Integer.parseInt((String) valObj);
-            //if val is between threshold approve line, else reject line
-            if (val < settings.getMaxAlleles() && val > settings.getMinAlleles()) {
-                return true;
-                
-            } else {
-                return false;
-               
-            }
-            //System.out.println("val="+val);
+            return val < settings.getMaxMac() && val > settings.getMac();
         } else {
             boolean keep = true;
             //ArrayList value
@@ -45,7 +37,7 @@ public class AlleleCount extends AbstractSimpleFilter {
             }
             //for every double in ArrayList check if between threshold
             for (double dValue : valuesInteger) {
-                if (dValue < settings.getMaxAlleles() && dValue > settings.getMinAlleles()) {
+                if (dValue < settings.getMaxMac() && dValue > settings.getMac()) {
                     keep =  true;
                 } else {
                     keep=  false;
