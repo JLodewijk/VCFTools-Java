@@ -42,8 +42,8 @@ public class FilterFactory {
     
     public void createSimpleFilters() {
         this.simpleFilters = new ArrayList<>();
-        if (!this.settings.getChr().isEmpty()) { this.simpleFilters.add(new IncludeChromosome()); }
-        if (!this.settings.getNotChr().isEmpty()) { this.simpleFilters.add(new ExcludeChromosome()); }
+        if ((!this.settings.getChr().isEmpty()) || (!this.settings.getBed().isEmpty())) { this.simpleFilters.add(new IncludeChromosome()); }
+        if ((!this.settings.getNotChr().isEmpty()) || (!this.settings.getExludeBed().isEmpty())) { this.simpleFilters.add(new ExcludeChromosome()); }
         if (!this.settings.getSnp().isEmpty()) { this.simpleFilters.add(new IncludeSnp()); }
         if (!this.settings.getPositions().isEmpty()) { this.simpleFilters.add(new IncludePositions()); }
         if (this.settings.getKeepInfo() != null) { this.simpleFilters.add(new KeepInfo()); }
@@ -51,8 +51,6 @@ public class FilterFactory {
             if (this.settings.isKeepIndels() == true) { this.simpleFilters.add(new KeepIndels()); }
             if (this.settings.isKeepIndels() == false) { this.simpleFilters.add(new RemoveIndels()); }
         }
-        if (!this.settings.getBed().isEmpty()) { /* bed incl chromosome implementation */ }
-        if (!this.settings.getExludeBed().isEmpty()) { /* bed incl chromosome implementation */ }
         if (this.settings.isRemoveFilteredAll() != null) {
             if (this.settings.isRemoveFilteredAll() == true) { this.simpleFilters.add(new RemoveFiltered()); }
         }
