@@ -26,7 +26,6 @@ public class DbConnector {
             return connection;
         } else {
             try {
-                Properties prop = new Properties();
                 String driver = "com.mysql.jdbc.Driver";
                 String dbUrl = "jdbc:mysql://mysql.bin/Jlodewijk";
                 String dbUser = "jlodewijk";

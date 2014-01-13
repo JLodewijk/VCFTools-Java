@@ -24,6 +24,7 @@
                 </tr>
             </thead>
             <tbody>
+                <p>${sessionScope}</p>
                 <c:forEach items="${users}" var="user">
                     <tr>
                         <td><c:out value="${user.name}" /></td>
@@ -35,6 +36,6 @@
             </tbody>
         </table>
         <p><a href="UserServlet?action=insert&name=<c:out value="${user.name}"/>">Add User</a>
-            <a href="UserServlet?action=insert&name=<c:out value="${user.name}"/>">Change Your Password</a></p>
+            <a href="UserServlet?action=change&name=<c:out value="${user.name}"/>">Change Your Password</a></p>
     </body>
 </html>
