@@ -24,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                <p>${sessionScope}</p>
+                <p>${users}</p>
                 <c:forEach items="${users}" var="user">
                     <tr>
                         <td><c:out value="${user.name}" /></td>
