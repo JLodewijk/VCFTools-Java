@@ -13,7 +13,21 @@
         <meta name="description" content="A layout example with a side menu that hides on mobile, just like the Pure website.">
         <title>VcfTools Online</title>
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
-        <link rel="stylesheet" href="css/layouts/side-menu.css">
+        <link rel="stylesheet" href="css/site.css">
+        <script src="js/jquery-1.10.2.min.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="js/jquery.validate.min.js"></script>
+        <script src="js/jquery.iframe-transport.js"></script>
+        <script src="js/jquery.fileupload.js"></script>
+        <script src="js/jquery.fileupload-process.js"></script>
+        <script src="js/jquery.fileupload-image.js"></script>
+        <script src="js/jquery.fileupload-audio.js"></script>
+        <script src="js/jquery.fileupload-video.js"></script>
+        <script src="js/jquery.fileupload-validate.js"></script>
+        <script src="js/jquery.fileupload-ui.js"></script>
+        <script src="js/jquery.fileupload-jquery-ui.js"></script>
+        <script src="js/ui.js"></script>
+        <script src="js/program.js"></script>
     </head>
     <body>
         <div id="layout">
@@ -31,19 +45,64 @@
                 </div>
 
                 <div class="content">
-                       
-                </div>
-            </div>
-        </div>
+                    <form class="vcftoolsform" id="vcftoolsform" method="get" action="">
+
+                        <fieldset>
+                            <legend>VcfTools</legend> 
 
 
+                            <div class="content">
+                                <form class="vcftoolsform" id="vcftoolsform" method="get" action="">
+                                    <div id="fileuploader">
+                                        <label for="file">Select VCF file</label>
+                                        <input id="fileupload" type="file" name="files[]" multiple>
+                                        <div id="progress">
+                                            <div class="bar" style="width: 0%;"></div>
+                                        </div>
+
+                                    </div>
 
 
+                                    <table>
+                                        <tr>
+                                            <th>Include Chr</th>
+                                            <th>from Bp</th>
+                                            <th>to Bp</th>
+                                        </tr>
+                                        <tr>
+                                            <td><input id="chromosome" name="chromosome_1" type="text" /></td>
+                                            <td><input id="frombp" name="frombp_1" type="text" /></td>
+                                            <td><input id="tobp" name="tobp_1" type="text" /></td>
+                                        </tr>
+                                    </table>
+                                    <table>
+                                        <tr>
+                                            <th>Exclude Chr</th>
+                                            <th>from Bp</th>
+                                            <th>to Bp</th>
+                                        </tr>
+                                        <tr>
+                                            <td><input id="chromosome" name="chromosome_1" type="text" /></td>
+                                            <td><input id="frombp" name="frombp_1" type="text" /></td>
+                                            <td><input id="tobp" name="tobp_1" type="text" /></td>
+                                        </tr>
+                                    </table> 
+                                    <p>
+                                        <label for="snp">snp</label>
+                                        <input id="snp" name="snp" type="text" />
+                                    </p>
 
-        <script src="js/ui.js"></script>
+                                    <p>
+                                        <input class="submit" type="submit" value="Submit" />
+                                    </p>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            </div>
+                        </div>
 
 
-    </body>
-</html>
+                            </body>
+                            </html>
 
 
