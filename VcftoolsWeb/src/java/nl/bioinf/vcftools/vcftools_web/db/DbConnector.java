@@ -8,7 +8,6 @@ package nl.bioinf.vcftools.vcftools_web.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 /**
  *
@@ -26,7 +25,6 @@ public class DbConnector {
             return connection;
         } else {
             try {
-                Properties prop = new Properties();
                 String driver = "com.mysql.jdbc.Driver";
                 String dbUrl = "jdbc:mysql://mysql.bin/Jlodewijk";
                 String dbUser = "jlodewijk";
