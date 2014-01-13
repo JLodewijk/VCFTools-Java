@@ -13,30 +13,38 @@ import java.sql.SQLException;
  */
 public class ValidateUser {
 
-    public static boolean checkUserInformation(Connection connection,String name, String pass) {
+    public static boolean checkUserInformation(String name, String pass) {
         boolean exist = false;
         try {
 
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/thema10", "jlodewijk", "Hallo");
             PreparedStatement ps = connection.prepareStatement("select * from users where name=? and password=?;");
             ps.setString(1, name);
             ps.setString(2, pass);
             ResultSet rs = ps.executeQuery();
             exist = rs.next();
 
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return exist;
     }
 
-    public static boolean doesUserNameExist(Connection connection,String name) {
+    public static boolean doesUserNameExist(String name) {
         boolean exist = false;
         try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/thema10", "jlodewijk", "Hallo");
             PreparedStatement ps = connection.prepareStatement("select * from users where name=?;");
             ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
             exist = rs.next();
 
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
