@@ -36,6 +36,7 @@
                 </c:forEach>
             </tbody>
         </table>
-        <p><a href="UserServlet?action=insert&name=<c:out value="${user.name}"/>">Add User</a></p>
+        <p><a href="UserServlet?action=insert&name=<c:out value="${user.name}"/>">Add User</a>
+            <a href="UserServlet?action=insert&name=<c:out value="${user.name}"/>">Change Your Password</a></p>
     </body>
 </html>

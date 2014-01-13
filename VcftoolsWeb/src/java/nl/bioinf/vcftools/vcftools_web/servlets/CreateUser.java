@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import nl.bioinf.vcftools.vcftools_web.db.DbConnector;
 
 /**
  *
@@ -16,17 +17,23 @@ import java.sql.SQLException;
  */
 public class CreateUser {
 
-    public static void insertNewUser(String name, String pass) {
+    private Connection connection;
+
+    /**
+     * Makes contact with the database.
+     */
+    public CreateUser() {
+        connection = DbConnector.getConnection();
+    }
+
+    public void insertNewUser(String name, String pass) {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/thema10", "jlodewijk", "Hallo");
+
             PreparedStatement ps = connection.prepareStatement("insert into users (name, password) values (?,?);");
             ps.setString(1, name);
             ps.setString(2, pass);
             ps.executeUpdate();
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }

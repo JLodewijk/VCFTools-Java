@@ -17,28 +17,29 @@ import java.util.Properties;
 public class DbConnector {
 
     private static Connection connection = null;
-   /**
+
+    /**
      * Makes contact with the database, cam be used by all the scripts.
      */
     public static Connection getConnection() {
-	if (connection != null) {
-	    return connection;
-	} else {
-	    try {
-		Properties prop = new Properties();
-		String driver = "com.mysql.jdbc.Driver";
-		String dbUrl = "jdbc:mysql://mysql.bin/Jlodewijk";
-		String dbUser = "jlodewijk";
-		String dbPass = "jeroen";
-		Class.forName(driver);
-		connection = DriverManager.getConnection(dbUrl, dbUser, dbPass);
-	    } catch (ClassNotFoundException e) {
-		e.printStackTrace();
-	    } catch (SQLException e) {
-		e.printStackTrace();
-	    }
-	    return connection;
-	}
+        if (connection != null) {
+            return connection;
+        } else {
+            try {
+                Properties prop = new Properties();
+                String driver = "com.mysql.jdbc.Driver";
+                String dbUrl = "jdbc:mysql://mysql.bin/Jlodewijk";
+                String dbUser = "jlodewijk";
+                String dbPass = "jeroen";
+                Class.forName(driver);
+                connection = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return connection;
+        }
 
     }
 }
