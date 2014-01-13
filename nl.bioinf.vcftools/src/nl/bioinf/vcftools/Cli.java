@@ -143,7 +143,8 @@ public class Cli {
             usage();
         }
 
-        if (this.cmd.hasOption("fromBp") && !(this.cmd.hasOption("chr"))) {
+        if ((this.cmd.hasOption("fromBp")) && ((!this.cmd.hasOption("chr")) && (!this.cmd.hasOption("notChr")))) {
+
             System.err.println("The options -fromBp and -toBp can only be used in conjunction with -chr");
             System.exit(0);
         }
@@ -335,7 +336,7 @@ public class Cli {
         if (this.cmd.hasOption("notChr")) {
 
             for (int pointer = 0; pointer < this.args.length; pointer++) {
-                if (this.args[pointer].equals("-chr")) {
+                if (this.args[pointer].equals("-notChr")) {
 
                     int fromValuePointer = pointer + 2;
                     int toValueFactor = pointer + 4;
