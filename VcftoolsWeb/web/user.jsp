@@ -29,7 +29,7 @@
 	    <option value="3">User</option>
 
 	</select>
-                <input type="submit" value="Submit" />
-        </form>
-    </body>
+	<input type="submit" value="Submit" />
+    </form>
+</body>
 </html>
