@@ -6,10 +6,8 @@
 package nl.bioinf.vcftools.vcftools_web.servlets;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import nl.bioinf.vcftools.vcftools_web.db.DbConnector;
 
 /**
  *
@@ -17,21 +15,14 @@ import nl.bioinf.vcftools.vcftools_web.db.DbConnector;
  */
 public class CreateUser {
 
-    private Connection connection;
 
-    /**
-     * Makes contact with the database.
-     */
-    public CreateUser() {
-        connection = DbConnector.getConnection();
-    }
-
-    public void insertNewUser(String name, String pass) {
+    public static void insertNewUser(Connection connection,String name, String pass) {
         try {
 
-            PreparedStatement ps = connection.prepareStatement("insert into users (name, password) values (?,?);");
+            PreparedStatement ps = connection.prepareStatement("insert into users (name, password, role) values (?,?,?);");
             ps.setString(1, name);
             ps.setString(2, pass);
+	    ps.setString(3, "3");
             ps.executeUpdate();
 
         } catch (SQLException e) {
