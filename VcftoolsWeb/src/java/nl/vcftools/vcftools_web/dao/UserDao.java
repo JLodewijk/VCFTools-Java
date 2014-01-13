@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.bioinf.vcftools.vcftools_web.pojo.UserModel;
+import nl.bioinf.vcftools.vcftools_web.db.DbConnector;
+
 
 /**
  *
@@ -23,15 +25,9 @@ public class UserDao {
     /**
      * Makes contact with the database.
      */
+
     public UserDao() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://mysql.bin/Jlodewijk", "jlodewijk", "jeroen");
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        connection = DbConnector.getConnection();
     }
 
     /**
