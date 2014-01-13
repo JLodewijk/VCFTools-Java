@@ -21,10 +21,15 @@
             Password: <input
                 type="text" name="password"
                 value="<c:out value="${user.password}" />" /> <br /> 
-            Role : <input
+            Role : <select
                 type="text" name="role"
-                value="<c:out value="${user.role}" />" /> <br /> <input
-                type="submit" value="Submit" />
-        </form>
-    </body>
+                value="<c:out value="${user.role}" />" /> <br /> 
+	    <option value="1">Masteradmin</option>
+	    <option value="2">Admin</option>
+	    <option value="3">User</option>
+
+	</select>
+	<input type="submit" value="Submit" />
+    </form>
+</body>
 </html>

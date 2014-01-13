@@ -19,7 +19,6 @@
             <thead>
                 <tr>
                     <th>Username</th>
-                    <th>Password</th>
                     <th>Role</th>
                     <th colspan=2>Action</th>
                 </tr>
@@ -28,7 +27,6 @@
                 <c:forEach items="${users}" var="user">
                     <tr>
                         <td><c:out value="${user.name}" /></td>
-                        <td><c:out value="${user.password}" /></td>
                         <td><c:out value="${user.role}" /></td>
                         <td><a href="UserServlet?action=edit&name=<c:out value="${user.name}"/>">Update</a></td>
                         <td><a href="UserServlet?action=delete&name=<c:out value="${user.name}"/>">Delete</a></td>
