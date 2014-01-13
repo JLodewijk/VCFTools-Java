@@ -19,7 +19,6 @@
             <thead>
                 <tr>
                     <th>Username</th>
-                    <th>Password</th>
                     <th>Role</th>
                     <th colspan=2>Action</th>
                 </tr>
