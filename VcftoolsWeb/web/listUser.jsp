@@ -28,7 +28,6 @@
                 <c:forEach items="${users}" var="user">
                     <tr>
                         <td><c:out value="${user.name}" /></td>
-                        <td><c:out value="${user.password}" /></td>
                         <td><c:out value="${user.role}" /></td>
                         <td><a href="UserServlet?action=edit&name=<c:out value="${user.name}"/>">Update</a></td>
                         <td><a href="UserServlet?action=delete&name=<c:out value="${user.name}"/>">Delete</a></td>
