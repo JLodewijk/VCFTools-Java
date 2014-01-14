@@ -26,6 +26,7 @@ import nl.bioinf.vcftools.filters.site.RemoveFiltered;
 import nl.bioinf.vcftools.filters.site.NonRefAlleleFrequencies;
 import java.util.ArrayList;
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filters.site.ExcludeSnp;
 
 /**
  *
@@ -45,6 +46,7 @@ public class FilterFactory {
         if ((!this.settings.getChr().isEmpty()) || (!this.settings.getBed().isEmpty())) { this.simpleFilters.add(new IncludeChromosome()); }
         if ((!this.settings.getNotChr().isEmpty()) || (!this.settings.getExludeBed().isEmpty())) { this.simpleFilters.add(new ExcludeChromosome()); }
         if (!this.settings.getSnp().isEmpty()) { this.simpleFilters.add(new IncludeSnp()); }
+        if (!this.settings.getExcludeSnp().isEmpty()) { this.simpleFilters.add(new ExcludeSnp()); }
         if (!this.settings.getPositions().isEmpty()) { this.simpleFilters.add(new IncludePositions()); }
         if (this.settings.getKeepInfo() != null) { this.simpleFilters.add(new KeepInfo()); }
         if (this.settings.isKeepIndels() != null) {
