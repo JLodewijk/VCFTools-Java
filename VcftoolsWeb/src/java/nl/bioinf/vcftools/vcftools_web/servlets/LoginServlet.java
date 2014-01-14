@@ -16,6 +16,7 @@ import nl.vcftools.vcftools_web.dao.UserDaoMysqlImpl;
 
 public class LoginServlet extends HttpServlet {
     private Connection connection;
+    private UserDaoMysqlImpl dao;
 
     /**
      * Makes contact with the database.
@@ -23,6 +24,7 @@ public class LoginServlet extends HttpServlet {
 
     public LoginServlet() {
         connection = DbConnector.getConnection();
+	dao = new UserDaoMysqlImpl();
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -57,9 +59,8 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("error", "Could not log in with the given username and password");
                 view = request.getRequestDispatcher("login.jsp");
             }else{
-                session.setAttribute("user", user);
-                
-                view = request.getRequestDispatcher("listUser.jsp");
+                session.setAttribute("webuser", user);
+                view = request.getRequestDispatcher("home.jsp");
             }
         }
         request.setAttribute("first", firstVisit);
@@ -98,22 +99,13 @@ public class LoginServlet extends HttpServlet {
     private UserModel loginUser(String user, String pass) {
         UserModel u = null;
         UserDao dao = UserDaoFactory.getInstance(UserDaoFactory.DbType.MYSQL);
-        try {
-            String url = "jdbc:mysql://mysql.bin/Jlodewijk";
-
-            String dbPass = "jeroen";
-            String dbUser = "jlodewijk";
-            dao.connect(url, dbUser, dbPass);
-
-            //fetch user from db
-            u = dao.getUser(user, pass);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        String url = "jdbc:mysql://mysql.bin/Jlodewijk";
+        String dbPass = "jeroen";
+        String dbUser = "jlodewijk";
+        dao.connect(url, dbUser, dbPass);
+        u = dao.getUser(user, pass);
         return u;
     }
-
 
 
 

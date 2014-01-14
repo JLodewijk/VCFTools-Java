@@ -1,7 +1,5 @@
 package nl.vcftools.vcftools_web.dao;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -33,13 +31,13 @@ public class UserDaoMysqlImpl implements UserDao {
      * Makes contact with the database.
      */
     public UserDaoMysqlImpl() {
-        
+        connection = DbConnector.getConnection();
     }
     public static UserDaoMysqlImpl getInstance(){
         return instance;
     }
     @Override
-    public void connect(String url, String user, String pass) throws IOException, FileNotFoundException {
+    public void connect(String url, String user, String pass){
         if (connection != null) {
             return;
         }
@@ -124,12 +122,12 @@ public class UserDaoMysqlImpl implements UserDao {
     
     
     @Override
-    public UserModel getUser(String uName, String uPass) throws IOException {
+    public UserModel getUser(String uName, String uPass){
         UserModel u = null;
         try {
-            PreparedStatement ps = preparedStatements.get(FETCH_USER);
+            PreparedStatement ps = preparedStatements.get("select * from users where name=?;");
             ps.setString(1, uName);
-            ps.setString(2, uPass);
+            //ps.setString(2, uPass);
            
             
             ResultSet rs = ps.executeQuery();
@@ -195,7 +193,7 @@ public class UserDaoMysqlImpl implements UserDao {
     }
 
     @Override
-    public void disconnect() throws IOException {
+    public void disconnect(){
         try {
             for (PreparedStatement ps : preparedStatements.values()) {
                 ps.close();

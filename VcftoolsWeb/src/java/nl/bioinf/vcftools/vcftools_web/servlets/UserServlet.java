@@ -30,6 +30,8 @@ public class UserServlet extends HttpServlet {
     public UserServlet() {
         dao = new UserDaoMysqlImpl();
     }
+    
+
 
     /**
      * Sends request to list all user and gets the user request.
@@ -41,7 +43,6 @@ public class UserServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Action is the button that has been pressed
-        System.out.println("kdsalhfdkla");
         String button = request.getParameter("action");
         if (button.equalsIgnoreCase("delete")) {
             String name = request.getParameter("name");
@@ -56,9 +57,6 @@ public class UserServlet extends HttpServlet {
         } else if (button.equalsIgnoreCase("listUser")) {
             UserServlet.action = allUsers;
             request.setAttribute("users", dao.getAllUsers());
-        } else if (button.equalsIgnoreCase("change")){
-            UserServlet.action = changePassword;
-            
         } else {
             UserServlet.action = insertUser;
         }
@@ -68,7 +66,7 @@ public class UserServlet extends HttpServlet {
     }
 
     /**
-     * Gets form information and sents it to the UserDaoMysqlImpl.
+     * Gets form information and sends it to the UserDaoMysqlImpl.
      *
      * @param request
      * @param response
@@ -76,6 +74,7 @@ public class UserServlet extends HttpServlet {
      * @throws IOException
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	//request.setAttribute("users", dao.getAllUsers());
         UserModel user = new UserModel();
         user.setName(request.getParameter("name"));
         user.setPassword(request.getParameter("password"));
@@ -91,5 +90,5 @@ public class UserServlet extends HttpServlet {
         RequestDispatcher view = request.getRequestDispatcher(allUsers);
         request.setAttribute("users", dao.getAllUsers());
         view.forward(request, response);
-   }
+    }
 }

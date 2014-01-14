@@ -26,9 +26,12 @@ public class DbConnector {
         } else {
             try {
                 String driver = "com.mysql.jdbc.Driver";
-                String dbUrl = "jdbc:mysql://mysql.bin/Jlodewijk";
-                String dbUser = "jlodewijk";
-                String dbPass = "jeroen";
+//                String dbUrl = "jdbc:mysql://mysql.bin/Jlodewijk";
+//                String dbUser = "jlodewijk";
+//                String dbPass = "jeroen";
+                String dbUrl = "jdbc:mysql://127.0.0.1:3306/thema10";
+                String dbUser = "jl";
+                String dbPass = "hallo";
                 Class.forName(driver);
                 connection = DriverManager.getConnection(dbUrl, dbUser, dbPass);
             } catch (ClassNotFoundException e) {
