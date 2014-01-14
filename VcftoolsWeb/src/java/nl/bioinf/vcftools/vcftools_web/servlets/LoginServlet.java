@@ -57,7 +57,8 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("error", "Could not log in with the given username and password");
                 view = request.getRequestDispatcher("login.jsp");
             }else{
-                session.setAttribute("webuser", user);
+                session.setAttribute("user", user);
+                
                 view = request.getRequestDispatcher("listUser.jsp");
             }
         }

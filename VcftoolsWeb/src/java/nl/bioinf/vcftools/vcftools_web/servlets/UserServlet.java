@@ -41,6 +41,7 @@ public class UserServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Action is the button that has been pressed
+        System.out.println("kdsalhfdkla");
         String button = request.getParameter("action");
         if (button.equalsIgnoreCase("delete")) {
             String name = request.getParameter("name");
@@ -90,5 +91,5 @@ public class UserServlet extends HttpServlet {
         RequestDispatcher view = request.getRequestDispatcher(allUsers);
         request.setAttribute("users", dao.getAllUsers());
         view.forward(request, response);
-    }
+   }
 }

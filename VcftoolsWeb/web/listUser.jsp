@@ -24,7 +24,8 @@
                 </tr>
             </thead>
             <tbody>
-                <p>${users}</p>
+                <!--UserServlet?action=listUser"-->
+                <p>${sessionScope}</p>
                 <c:forEach items="${users}" var="user">
                     <tr>
                         <td><c:out value="${user.name}" /></td>
