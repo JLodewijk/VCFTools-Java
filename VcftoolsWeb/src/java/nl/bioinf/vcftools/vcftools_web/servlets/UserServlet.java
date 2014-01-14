@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.vcftools.vcftools_web.dao.UserDao;
+import nl.vcftools.vcftools_web.dao.UserDaoMysqlImpl;
 import nl.bioinf.vcftools.vcftools_web.pojo.UserModel;
 
 /**
@@ -19,15 +19,16 @@ public class UserServlet extends HttpServlet {
     private static final String insertUser = "/user.jsp";
     private static final String editUser = "/editUser.jsp";
     private static final String allUsers = "/listUser.jsp";
+    private static final String changePassword = "/changePw.jsp";
     private static String action;
-    private final UserDao dao;
+    private final UserDaoMysqlImpl dao;
 
     /**
-     * Calls the UserDao to make contact and getting information out of the
+     * Calls the UserDaoMysqlImpl to make contact and getting information out of the
  database.
      */
     public UserServlet() {
-        dao = new UserDao();
+        dao = new UserDaoMysqlImpl();
     }
 
     /**
@@ -54,6 +55,9 @@ public class UserServlet extends HttpServlet {
         } else if (button.equalsIgnoreCase("listUser")) {
             UserServlet.action = allUsers;
             request.setAttribute("users", dao.getAllUsers());
+        } else if (button.equalsIgnoreCase("change")){
+            UserServlet.action = changePassword;
+            
         } else {
             UserServlet.action = insertUser;
         }
@@ -63,7 +67,7 @@ public class UserServlet extends HttpServlet {
     }
 
     /**
-     * Gets form information and sents it to the UserDao.
+     * Gets form information and sents it to the UserDaoMysqlImpl.
      *
      * @param request
      * @param response
