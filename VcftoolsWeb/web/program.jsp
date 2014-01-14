@@ -50,59 +50,74 @@
                         <fieldset>
                             <legend>VcfTools</legend> 
 
-
-                            <div class="content">
-                                <form class="vcftoolsform" id="vcftoolsform" method="get" action="">
-                                    <div id="fileuploader">
-                                        <label for="file">Select VCF file</label>
-                                        <input id="fileupload" type="file" name="files[]" multiple>
-                                        <div id="progress">
-                                            <div class="bar" style="width: 0%;"></div>
-                                        </div>
-
+                            <form class="vcftoolsform" id="vcftoolsform" method="get" action="">
+                                <div id="fileuploader">
+                                    <label for="file">Select VCF file</label>
+                                    <input id="fileupload" type="file" name="files[]" multiple>
+                                    <div id="progress">
+                                        <div class="bar" style="width: 0%;"></div>
                                     </div>
 
-
-                                    <table>
-                                        <tr>
-                                            <th>Include Chr</th>
-                                            <th>from Bp</th>
-                                            <th>to Bp</th>
-                                        </tr>
-                                        <tr>
-                                            <td><input id="chromosome" name="chromosome_1" type="text" /></td>
-                                            <td><input id="frombp" name="frombp_1" type="text" /></td>
-                                            <td><input id="tobp" name="tobp_1" type="text" /></td>
-                                        </tr>
-                                    </table>
-                                    <table>
-                                        <tr>
-                                            <th>Exclude Chr</th>
-                                            <th>from Bp</th>
-                                            <th>to Bp</th>
-                                        </tr>
-                                        <tr>
-                                            <td><input id="chromosome" name="chromosome_1" type="text" /></td>
-                                            <td><input id="frombp" name="frombp_1" type="text" /></td>
-                                            <td><input id="tobp" name="tobp_1" type="text" /></td>
-                                        </tr>
-                                    </table> 
-                                    <p>
-                                        <label for="snp">snp</label>
-                                        <input id="snp" name="snp" type="text" />
-                                    </p>
-
-                                    <p>
-                                        <input class="submit" type="submit" value="Submit" />
-                                    </p>
-                                    </fieldset>
-                                </form>
-                            </div>
-                            </div>
-                        </div>
+                                </div>
+                                <table>
+                                    <tr>
+                                        <th>Include Chr</th>
+                                        <th>from Bp</th>
+                                        <th>to Bp</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input id="chromosome" name="chromosome_1" type="text" /></td>
+                                        <td><input id="frombp" name="frombp_1" type="text" /></td>
+                                        <td><input id="tobp" name="tobp_1" type="text" /></td>
+                                    </tr>
+                                </table>
+                                <table>
+                                    <tr>
+                                        <th>Exclude Chr</th>
+                                        <th>from Bp</th>
+                                        <th>to Bp</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input id="chromosome" name="chromosome_1" type="text" /></td>
+                                        <td><input id="frombp" name="frombp_1" type="text" /></td>
+                                        <td><input id="tobp" name="tobp_1" type="text" /></td>
+                                    </tr>
+                                </table> 
+                                <p>
+                                    <label for="snp">snp</label>
+                                    <input id="snp" name="snp" type="text" />
+                                </p>
 
 
-                            </body>
-                            </html>
+
+
+                                <fieldset id="newsletter_topics">
+                                    <legend>Indels</legend>
+                                    <label for="keep_only_indels">
+                                        <input type="checkbox" id="topic_marketflash" value="marketflash" name="topic" />
+                                        Keep only
+                                    </label>
+                                    <label for="remove_indels">
+                                        <input type="checkbox" id="topic_fuzz" value="fuzz" name="topic" />
+                                        Remove
+                                    </label>
+                                </fieldset>
+
+
+
+                                <p>
+                                    <input class="submit" type="submit" value="Submit" />
+                                </p>
+
+
+
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
 
 
