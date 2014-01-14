@@ -75,8 +75,7 @@ public class UserDaoMysqlImpl implements UserDao {
     public void addUser(UserModel user) {
         try {
 
-            PreparedStatement ps = connection
-                    .prepareStatement("insert into users (name,password,role) values (?, ?, ?)");
+            PreparedStatement ps = connection.prepareStatement("insert into users (name,password,role) values (?, ?, ?)");
             ps.setString(1, user.getName());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getRole());
@@ -154,11 +153,10 @@ public class UserDaoMysqlImpl implements UserDao {
         List<UserModel> users = new ArrayList<UserModel>();
         try {
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from users");
+            ResultSet rs = st.executeQuery("select * from users;");
             while (rs.next()) {
                 UserModel user = new UserModel();
                 user.setName(rs.getString("name"));
-                user.setPassword(rs.getString("password"));
                 user.setRole(rs.getString("role"));
                 users.add(user);
             }

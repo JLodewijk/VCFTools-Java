@@ -20,7 +20,7 @@
                 <br />
             </li>
 
-            <li class="pure-menu-selected pure-menu-divided "><a href="index.html">Home</a></li>
+            <li class="pure-menu-selected pure-menu-divided "><a href="index.jsp">Home</a></li>
             <li><a href="about.html">About Vcf</a></li>
             <li><a href="documentation.html">Documentation</a></li>
             <li><a href="program.html">Program</a></li>
