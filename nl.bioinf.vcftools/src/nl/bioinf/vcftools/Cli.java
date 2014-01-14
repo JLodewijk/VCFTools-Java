@@ -343,16 +343,16 @@ public class Cli {
 
                     if (pointer + 2 == this.args.length) {
 
-                        settings.addChr(this.args[pointer + 1]);
+                        settings.addNotChr(this.args[pointer + 1]);
                         break;
                     }
                     if (this.args[fromValuePointer].equals("-fromBp") && this.args[toValueFactor].equals("-toBp")) {
                         int fromBp = Integer.parseInt(this.args[fromValuePointer + 1]);
                         int toBp = Integer.parseInt(this.args[toValueFactor + 1]);
-                        settings.addChr(this.args[pointer + 1], fromBp, toBp);
+                        settings.addNotChr(this.args[pointer + 1], fromBp, toBp);
                     } else {
 
-                        settings.addChr(this.args[pointer + 1]);
+                        settings.addNotChr(this.args[pointer + 1]);
                     }
 
                 }
