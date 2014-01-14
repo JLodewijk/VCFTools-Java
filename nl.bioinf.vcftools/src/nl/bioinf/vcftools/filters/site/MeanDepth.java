@@ -18,8 +18,7 @@ public class MeanDepth extends AbstractSimpleFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        return vcfLine.getDp()/vcfLine.getGenotypeNumber()> settings.getMinMeanDp() && vcfLine.getDp()/vcfLine.getGenotypeNumber() < settings.getMaxMeanDp();
-     
+        return settings.getMinMeanDp() >= ((double)vcfLine.getDp()/(double)vcfLine.getGenotypeNumber())  && settings.getMaxMeanDp() <= ((double)vcfLine.getDp()/(double)vcfLine.getGenotypeNumber());
     }
     
 }
