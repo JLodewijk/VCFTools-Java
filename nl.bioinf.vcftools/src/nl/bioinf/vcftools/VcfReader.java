@@ -28,30 +28,36 @@ public class VcfReader {
 //    public static void main(String[] args) throws IOException {
 //
 //        VcfReader read = new VcfReader();
-//        read.readVcfLines("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
+//        read.performFilters("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
 //    }
 
     public VcfReader(Settings settings) {
         this.settings = settings;
         try {
-            readVcfLines(settings.getInputFile());
+            performFilters();
         } catch (IOException ex) {
             Logger.getLogger(VcfReader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     
+    /**
+     * 
+     */
+    public void performDependencyCalculations() {
+        
+    }
+    
 
     /**
-     * Reads VCF line for line while file has next line
+     * Reads VCF line for line while file has next line and performs the filters
      *
      * @param file
      * @return
      * @throws IOException
      */
-    public String readVcfLines(String file) throws IOException {
-        Vcf vcf = new Vcf(file);
-        SiteFilters site = new SiteFilters();
+    public void performFilters() throws IOException {
+        Vcf vcf = new Vcf(settings.getInputFile());
         
         FilterHandler filterHandler = new FilterHandler(this.settings);
         //while vcf file has next iteration get next iteration
@@ -64,50 +70,8 @@ public class VcfReader {
               else {
                 System.out.println("Kept:" + iteration.toString());
               }
-//            VariantContext vc = vcf.getNextIterAsVariantContext();
-//            site.MeanDepth(vc,84,86);
-            
-            //get next line
-//            VariantContext nextLine = vcf.getNextIterAsVariantContext();
-//            //System.out.println(nextLine.getAlternateAlleles());
-//            VariantContext nextLine2 = vcf.getNextIterAsVariantContext();
-//            //System.out.println(nextLine2.getAllele("C"));
-//            VariantContext nextLine3 = vcf.getNextIterAsVariantContext();
-//            Genotype genotypes = nextLine.getGenotype(0);
-//            //System.out.println(genotypes.getAlleles());
-//            //System.out.println(nextLine.getAttribute("AF").getClass().getName());
-//            //alleleFreq;
-//            //alleleFreq = nextLine.getAttributeAsDouble("AF", 0.0);
-//            System.out.println(nextLine.getAttribute("Dels").getClass().getName());
-//            Object valObj = nextLine.getAttribute("AF");
-//            //System.out.println(valObj.getClass().getName());
-//
-//            if (valObj instanceof String) {
-//                //handle single value
-//                Double val = Double.valueOf((String) valObj);
-//                //System.out.println("val="+val);
-//            } else {
-//                //ArrayList value
-//                ArrayList<String> values = (ArrayList<String>) valObj;
-//                List<Double> valuesDoubles = new ArrayList<Double>();
-//                for (String str : values) {
-//                    valuesDoubles.add(str != null ? Double.parseDouble(str) : null);
-//                }
-//                //System.out.println("value list=" + valuesDoubles);
-//            }
-
-//            try{
-//                Double val = Double.valueOf((String)valObj);
-//            }catch(ClassCastException e){
-//                ArrayList<String> values = (ArrayList<String>)valObj;
-//            }
-            //System.out.println("@@@" + nextLine);
-            //float al = Float.valueOf(alleleFreq);
-            //System.out.println(al);
-            //System.out.println(nextLine.getGenotypes().size());
         }
 
-        return null;
 
     }
 }
