@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.vcftools.vcftools_web.dao.DaoMysqlImpl;
 import nl.bioinf.vcftools.vcftools_web.pojo.UserModel;
 import nl.vcftools.vcftools_web.dao.Dao;
 import nl.vcftools.vcftools_web.dao.DaoFactory;
@@ -28,9 +27,8 @@ public class UserServlet extends HttpServlet {
     /**
      * Calls the DaoMysqlImpl to make contact and getting information out of the database.
      */
-    private UserServlet() {
-    }
-
+//    private UserServlet() {
+//    }
     /**
      * Sends request to list all user and gets the user request.
      *
@@ -40,27 +38,22 @@ public class UserServlet extends HttpServlet {
      * @throws IOException
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Action is the button that has been pressed
-        String button = request.getParameter("action");
-        if (button.equalsIgnoreCase("delete")) {
-            String name = request.getParameter("name");
-            dao.deleteUser(name);
-            UserServlet.action = allUsers;
-            request.setAttribute("users", dao.getAllUsers());
-        } else if (button.equalsIgnoreCase("edit")) {
-            UserServlet.action = editUser;
-            String name = request.getParameter("name");
-            UserModel user = dao.getName(name);
-            request.setAttribute("user", user);
-        } else if (button.equalsIgnoreCase("listUser")) {
-            UserServlet.action = allUsers;
-            request.setAttribute("users", dao.getAllUsers());
-        } else {
-            UserServlet.action = insertUser;
-        }
-
-        RequestDispatcher view = request.getRequestDispatcher(UserServlet.action);
-        view.forward(request, response);
+	dao.connect();
+	UserModel user = new UserModel();
+	user.setName(request.getParameter("name"));
+	user.setPassword(request.getParameter("password"));
+	user.setRole(request.getParameter("role"));
+	String name = request.getParameter("name");
+	if (UserServlet.action.equalsIgnoreCase(insertUser)) {
+	    user.setName(name);
+	    dao.addUser(user);
+	} else {
+	    user.setName(name);
+	    dao.updateUser(user);
+	}
+	RequestDispatcher view = request.getRequestDispatcher(allUsers);
+	request.setAttribute("users", dao.getAllUsers());
+	view.forward(request, response);
     }
 
     /**
@@ -72,30 +65,26 @@ public class UserServlet extends HttpServlet {
      * @throws IOException
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //request.setAttribute("users", dao.getAllUsers());
-        String button = request.getParameter("action");
-        if (button.equalsIgnoreCase("updateUser")) {
-            UserModel user = new UserModel();
-            user.setName(request.getParameter("name"));
-            user.setPassword(request.getParameter("password"));
-            user.setRole(request.getParameter("role"));
-            String name = request.getParameter("name");
-            if (UserServlet.action.equalsIgnoreCase(insertUser)) {
-                user.setName(name);
-                dao.addUser(user);
-            } else {
-                user.setName(name);
-                dao.updateUser(user);
-            }
-            RequestDispatcher view = request.getRequestDispatcher(allUsers);
-            request.setAttribute("users", dao.getAllUsers());
-            view.forward(request, response);
-        } else if (button.equalsIgnoreCase("pw")){
-            String name = request.getParameter("name");
-            String newPass =  request.getParameter("password");
-            dao.ChangePw(name, newPass);
-            UserServlet.action = allUsers;
-            request.setAttribute("users", dao.getAllUsers());
-        }   
+	dao.connect();
+	String button = request.getParameter("action");
+	if (button.equalsIgnoreCase("delete")) {
+	    String name = request.getParameter("name");
+	    dao.deleteUser(name);
+	    UserServlet.action = allUsers;
+	    request.setAttribute("users", dao.getAllUsers());
+	} else if (button.equalsIgnoreCase("edit")) {
+	    UserServlet.action = editUser;
+	    String name = request.getParameter("name");
+	    UserModel user = dao.getName(name);
+	    request.setAttribute("user", user);
+	} else if (button.equalsIgnoreCase("listUser")) {
+	    UserServlet.action = allUsers;
+	    request.setAttribute("users", dao.getAllUsers());
+	} else {
+	    UserServlet.action = insertUser;
+	}
+
+	RequestDispatcher view = request.getRequestDispatcher(UserServlet.action);
+	view.forward(request, response);
     }
 }
