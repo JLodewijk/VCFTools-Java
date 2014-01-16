@@ -43,35 +43,40 @@ public class UserServlet extends HttpServlet {
         user.setName(request.getParameter("name"));
         user.setPassword(request.getParameter("password"));
         user.setRole(request.getParameter("role"));
-        String name = request.getParameter("name");
-        if (UserServlet.action.equalsIgnoreCase(insertUser)) {
+      String name = request.getParameter("name");
+      if (UserServlet.action.equalsIgnoreCase(insertUser)) {
             user.setName(name);
-            dao.addUser(user);
-        } else if (button.equalsIgnoreCase("delete")) {            
+            dao.addUser(user);}
+        if (button.equalsIgnoreCase("delete")) {            
+            //String name = request.getParameter("name");
             dao.deleteUser(name);
-            //UserServlet.action = allUsers;
-            //request.setAttribute("users", dao.getAllUsers());
+            UserServlet.action = allUsers;
+            request.setAttribute("users", dao.getAllUsers());
         } else if (button.equalsIgnoreCase("edit")) {
             UserServlet.action = editUser;
-            //tring name2 = request.getParameter("name");
-            //UserModel user2 = dao.getName(name2);
+            //String name = request.getParameter("name");
+            //UserModel user = dao.getName(name);
             request.setAttribute("user", user);
         } else if (button.equalsIgnoreCase("change")) {
             UserServlet.action = changePassword;
         }  else if (button.equalsIgnoreCase("pw")) {
-            //String name2 = request.getParameter("name");
+            //String name = request.getParameter("name");
             String newPass = request.getParameter("password");
             dao.ChangePw(name, newPass);
             UserServlet.action = allUsers;
             request.setAttribute("users", dao.getAllUsers());
 
         } else {
+            //String name = request.getParameter("name");
+            //UserModel user = dao.getName(name);
+            request.setAttribute("user", user); 
             user.setName(name);
             dao.updateUser(user);
         }
-        RequestDispatcher view = request.getRequestDispatcher(allUsers);
+        RequestDispatcher view = request.getRequestDispatcher(UserServlet.action);
         request.setAttribute("users", dao.getAllUsers());
         view.forward(request, response);
+        
     }
 
     /**
