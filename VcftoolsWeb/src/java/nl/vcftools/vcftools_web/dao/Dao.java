@@ -20,6 +20,7 @@ public interface Dao {
     public void addUser(UserModel user);
     public void deleteUser(String name);
     public void updateUser(UserModel user);
+    public void ChangePw(String name, String newPass); 
     public List<UserModel> getAllUsers();
     public UserModel getName(String name);
     public void disconnect();

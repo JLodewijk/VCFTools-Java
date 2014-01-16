@@ -52,7 +52,7 @@
             </a>
             <div class='content'>
                 <jsp:include page="includes/menubar.jsp"></jsp:include>
-                <form method="POST" action='UserServlet' name="frmAddUser">
+                <form method="get" action='UserServlet?name='+ ${sessionScope.name} name="frmAddUser">
 
                         <p>New Password: <input
                                 type="text" name="password"
@@ -60,7 +60,7 @@
                         <p>Confirm Password: <input
                                 type="text" name="password"
                                 value="<c:out value="${user.password}"/>"/><br /> </p>
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Submit"/>
                 </form>    
             </div>
         </div>

@@ -19,7 +19,7 @@
 
     </head>
     <body>
-        <form method="POST" id="editForm" action='UserServlet' name="frmAddUser">
+        <form method="POST" id="editForm" action='UserServlet?action=updateUser' name="frmAddUser">
             Username : <input type="text" readonly="readonly" name="name"
                               value="<c:out value="${user.name}" />" /> <br /> 
             Password: <input

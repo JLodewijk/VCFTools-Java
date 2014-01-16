@@ -26,13 +26,10 @@ public class UserServlet extends HttpServlet {
     Dao dao = DaoFactory.getInstance(DaoFactory.DbType.MYSQL);
 
     /**
-     * Calls the DaoMysqlImpl to make contact and getting information out of the
- database.
+     * Calls the DaoMysqlImpl to make contact and getting information out of the database.
      */
     private UserServlet() {
     }
-    
-
 
     /**
      * Sends request to list all user and gets the user request.
@@ -75,21 +72,30 @@ public class UserServlet extends HttpServlet {
      * @throws IOException
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	//request.setAttribute("users", dao.getAllUsers());
-        UserModel user = new UserModel();
-        user.setName(request.getParameter("name"));
-        user.setPassword(request.getParameter("password"));
-        user.setRole(request.getParameter("role"));
-        String name = request.getParameter("name");
-        if (UserServlet.action.equalsIgnoreCase(insertUser)) {
-            user.setName(name);
-            dao.addUser(user);
-        } else {
-            user.setName(name);
-            dao.updateUser(user);
-        }
-        RequestDispatcher view = request.getRequestDispatcher(allUsers);
-        request.setAttribute("users", dao.getAllUsers());
-        view.forward(request, response);
+        //request.setAttribute("users", dao.getAllUsers());
+        String button = request.getParameter("action");
+        if (button.equalsIgnoreCase("updateUser")) {
+            UserModel user = new UserModel();
+            user.setName(request.getParameter("name"));
+            user.setPassword(request.getParameter("password"));
+            user.setRole(request.getParameter("role"));
+            String name = request.getParameter("name");
+            if (UserServlet.action.equalsIgnoreCase(insertUser)) {
+                user.setName(name);
+                dao.addUser(user);
+            } else {
+                user.setName(name);
+                dao.updateUser(user);
+            }
+            RequestDispatcher view = request.getRequestDispatcher(allUsers);
+            request.setAttribute("users", dao.getAllUsers());
+            view.forward(request, response);
+        } else if (button.equalsIgnoreCase("pw")){
+            String name = request.getParameter("name");
+            String newPass =  request.getParameter("password");
+            dao.ChangePw(name, newPass);
+            UserServlet.action = allUsers;
+            request.setAttribute("users", dao.getAllUsers());
+        }   
     }
 }
