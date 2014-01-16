@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import nl.vcftools.vcftools_web.dao.DaoMysqlImpl;
 import nl.bioinf.vcftools.vcftools_web.pojo.UserModel;
+import nl.vcftools.vcftools_web.dao.Dao;
+import nl.vcftools.vcftools_web.dao.DaoFactory;
 
 /**
  *
@@ -21,14 +23,13 @@ public class UserServlet extends HttpServlet {
     private static final String allUsers = "/listUser.jsp";
     private static final String changePassword = "/changePw.jsp";
     private static String action;
-    private final DaoMysqlImpl dao;
+    Dao dao = DaoFactory.getInstance(DaoFactory.DbType.MYSQL);
 
     /**
      * Calls the DaoMysqlImpl to make contact and getting information out of the
  database.
      */
-    public UserServlet() {
-        dao = new DaoMysqlImpl();
+    private UserServlet() {
     }
     
 

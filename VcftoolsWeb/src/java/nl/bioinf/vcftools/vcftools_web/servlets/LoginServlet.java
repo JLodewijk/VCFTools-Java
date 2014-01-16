@@ -16,20 +16,21 @@ import nl.vcftools.vcftools_web.dao.DaoMysqlImpl;
 
 public class LoginServlet extends HttpServlet {
 
-    private Connection connection;
-    private DaoMysqlImpl dao;
+    //private Connection connection;
+    Dao dao = DaoFactory.getInstance(DaoFactory.DbType.MYSQL);
 
     /**
      * Makes contact with the database.
      */
     public LoginServlet() {
-	connection = DbConnector.getConnection();
-	dao = new DaoMysqlImpl();
+	//connection = DbConnector.getConnection();
+	//dao = new DaoMysqlImpl();
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
+	dao.connect();
 
 	String firstVisit = "yes";
 	//get or create session object
@@ -93,11 +94,11 @@ public class LoginServlet extends HttpServlet {
 
     private boolean loginUser(String user, String pass) {
 	boolean exist = false;
-	Dao dao = DaoFactory.getInstance(DaoFactory.DbType.MYSQL);
-	String url = "jdbc:mysql://mysql.bin/Jlodewijk";
-	String dbPass = "jeroen";
-	String dbUser = "jlodewijk";
-	dao.connect(url, dbUser, dbPass);
+//	Dao dao = DaoFactory.getInstance(DaoFactory.DbType.MYSQL);
+//	String url = "jdbc:mysql://mysql.bin/Jlodewijk";
+//	String dbPass = "jeroen";
+//	String dbUser = "jlodewijk";
+	dao.connect();
 	exist = dao.getUser(user, pass);
 	return exist;
     }

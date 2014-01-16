@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.bioinf.vcftools.vcftools_web.pojo.UserModel;
-import nl.bioinf.vcftools.vcftools_web.db.DbConnector;
 
 /**
  *
@@ -23,15 +22,14 @@ public class DaoMysqlImpl implements Dao {
     private static final DaoMysqlImpl instance = new DaoMysqlImpl();
     private static final String FETCH_USER = "fetch_user";
     private static final String INSERT_USER = "insert_user";
-
-    private HashMap<String, PreparedStatement> preparedStatements = new HashMap<String, PreparedStatement>();
     private Connection connection;
+    private HashMap<String, PreparedStatement> preparedStatements = new HashMap<String, PreparedStatement>();
+    
 
     /**
      * Makes contact with the database.
      */
-    public DaoMysqlImpl() {
-	connection = DbConnector.getConnection();
+    private DaoMysqlImpl() {
     }
 
     public static DaoMysqlImpl getInstance() {
@@ -44,28 +42,34 @@ public class DaoMysqlImpl implements Dao {
      * @param url is the url of the db
      * @param user is the username that corrosponds with the db.
      * @param pass is the password that corrosponds with user of that db.
+     * @return 
      */
     @Override
-    public void connect(String url, String user, String pass) {
-	if (connection != null) {
-	    return;
-	}
+    public void connect() {
+	this.connection = null;
 	try {
-	    Class.forName("com.mysql.jdbc.Driver");
-	    connection = DriverManager.getConnection(url, user, pass);
-	    System.out.println("connection established");
-	    prepareStatements();
-	} catch (ClassNotFoundException ex) {
-	    ex.printStackTrace();
-	} catch (SQLException ex) {
-	    ex.printStackTrace();
+	    String driver = "com.mysql.jdbc.Driver";
+	    String dbUrl = "jdbc:mysql://mysql.bin/Jlodewijk";
+	    String dbUser = "jlodewijk";
+	    String dbPass = "jeroen";
+//                String dbUrl = "jdbc:mysql://127.0.0.1:3306/thema10";
+//                String dbUser = "jl";
+//                String dbPass = "hallo";
+	    Class.forName(driver);
+	    this.connection = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+	} catch (ClassNotFoundException e) {
+	    e.printStackTrace();
+	} catch (SQLException e) {
+	    e.printStackTrace();
 	}
     }
+        
+    
 
     private void prepareStatements() throws SQLException {
 	PreparedStatement ps;
 	String sql = "select * from users where name=? and password=?;";
-	ps = connection.prepareStatement(sql);
+	ps = this.connection.prepareStatement(sql);
 	preparedStatements.put(FETCH_USER, ps);
 
 //        sql = "insert into users (name, password) values (?,?)";
@@ -81,7 +85,19 @@ public class DaoMysqlImpl implements Dao {
      */
     @Override
     public boolean getUser(String uName, String uPass) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	boolean exist = false;
+	try {
+
+	    PreparedStatement ps = this.connection.prepareStatement("select * from users where name=? and password=?;");
+	    ps.setString(1, uName);
+	    ps.setString(2, uPass);
+	    ResultSet rs = ps.executeQuery();
+	    exist = rs.next();
+
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return exist;
     }
 
     @Override
@@ -97,7 +113,7 @@ public class DaoMysqlImpl implements Dao {
     public void addUser(UserModel user) {
 	try {
 
-	    PreparedStatement ps = connection.prepareStatement("insert into users (name,password,role) values (?, ?, ?)");
+	    PreparedStatement ps = this.connection.prepareStatement("insert into users (name,password,role) values (?, ?, ?)");
 	    ps.setString(1, user.getName());
 	    ps.setString(2, user.getPassword());
 	    ps.setString(3, user.getRole());
@@ -117,7 +133,7 @@ public class DaoMysqlImpl implements Dao {
      */
     public void deleteUser(String name) {
 	try {
-	    PreparedStatement ps = connection
+	    PreparedStatement ps = this.connection
 		    .prepareStatement("delete from users where name=?");
 	    ps.setString(1, name);
 	    ps.executeUpdate();
@@ -135,7 +151,7 @@ public class DaoMysqlImpl implements Dao {
      */
     public void updateUser(UserModel user) {
 	try {
-	    PreparedStatement ps = connection
+	    PreparedStatement ps = this.connection
 		    .prepareStatement("update users set password=?, role=? "
 			    + "where name=?");
 	    ps.setString(1, user.getPassword());
@@ -158,7 +174,7 @@ public class DaoMysqlImpl implements Dao {
     public List<UserModel> getAllUsers() {
 	List<UserModel> users = new ArrayList<UserModel>();
 	try {
-	    Statement st = connection.createStatement();
+	    Statement st = this.connection.createStatement();
 	    ResultSet rs = st.executeQuery("select * from users;");
 	    while (rs.next()) {
 		UserModel user = new UserModel();
@@ -182,7 +198,7 @@ public class DaoMysqlImpl implements Dao {
     public UserModel getName(String name) {
 	UserModel user = new UserModel();
 	try {
-	    PreparedStatement ps = connection.
+	    PreparedStatement ps = this.connection.
 		    prepareStatement("select * from users where name=?");
 	    ps.setString(1, name);
 	    ps.executeQuery();
@@ -209,7 +225,7 @@ public class DaoMysqlImpl implements Dao {
 	} catch (SQLException ex) {
 	} finally {
 	    try {
-		connection.close();
+		this.connection.close();
 	    } catch (SQLException ex) {
 	    }
 	}
