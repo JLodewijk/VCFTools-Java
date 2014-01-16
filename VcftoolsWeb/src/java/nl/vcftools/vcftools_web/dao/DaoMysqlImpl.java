@@ -24,13 +24,7 @@ public class DaoMysqlImpl implements Dao {
     private static final String INSERT_USER = "insert_user";
     private Connection connection;
     private HashMap<String, PreparedStatement> preparedStatements = new HashMap<String, PreparedStatement>();
-    
 
-    /**
-     * Makes contact with the database.
-     */
-    private DaoMysqlImpl() {
-    }
 
     public static DaoMysqlImpl getInstance() {
 	return instance;
@@ -82,6 +76,7 @@ public class DaoMysqlImpl implements Dao {
      *
      * @param uName is the username of the user performing the login.
      * @param uPass is the password of the user performing the login.
+     * @return 
      */
     @Override
     public boolean getUser(String uName, String uPass) {
@@ -110,6 +105,7 @@ public class DaoMysqlImpl implements Dao {
      *
      * @param user
      */
+    @Override
     public void addUser(UserModel user) {
 	try {
 
@@ -131,6 +127,7 @@ public class DaoMysqlImpl implements Dao {
      *
      * @param name is the username
      */
+    @Override
     public void deleteUser(String name) {
 	try {
 	    PreparedStatement ps = this.connection
@@ -149,6 +146,7 @@ public class DaoMysqlImpl implements Dao {
      *
      * @param user is the name of the user that is being updated
      */
+    @Override
     public void updateUser(UserModel user) {
 	try {
 	    PreparedStatement ps = this.connection
@@ -171,6 +169,7 @@ public class DaoMysqlImpl implements Dao {
      *
      * @return
      */
+    @Override
     public List<UserModel> getAllUsers() {
 	List<UserModel> users = new ArrayList<UserModel>();
 	try {
@@ -195,6 +194,7 @@ public class DaoMysqlImpl implements Dao {
      * @param name is the username
      * @return
      */
+    @Override
     public UserModel getName(String name) {
 	UserModel user = new UserModel();
 	try {
