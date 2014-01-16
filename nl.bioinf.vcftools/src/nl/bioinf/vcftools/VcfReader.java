@@ -8,6 +8,7 @@ package nl.bioinf.vcftools;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import nl.bioinf.vcftools.filters.FilterDependencies;
 import nl.bioinf.vcftools.filters.FilterHandler;
 import nl.bioinf.vcftools.handlers.Vcf;
 import nl.bioinf.vcftools.handlers.VcfLine;
@@ -25,15 +26,15 @@ public class VcfReader {
      */
     
     private Settings settings;
-//    public static void main(String[] args) throws IOException {
-//
-//        VcfReader read = new VcfReader();
-//        read.performFilters("/share/home/mhroelfes/Dropbox/Thema10/VCF/region.txt");
-//    }
 
+    /**
+     * The default constructor always needs the settings.
+     * @param settings 
+     */
     public VcfReader(Settings settings) {
         this.settings = settings;
         try {
+            performDependencyCalculations();
             performFilters();
         } catch (IOException ex) {
             Logger.getLogger(VcfReader.class.getName()).log(Level.SEVERE, null, ex);
@@ -42,9 +43,20 @@ public class VcfReader {
     
     
     /**
-     * 
+     * Perform all Dependency calculations
      */
-    public void performDependencyCalculations() {
+    public void performDependencyCalculations() throws IOException {
+        Vcf vcf = new Vcf(settings.getInputFile());
+        FilterDependencies filterDependencies = new FilterDependencies();
+        
+        // While vcf file has next iteration get next iteration
+        while (vcf.hasNextIter()) {
+            VcfLine iteration = vcf.getNextIter();
+            // Collect the dependencies of the vcf line
+            filterDependencies.collectDependencies(iteration);
+        }
+        // Calculate the dependencies (average etc)
+        filterDependencies.calculateDependencies();
         
     }
     
@@ -58,12 +70,13 @@ public class VcfReader {
      */
     public void performFilters() throws IOException {
         Vcf vcf = new Vcf(settings.getInputFile());
-        
         FilterHandler filterHandler = new FilterHandler(this.settings);
-        //while vcf file has next iteration get next iteration
-        while (vcf.hasNextIter()) {
+        
+        // While vcf file has next iteration get next iteration
+        while (vcf.hasNextIter()) {     
               VcfLine iteration = vcf.getNextIter();
               
+              // Perform all the filters and check if line has to stay or not
               if (filterHandler.performFilters(iteration) == false) {
                 System.out.println("Removed:" + iteration.toString());
               }
@@ -71,7 +84,5 @@ public class VcfReader {
                 System.out.println("Kept:" + iteration.toString());
               }
         }
-
-
     }
 }
