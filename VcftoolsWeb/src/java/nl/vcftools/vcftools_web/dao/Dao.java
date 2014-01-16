@@ -15,11 +15,13 @@ import nl.bioinf.vcftools.vcftools_web.pojo.UserModel;
  */
 public interface Dao {
     public void connect(String url, String user, String pass);
-    public UserModel getUser(String uName, String uPass);
+    public boolean getUser(String uName, String uPass);
     public void addUser(UserModel user);
     public void deleteUser(String name);
     public void updateUser(UserModel user);
     public List<UserModel> getAllUsers();
     public UserModel getName(String name);
     public void disconnect();
+    //public boolean checkUserInformation(String name,String pass);
+    public boolean doesUserNameExist(String name);
 }

@@ -15,60 +15,54 @@ import nl.vcftools.vcftools_web.dao.DaoFactory;
 import nl.vcftools.vcftools_web.dao.DaoMysqlImpl;
 
 public class LoginServlet extends HttpServlet {
+
     private Connection connection;
     private DaoMysqlImpl dao;
 
     /**
      * Makes contact with the database.
      */
-
     public LoginServlet() {
-        connection = DbConnector.getConnection();
+	connection = DbConnector.getConnection();
 	dao = new DaoMysqlImpl();
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-                //getInitParameter(null);
-        //String userName = request.getParameter("username");
-        String firstVisit = "yes";
-        //get or create session object
-        HttpSession session = request.getSession();
-        RequestDispatcher view;
+	    throws ServletException, IOException {
 
-        //System.err.println("HOI! het gaat fout");
-        //System.out.println("HALLO! het gaat goed");
+	String firstVisit = "yes";
+	//get or create session object
+	HttpSession session = request.getSession();
+	RequestDispatcher view;
 
-//        List<User> persons = new ArrayList<User>();
-//        persons.add(new User("Henk", "Honk", "hh@mail.com", "admin"));
-//        persons.add(new User("Anita", "Aantjes", "Anita@libelle.nl", "user"));
-//        persons.add(new User("John", "Doe", "jd@fbi.org", "guest"));
-//        request.setAttribute("persons", persons);
 
-        if (session.getAttribute("username") != null) {
-            //existing session
-            firstVisit = "No";
-            view = request.getRequestDispatcher("listUser.jsp");
-        } else {
-            
-            //new session; try to log in
-            UserModel user = loginUser(
-                    request.getParameter("username"), 
-                   request.getParameter("password"));
-            if(user == null){
-                request.setAttribute("error", "Could not log in with the given username and password");
-                view = request.getRequestDispatcher("login.jsp");
-            }else{
-                session.setAttribute("webuser", user);
-                view = request.getRequestDispatcher("home.jsp");
-            }
-        }
-        request.setAttribute("first", firstVisit);
-        view.forward(request, response);
-    
-        
+	if (session.getAttribute("username") != null) {
+	    //existing session
+	    firstVisit = "No";
+	    view = request.getRequestDispatcher("listUser.jsp");
+	} else {
 
-        
+	    //Old code based on that loginUser return a UserModel
+//            UserModel user = loginUser(
+//                    request.getParameter("username"), 
+//                   request.getParameter("password"));
+	    //new session; try to log in
+	    boolean user = loginUser(
+		    request.getParameter("username"),
+		    request.getParameter("password"));
+//            if(user == null){
+	    if (user == false) {
+		request.setAttribute("error", "Could not log in with the given username and password");
+		view = request.getRequestDispatcher("login.jsp");
+	    } else {
+		session.setAttribute("webuser", user);
+		view = request.getRequestDispatcher("home.jsp");
+	    }
+	}
+	request.setAttribute("first", firstVisit);
+	view.forward(request, response);
+
 //        // Gets the value of the pressed button.
 //        String userinput = request.getParameter("userinput");
 //        String name = request.getParameter("username");
@@ -96,19 +90,16 @@ public class LoginServlet extends HttpServlet {
 //            }
 //        }
     }
-    private UserModel loginUser(String user, String pass) {
-        UserModel u = null;
-        Dao dao = DaoFactory.getInstance(DaoFactory.DbType.MYSQL);
-        String url = "jdbc:mysql://mysql.bin/Jlodewijk";
-        String dbPass = "jeroen";
-        String dbUser = "jlodewijk";
-        dao.connect(url, dbUser, dbPass);
-        u = dao.getUser(user, pass);
-        return u;
+
+    private boolean loginUser(String user, String pass) {
+	boolean exist = false;
+	Dao dao = DaoFactory.getInstance(DaoFactory.DbType.MYSQL);
+	String url = "jdbc:mysql://mysql.bin/Jlodewijk";
+	String dbPass = "jeroen";
+	String dbUser = "jlodewijk";
+	dao.connect(url, dbUser, dbPass);
+	exist = dao.getUser(user, pass);
+	return exist;
     }
 
-
-
 }
-
-
