@@ -25,11 +25,6 @@ public class DaoMysqlImpl implements Dao {
     private Connection connection;
     private HashMap<String, PreparedStatement> preparedStatements = new HashMap<String, PreparedStatement>();
 
-    /**
-     * Makes contact with the database.
-     */
-    private DaoMysqlImpl() {
-    }
 
     public static DaoMysqlImpl getInstance() {
         return instance;
@@ -79,6 +74,7 @@ public class DaoMysqlImpl implements Dao {
      *
      * @param uName is the username of the user performing the login.
      * @param uPass is the password of the user performing the login.
+     * @return 
      */
     @Override
     public boolean getUser(String uName, String uPass) {
