@@ -12,6 +12,8 @@
         <title>Insert title here</title>
     </head>
     <body>
-        <jsp:forward page="/UserServlet?action=listUser" />
+	<form method="POST" id="userForm" action='UserServlet' name="frmAddUser">
+	    	<button name="action" type="submit" value="listUser">Admin Panel</button>
+	</form>
     </body>
 </html>
