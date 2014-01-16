@@ -18,9 +18,9 @@ import nl.bioinf.vcftools.vcftools_web.db.DbConnector;
  *
  * @author Jeroen
  */
-public class UserDaoMysqlImpl implements UserDao {
+public class DaoMysqlImpl implements Dao {
 
-    private static final UserDaoMysqlImpl instance = new UserDaoMysqlImpl();
+    private static final DaoMysqlImpl instance = new DaoMysqlImpl();
     private static final String FETCH_USER = "fetch_user";
     private static final String INSERT_USER = "insert_user";
 
@@ -30,12 +30,19 @@ public class UserDaoMysqlImpl implements UserDao {
     /**
      * Makes contact with the database.
      */
-    public UserDaoMysqlImpl() {
+    public DaoMysqlImpl() {
         connection = DbConnector.getConnection();
     }
-    public static UserDaoMysqlImpl getInstance(){
+    public static DaoMysqlImpl getInstance(){
         return instance;
     }
+     /**
+     * Makes contact with the database.
+     * 
+     * @param url is the url of the db
+     * @param user is the username that corrosponds with the db.
+     * @param pass is the password that corrosponds with user of that db.
+     */
     @Override
     public void connect(String url, String user, String pass){
         if (connection != null) {
@@ -79,7 +86,7 @@ public class UserDaoMysqlImpl implements UserDao {
             ps.setString(3, user.getRole());
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(UserDaoMysqlImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DaoMysqlImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -87,7 +94,7 @@ public class UserDaoMysqlImpl implements UserDao {
     /**
      * Delete a user in the database.
      *
-     * @param name
+     * @param name is the username
      */
     public void deleteUser(String name) {
         try {
@@ -97,13 +104,14 @@ public class UserDaoMysqlImpl implements UserDao {
             ps.executeUpdate();
 
         } catch (SQLException ex) {
-            Logger.getLogger(UserDaoMysqlImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DaoMysqlImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     /**
-     *
-     * @param user
+     * Takes an existing entry and changes the username, password and role of that user.
+     * 
+     * @param user is the name of the user that is being updated
      */
     public void updateUser(UserModel user) {
         try {
@@ -115,12 +123,17 @@ public class UserDaoMysqlImpl implements UserDao {
             ps.setString(3, user.getName());
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(UserDaoMysqlImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DaoMysqlImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
     
-    
+     /**
+     * Checks if the user exist in the db.
+     * 
+     * @param uName is the username of the user performing the login.
+     * @param uPass is the password of the user performing the login.
+     */
     @Override
     public UserModel getUser(String uName, String uPass){
         UserModel u = null;
@@ -168,7 +181,7 @@ public class UserDaoMysqlImpl implements UserDao {
     /**
      * Gets the username, password and role
      *
-     * @param name
+     * @param name is the username
      * @return
      */
     public UserModel getName(String name) {

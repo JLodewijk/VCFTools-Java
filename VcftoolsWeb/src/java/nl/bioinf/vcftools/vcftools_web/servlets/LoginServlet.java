@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import nl.bioinf.vcftools.vcftools_web.db.DbConnector;
 import nl.bioinf.vcftools.vcftools_web.pojo.UserModel;
-import nl.vcftools.vcftools_web.dao.UserDao;
-import nl.vcftools.vcftools_web.dao.UserDaoFactory;
-import nl.vcftools.vcftools_web.dao.UserDaoMysqlImpl;
+import nl.vcftools.vcftools_web.dao.Dao;
+import nl.vcftools.vcftools_web.dao.DaoFactory;
+import nl.vcftools.vcftools_web.dao.DaoMysqlImpl;
 
 public class LoginServlet extends HttpServlet {
     private Connection connection;
-    private UserDaoMysqlImpl dao;
+    private DaoMysqlImpl dao;
 
     /**
      * Makes contact with the database.
@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 
     public LoginServlet() {
         connection = DbConnector.getConnection();
-	dao = new UserDaoMysqlImpl();
+	dao = new DaoMysqlImpl();
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -98,7 +98,7 @@ public class LoginServlet extends HttpServlet {
     }
     private UserModel loginUser(String user, String pass) {
         UserModel u = null;
-        UserDao dao = UserDaoFactory.getInstance(UserDaoFactory.DbType.MYSQL);
+        Dao dao = DaoFactory.getInstance(DaoFactory.DbType.MYSQL);
         String url = "jdbc:mysql://mysql.bin/Jlodewijk";
         String dbPass = "jeroen";
         String dbUser = "jlodewijk";

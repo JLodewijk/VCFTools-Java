@@ -11,10 +11,10 @@ package nl.vcftools.vcftools_web.dao;
  *
  * @author michiel
  */
-public class UserDaoFactory {
-    public static UserDao getInstance(DbType type){
+public class DaoFactory {
+    public static Dao getInstance(DbType type){
         switch(type){
-            case MYSQL: return UserDaoMysqlImpl.getInstance();
+            case MYSQL: return DaoMysqlImpl.getInstance();
             default: throw new UnsupportedOperationException("type " + type + " si not supported yet!");
         }
     }
