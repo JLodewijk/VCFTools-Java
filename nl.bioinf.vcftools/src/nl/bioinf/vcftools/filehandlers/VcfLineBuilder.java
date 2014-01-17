@@ -44,6 +44,11 @@ public class VcfLineBuilder {
     public VcfLine make() {
         return new VcfLine(vcb.make());
     }
+
+    @Override
+    public String toString() {
+        return "VcfLineBuilder{" + "vcb=" + vcb + '}';
+    }
     
     
     
