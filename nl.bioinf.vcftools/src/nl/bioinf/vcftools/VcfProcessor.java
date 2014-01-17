@@ -80,7 +80,7 @@ public class VcfProcessor {
             VcfLine iteration = reader.getNextIter();
 
             // Perform all the filters and check if line has to stay or not
-            if (filterHandler.performFilters(iteration) == true) {
+            if (filterHandler.performSiteFilters(iteration) == true) {
                 writer.writeVcfLine(iteration);
             }
         }

@@ -34,7 +34,7 @@ import nl.bioinf.vcftools.filters.site.ExcludeSnp;
  */
 public class FilterFactory {
     private Settings settings;
-    private ArrayList<AbstractSimpleFilter> simpleFilters;
+    private ArrayList<AbstractSiteFilter> simpleFilters;
     
     public FilterFactory(Settings settings) {
         this.settings = settings;
@@ -74,11 +74,11 @@ public class FilterFactory {
         // to do add mask
     }
 
-    public ArrayList<AbstractSimpleFilter> getSimpleFilters() {
+    public ArrayList<AbstractSiteFilter> getSimpleFilters() {
         return simpleFilters;
     }
 
-    public void setSimpleFilters(ArrayList<AbstractSimpleFilter> simpleFilters) {
+    public void setSimpleFilters(ArrayList<AbstractSiteFilter> simpleFilters) {
         this.simpleFilters = simpleFilters;
     }
     

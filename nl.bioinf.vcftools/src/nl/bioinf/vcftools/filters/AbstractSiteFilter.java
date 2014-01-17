@@ -13,7 +13,7 @@ import nl.bioinf.vcftools.filters.AbstractFilter;
  * 
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  */
-public abstract class AbstractSimpleFilter extends AbstractFilter{
+public abstract class AbstractSiteFilter extends AbstractFilter{
     
 
     

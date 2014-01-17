@@ -9,14 +9,14 @@ package nl.bioinf.vcftools.filters.site;
 import java.util.ArrayList;
 import java.util.List;
 import nl.bioinf.vcftools.Settings;
-import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
+import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
  * this class filters a vcf line on allele count, returns true if line has to be kept, returns false if line is rejected
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
-public class MinorAlleleCount extends AbstractSimpleFilter {
+public class MinorAlleleCount extends AbstractSiteFilter {
     
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
