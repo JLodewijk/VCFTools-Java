@@ -15,7 +15,7 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
 import nl.bioinf.vcftools.filehandlers.VcfWriter;
 
 /**
- *
+ * Process the VcfFiles and perform the filters and statistics calculations
  * @author Marco Roelfes
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */

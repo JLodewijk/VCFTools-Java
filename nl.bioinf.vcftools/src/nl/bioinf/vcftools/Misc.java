@@ -11,7 +11,7 @@ import java.util.List;
 import org.broadinstitute.variant.variantcontext.Allele;
 
 /**
- *
+ * Miscellaneous static methods
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class Misc {
