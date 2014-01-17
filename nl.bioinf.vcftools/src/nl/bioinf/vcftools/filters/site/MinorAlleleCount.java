@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
-import nl.bioinf.vcftools.handlers.VcfLine;
+import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
  * this class filters a vcf line on allele count, returns true if line has to be kept, returns false if line is rejected

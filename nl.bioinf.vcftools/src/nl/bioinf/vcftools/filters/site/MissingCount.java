@@ -8,7 +8,7 @@ package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
-import nl.bioinf.vcftools.handlers.VcfLine;
+import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
  *

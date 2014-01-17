@@ -7,8 +7,8 @@
 package nl.bioinf.vcftools.filters;
 
 import java.util.HashMap;
-import nl.bioinf.vcftools.handlers.VcfGenotype;
-import nl.bioinf.vcftools.handlers.VcfLine;
+import nl.bioinf.vcftools.filehandlers.VcfGenotype;
+import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
  *

@@ -10,8 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.bioinf.vcftools.filters.FilterDependencies;
 import nl.bioinf.vcftools.filters.FilterHandler;
-import nl.bioinf.vcftools.handlers.VcfReader;
-import nl.bioinf.vcftools.handlers.VcfLine;
+import nl.bioinf.vcftools.filehandlers.VcfReader;
+import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
  *
