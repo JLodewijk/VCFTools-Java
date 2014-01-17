@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.bioinf.vcftools.handlers;
+package nl.bioinf.vcftools.filehandlers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,14 @@ public class VcfLine {
     @Override
     public String toString() {
         return "VcfLine{" + "vc=" + vc + '}';
+    }
+    
+    /**
+     * Get original GATK VariantContext for internal use
+     * @return 
+     */
+    public VariantContext getBroadinstituteVariantContext() {
+        return this.vc;
     }
     
     /**
@@ -215,6 +223,7 @@ public class VcfLine {
      * Get the genotype using the specified index number
      * @param index
      * @return 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public VcfGenotype getGenotype(int index) {
         return new VcfGenotype(this.vc.getGenotype(index));

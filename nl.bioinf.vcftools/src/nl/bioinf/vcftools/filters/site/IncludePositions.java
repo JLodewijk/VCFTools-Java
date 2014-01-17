@@ -9,7 +9,7 @@ package nl.bioinf.vcftools.filters.site;
 import java.util.ArrayList;
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
-import nl.bioinf.vcftools.handlers.VcfLine;
+import nl.bioinf.vcftools.filehandlers.VcfLine;
 import org.apache.commons.collections4.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
 

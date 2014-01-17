@@ -8,7 +8,7 @@ package nl.bioinf.vcftools.filters;
 import java.util.ArrayList;
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filters.FilterFactory;
-import nl.bioinf.vcftools.handlers.VcfLine;
+import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
  *

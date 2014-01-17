@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package nl.bioinf.vcftools.handlers;
+package nl.bioinf.vcftools.filehandlers;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -12,27 +12,29 @@ import org.broad.tribble.AbstractFeatureReader;
 import org.broad.tribble.FeatureReader;
 import org.broadinstitute.variant.variantcontext.VariantContext;
 import org.broadinstitute.variant.vcf.VCFCodec;
+import org.broadinstitute.variant.vcf.VCFHeader;
 
 /**
  * @author mhroelfes
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
-public class Vcf {
+public class VcfReader {
     
     private VCFCodec vcfCodec = new VCFCodec();
     private boolean requireIndex = false;
     private FeatureReader<VariantContext> reader;
     private Iterator<VariantContext> iter;
+    private VcfHeader header;
 
     /**
      * Contstructor using VCF filename as input.
      * @param file vcf input file
      * @throws IOException
      */
-    public Vcf(String file) throws IOException {
-        reader = AbstractFeatureReader.getFeatureReader(
-                file, vcfCodec, requireIndex);
-        iter = reader.iterator();
+    public VcfReader(String file) throws IOException {
+        this.reader = AbstractFeatureReader.getFeatureReader(file, vcfCodec, requireIndex);
+        this.header = new VcfHeader((VCFHeader) this.reader.getHeader());
+        this.iter = this.reader.iterator();
     }
 
 
@@ -41,7 +43,7 @@ public class Vcf {
      * @return next iteration
      */
     public VcfLine getNextIter() {
-        return new VcfLine(iter.next());
+        return new VcfLine(this.iter.next());
     }
 
      /**
@@ -49,7 +51,7 @@ public class Vcf {
      * @return next iteration
      */
     public VariantContext getNextIterAsVariantContext() {
-        return iter.next();
+        return this.iter.next();
     }
     
     /**
@@ -57,8 +59,26 @@ public class Vcf {
      * @return true if has next iteration
      */
     public boolean hasNextIter() {
-        return iter.hasNext();
+        return this.iter.hasNext();
     }
+
+    /**
+     * Get the header of the VCF file
+     * @return 
+     */
+    public VcfHeader getHeader() {
+        return this.header;
+    }
+    
+    /**
+     * Close read stream
+     * @throws IOException 
+     */
+    public void close() throws IOException {
+        this.reader.close();
+    }
+    
+    
 }
 
 

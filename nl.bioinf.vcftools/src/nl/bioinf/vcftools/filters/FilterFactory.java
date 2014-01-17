@@ -9,7 +9,7 @@ package nl.bioinf.vcftools.filters;
 import nl.bioinf.vcftools.filters.site.KeepInfo;
 import nl.bioinf.vcftools.filters.site.MinimalQuality;
 import nl.bioinf.vcftools.filters.site.RemoveInfo;
-import nl.bioinf.vcftools.filters.site.AlleleCount;
+import nl.bioinf.vcftools.filters.site.MinorAlleleCount;
 import nl.bioinf.vcftools.filters.site.MeanDepth;
 import nl.bioinf.vcftools.filters.site.RemoveSpecificFilter;
 import nl.bioinf.vcftools.filters.site.AlleleFrequencies;
@@ -25,9 +25,8 @@ import nl.bioinf.vcftools.filters.site.MissingCount;
 import nl.bioinf.vcftools.filters.site.RemoveFiltered;
 import nl.bioinf.vcftools.filters.site.NonRefAlleleFrequencies;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filters.site.ExcludeSnp;
 
 /**
  *
@@ -44,17 +43,16 @@ public class FilterFactory {
     
     public void createSimpleFilters() {
         this.simpleFilters = new ArrayList<>();
-        if (!this.settings.getChr().isEmpty()) { this.simpleFilters.add(new IncludeChromosome()); }
-        if (!this.settings.getNotChr().isEmpty()) { this.simpleFilters.add(new ExcludeChromosome()); }
+        if ((!this.settings.getChr().isEmpty()) || (!this.settings.getBed().isEmpty())) { this.simpleFilters.add(new IncludeChromosome()); }
+        if ((!this.settings.getNotChr().isEmpty()) || (!this.settings.getExludeBed().isEmpty())) { this.simpleFilters.add(new ExcludeChromosome()); }
         if (!this.settings.getSnp().isEmpty()) { this.simpleFilters.add(new IncludeSnp()); }
+        if (!this.settings.getExcludeSnp().isEmpty()) { this.simpleFilters.add(new ExcludeSnp()); }
         if (!this.settings.getPositions().isEmpty()) { this.simpleFilters.add(new IncludePositions()); }
         if (this.settings.getKeepInfo() != null) { this.simpleFilters.add(new KeepInfo()); }
         if (this.settings.isKeepIndels() != null) {
             if (this.settings.isKeepIndels() == true) { this.simpleFilters.add(new KeepIndels()); }
             if (this.settings.isKeepIndels() == false) { this.simpleFilters.add(new RemoveIndels()); }
         }
-        if (!this.settings.getBed().isEmpty()) { /* bed incl chromosome implementation */ }
-        if (!this.settings.getExludeBed().isEmpty()) { /* bed incl chromosome implementation */ }
         if (this.settings.isRemoveFilteredAll() != null) {
             if (this.settings.isRemoveFilteredAll() == true) { this.simpleFilters.add(new RemoveFiltered()); }
         }
@@ -71,7 +69,7 @@ public class FilterFactory {
         if (this.settings.getHwe() != null) { /* Hardy() */ }
         if (this.settings.getGeno() != null) { /* ?? */ }
         if (this.settings.getMaxMissingCount() != null) { this.simpleFilters.add(new MissingCount()); }
-        if ((this.settings.getMinAlleles() != null) && (this.settings.getMaxAlleles() != null)) { this.simpleFilters.add(new AlleleCount()); }
+        if ((this.settings.getMinAlleles() != null) && (this.settings.getMaxAlleles() != null)) { this.simpleFilters.add(new MinorAlleleCount()); }
         if (this.settings.getThin() != null) { this.simpleFilters.add(new Thinning()); }
         // to do add mask
     }

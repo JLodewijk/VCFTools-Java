@@ -7,7 +7,7 @@ package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
-import nl.bioinf.vcftools.handlers.VcfLine;
+import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
  * This class filters a vcf line based on position of the SNP, if a SNP is too close to another it returns false and the line is rejected.
