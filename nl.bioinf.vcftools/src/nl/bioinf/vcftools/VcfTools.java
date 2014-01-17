@@ -36,7 +36,7 @@ public class VcfTools {
         Settings settings = cli.getSettings();
         System.out.println(settings.getChr());
         
-        VcfReader vcfReader = new VcfReader(settings);
+        VcfProcessor vcfReader = new VcfProcessor(settings);
 
 //        System.out.println("bleep");
 //        System.out.println(settings.getInputFile());

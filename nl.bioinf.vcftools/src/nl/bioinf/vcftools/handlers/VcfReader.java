@@ -17,7 +17,7 @@ import org.broadinstitute.variant.vcf.VCFCodec;
  * @author mhroelfes
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
-public class Vcf {
+public class VcfReader {
     
     private VCFCodec vcfCodec = new VCFCodec();
     private boolean requireIndex = false;
@@ -29,7 +29,7 @@ public class Vcf {
      * @param file vcf input file
      * @throws IOException
      */
-    public Vcf(String file) throws IOException {
+    public VcfReader(String file) throws IOException {
         reader = AbstractFeatureReader.getFeatureReader(
                 file, vcfCodec, requireIndex);
         iter = reader.iterator();

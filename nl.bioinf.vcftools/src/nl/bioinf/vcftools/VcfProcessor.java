@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.bioinf.vcftools.filters.FilterDependencies;
 import nl.bioinf.vcftools.filters.FilterHandler;
-import nl.bioinf.vcftools.handlers.Vcf;
+import nl.bioinf.vcftools.handlers.VcfReader;
 import nl.bioinf.vcftools.handlers.VcfLine;
 
 /**
@@ -18,7 +18,7 @@ import nl.bioinf.vcftools.handlers.VcfLine;
  * @author Marco Roelfes
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
-public class VcfReader {
+public class VcfProcessor {
 
     /**
      * @param args
@@ -31,13 +31,13 @@ public class VcfReader {
      * The default constructor always needs the settings.
      * @param settings 
      */
-    public VcfReader(Settings settings) {
+    public VcfProcessor(Settings settings) {
         this.settings = settings;
         try {
             performDependencyCalculations();
             performFilters();
         } catch (IOException ex) {
-            Logger.getLogger(VcfReader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VcfProcessor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -46,7 +46,7 @@ public class VcfReader {
      * Perform all Dependency calculations
      */
     public void performDependencyCalculations() throws IOException {
-        Vcf vcf = new Vcf(settings.getInputFile());
+        VcfReader vcf = new VcfReader(settings.getInputFile());
         FilterDependencies filterDependencies = new FilterDependencies();
         
         // While vcf file has next iteration get next iteration
@@ -69,7 +69,7 @@ public class VcfReader {
      * @throws IOException
      */
     public void performFilters() throws IOException {
-        Vcf vcf = new Vcf(settings.getInputFile());
+        VcfReader vcf = new VcfReader(settings.getInputFile());
         FilterHandler filterHandler = new FilterHandler(this.settings);
         
         // While vcf file has next iteration get next iteration
