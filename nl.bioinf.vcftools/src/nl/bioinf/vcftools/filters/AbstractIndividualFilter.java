@@ -5,6 +5,7 @@
  */
 
 package nl.bioinf.vcftools.filters;
+import java.util.List;
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
@@ -14,14 +15,14 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  * 
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  */
-public abstract class AbstractContextDependentFilter extends AbstractFilter{
+public abstract class AbstractIndividualFilter extends AbstractFilter{
 
     /**
      * 
      * @param vcfLine
      * @param settings
-     * @param FilterDependencies
+     * @param filterDependencies
      * @return
      */
-    public abstract boolean filter(VcfLine vcfLine, Settings settings, Object filterDependencies);
+    public abstract List<Boolean> filter(VcfLine vcfLine, Settings settings, FilterDependencies filterDependencies);
 }
