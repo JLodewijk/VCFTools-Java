@@ -67,7 +67,7 @@ public class VcfReader {
      * @return 
      */
     public VcfHeader getHeader() {
-        return header;
+        return this.header;
     }
     
     /**
