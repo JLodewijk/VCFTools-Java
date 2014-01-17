@@ -35,6 +35,14 @@ public class VcfLine {
     }
     
     /**
+     * Get original GATK VariantContext for internal use
+     * @return 
+     */
+    public VariantContext getBroadinstituteVariantContext() {
+        return this.vc;
+    }
+    
+    /**
      * Get the identifier of the SNP of the line.
      * 
      * @return Identifier
@@ -215,6 +223,7 @@ public class VcfLine {
      * Get the genotype using the specified index number
      * @param index
      * @return 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public VcfGenotype getGenotype(int index) {
         return new VcfGenotype(this.vc.getGenotype(index));

@@ -12,6 +12,7 @@ import nl.bioinf.vcftools.filters.FilterDependencies;
 import nl.bioinf.vcftools.filters.FilterHandler;
 import nl.bioinf.vcftools.filehandlers.VcfReader;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
+import nl.bioinf.vcftools.filehandlers.VcfWriter;
 
 /**
  *
@@ -24,12 +25,13 @@ public class VcfProcessor {
      * @param args
      * @throws IOException
      */
-    
     private Settings settings;
 
     /**
      * The default constructor always needs the settings.
-     * @param settings 
+     *
+     * @param settings
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public VcfProcessor(Settings settings) {
         this.settings = settings;
@@ -40,49 +42,49 @@ public class VcfProcessor {
             Logger.getLogger(VcfProcessor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     /**
      * Perform all Dependency calculations
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public void performDependencyCalculations() throws IOException {
-        VcfReader vcf = new VcfReader(settings.getInputFile());
+        VcfReader reader = new VcfReader(settings.getInputFile());
         FilterDependencies filterDependencies = new FilterDependencies();
-        
-        // While vcf file has next iteration get next iteration
-        while (vcf.hasNextIter()) {
-            VcfLine iteration = vcf.getNextIter();
-            // Collect the dependencies of the vcf line
+
+        // While reader file has next iteration get next iteration
+        while (reader.hasNextIter()) {
+            VcfLine iteration = reader.getNextIter();
+            // Collect the dependencies of the reader line
             filterDependencies.collectDependencies(iteration);
         }
         // Calculate the dependencies (average etc)
         filterDependencies.calculateDependencies();
-        
+        reader.close();
     }
-    
 
     /**
-     * Reads VCF line for line while file has next line and performs the filters
+     * Reads VCF line by line while file has next line and performs the filters
      *
-     * @param file
-     * @return
      * @throws IOException
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public void performFilters() throws IOException {
-        VcfReader vcf = new VcfReader(settings.getInputFile());
+        VcfReader reader = new VcfReader(settings.getInputFile());
+        VcfWriter writer = new VcfWriter();
+        writer.writeHeader(reader.getHeader());
+
         FilterHandler filterHandler = new FilterHandler(this.settings);
-        
-        // While vcf file has next iteration get next iteration
-        while (vcf.hasNextIter()) {     
-              VcfLine iteration = vcf.getNextIter();
-              
-              // Perform all the filters and check if line has to stay or not
-              if (filterHandler.performFilters(iteration) == false) {
-                System.out.println("Removed:" + iteration.toString());
-              }
-              else {
-                System.out.println("Kept:" + iteration.toString());
-              }
+
+        // While reader file has next iteration get next iteration
+        while (reader.hasNextIter()) {
+            VcfLine iteration = reader.getNextIter();
+
+            // Perform all the filters and check if line has to stay or not
+            if (filterHandler.performFilters(iteration) == true) {
+                writer.writeVcfLine(iteration);
+            }
         }
+        reader.close();
+        writer.close();
     }
 }

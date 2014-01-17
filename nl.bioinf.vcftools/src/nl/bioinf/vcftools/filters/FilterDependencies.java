@@ -50,8 +50,8 @@ public class FilterDependencies {
      * Calculate dependencies after all collecting is finished
      */
     public void calculateDependencies() {
-        System.out.println(this.dp);
-        System.out.println(this.count);
+        //System.out.println(this.dp);
+        //System.out.println(this.count);
     }
     
 }
