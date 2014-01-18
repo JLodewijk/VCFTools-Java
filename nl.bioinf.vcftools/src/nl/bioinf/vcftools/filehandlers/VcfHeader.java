@@ -32,9 +32,14 @@ public class VcfHeader {
         return this.header;
     }
 
+    /**
+     * Get the genotype Samples
+     * @return 
+     */
     public List<String> getGenotypeSamples() {
         return this.header.getGenotypeSamples();
     }
+    
     @Override
     public String toString() {
         return "VcfHeader{" + "header=" + header + '}';
