@@ -18,9 +18,9 @@ public class RemoveSpecificFilter extends AbstractSiteFilter {
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         for (String filterSatus : vcfLine.getSpecificFilter()) {
-            return !settings.getKeepFiltered().contains(filterSatus);
+            return settings.getKeepFiltered().contains(filterSatus);
         }
-        return false;
+        return true;
     }
 
 }
