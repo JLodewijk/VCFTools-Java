@@ -26,6 +26,7 @@ public class VcfProcessor {
      * @throws IOException
      */
     private Settings settings;
+    private FilterDependencies filterDependencies;
 
     /**
      * The default constructor always needs the settings.
@@ -48,42 +49,60 @@ public class VcfProcessor {
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public void performDependencyCalculations() throws IOException {
+        /*
+        For now we are performing these dependency checks on the complete
+        individual. In future versions this could be limited all the sites
+        left after previously filtered sites so we get the behaviour of the
+        original vcftools. In this scenario the same FilterDependencies class 
+        can be used but then only feed it the VcfLines that are left after
+        the first site filters.
+        
+        One thing to look out for when changing this scenario is when to 
+        perform the (site) phased filter.
+        */
+        
         VcfReader reader = new VcfReader(settings.getInputFile());
-        FilterDependencies filterDependencies = new FilterDependencies();
+        this.filterDependencies = new FilterDependencies();
 
         // While reader file has next iteration get next iteration
         while (reader.hasNextIter()) {
             VcfLine iteration = reader.getNextIter();
             // Collect the dependencies of the reader line
-            filterDependencies.collectDependencies(iteration);
+            this.filterDependencies.collectDependencies(iteration);
         }
-        // Calculate the dependencies (average etc)
-        filterDependencies.calculateDependencies();
+        // Calculate the dependencies and close the reader
+        this.filterDependencies.calculateDependencies();
         reader.close();
     }
 
     /**
-     * Reads VCF line by line while file has next line and performs the filters
+     * Performs all the filters
      *
      * @throws IOException
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public void performFilters() throws IOException {
+        // build reader and writer
         VcfReader reader = new VcfReader(settings.getInputFile());
         VcfWriter writer = new VcfWriter();
+        
+        // Write header to output
         writer.writeHeader(reader.getHeader());
 
+        // Build the FilterHandler
         FilterHandler filterHandler = new FilterHandler(this.settings);
 
         // While reader file has next iteration get next iteration
         while (reader.hasNextIter()) {
             VcfLine iteration = reader.getNextIter();
 
-            // Perform all the filters and check if line has to stay or not
+            // Perform all the site filters and write it away if it may stay
             if (filterHandler.performSiteFilters(iteration) == true) {
                 writer.writeVcfLine(iteration);
             }
         }
+        
+        // close the reader and writer
         reader.close();
         writer.close();
     }
