@@ -27,6 +27,7 @@ import nl.bioinf.vcftools.filters.site.NonRefAlleleFrequencies;
 import java.util.ArrayList;
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filters.site.ExcludeSnp;
+import nl.bioinf.vcftools.filters.site.Mask;
 
 /**
  *
@@ -71,7 +72,8 @@ public class FilterFactory {
         if (this.settings.getMaxMissingCount() != null) { this.simpleFilters.add(new MissingCount()); }
         if ((this.settings.getMinAlleles() != null) && (this.settings.getMaxAlleles() != null)) { this.simpleFilters.add(new MinorAlleleCount()); }
         if (this.settings.getThin() != null) { this.simpleFilters.add(new Thinning()); }
-        // to do add mask
+        if (this.settings.getMaskFile() != null) {this.simpleFilters.add(new Mask());}
+// to do add mask
     }
 
     public ArrayList<AbstractSiteFilter> getSimpleFilters() {
