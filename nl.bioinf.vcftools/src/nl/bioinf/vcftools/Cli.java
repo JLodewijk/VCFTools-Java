@@ -94,8 +94,8 @@ public class Cli {
         opt.addOption("removeInfo", true, "this option can be used to exclude sites with a specific INFO flag");
         opt.addOption("keepInfo", true, "this option can be used to select sites on the basis of specific INFO flags, keepInfo is applied befor removeInfo if both are given");
         opt.addOption("minQ", true, "include only sites with Quality above this threshold. A Double is expected");
-        opt.addOption("minMeanDP", true, "include sites with mean Depth within the thresholds defined by the user. A Double is expected");
-        opt.addOption("maxMeanDP", true, "include sites with mean Depth within the thresholds defined by the user. A Double is expected");
+        opt.addOption("minMeanDp", true, "include sites with mean Depth within the thresholds defined by the user. A Double is expected");
+        opt.addOption("maxMeanDp", true, "include sites with mean Depth within the thresholds defined by the user. A Double is expected");
         opt.addOption("maf", true, "include only sites with Minor Allele Frequency within the specified range. A Double is expected");
         opt.addOption("maxMaf", true, "include only sites with Minor Allele Frequency within a range which is specified by the user. A Double is expected");
         opt.addOption("nonRefAf", true, "include only sites with all Non-Reference Allele Frequencies within the specified range. A Double is expected");
@@ -136,22 +136,67 @@ public class Cli {
     /**
      * Function to check if valid options are given
      */
-    public void checkOptions() {
+    private void checkOptions() {
         System.out.println("checking options....");
 
         if (this.args.length < 1) {
             usage();
         }
 
-        if ((this.cmd.hasOption("fromBp")) && ((!this.cmd.hasOption("chr")) && (!this.cmd.hasOption("notChr")))) {
-
-            System.err.println("The options -fromBp and -toBp can only be used in conjunction with -chr");
+        if (!this.cmd.hasOption("vcf")) {
+            System.err.println("To run this program a VCF file is required");
             System.exit(0);
         }
-        if (this.cmd.hasOption("fromBp") && !(this.cmd.hasOption("toBp") || this.cmd.hasOption("toBp") && !(this.cmd.hasOption("fromBp")))) {
-            System.err.println("When the option -fromBp is given the -toBp is also required and vice-versa");
-            usage();
+        if (((this.cmd.hasOption("fromBp")) || (this.cmd.hasOption("toBp"))) && ((!this.cmd.hasOption("chr")) && (!this.cmd.hasOption("notChr")))) {
+            System.err.println("The options -fromBp and -toBp can only be used in conjunction with -chr or -notChr");
+            System.exit(0);
         }
+        
+            /*Check if fromBp is used with toBp and vice-verca and if fromBp and
+              toBp is used with chr or notChr
+             Only last missing fromBp or toBp gives ArrayOutOfBounceError   */
+        if(this.cmd.hasOption("fromBp") || this.cmd.hasOption("toBp")){  
+            
+            for (int pointer = 0; pointer < this.args.length; pointer++) {
+         
+                    if(this.args[pointer].equals("-fromBp")){
+                        if(this.args[pointer+2].equals("-toBp")){
+                        if(!(this.args[pointer-2].equals("-notChr")) && !(this.args[pointer-2].equals("-chr"))){
+                            System.err.println("1 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
+                            System.exit(0);
+                        } 
+                        }
+                        else if(this.args[pointer-2].equals("-toBp")){
+                            if(!(this.args[pointer-4].equals("-chr")) && !(this.args[pointer-4].equals("-notChr"))){
+                            System.err.println("2 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
+                            System.exit(0);
+                           }
+                        } else{System.err.println("3 It is required to use -fromBp in conjunction with -toBp");
+                                System.exit(0);
+                        }
+                    }
+                   
+                   if(this.args[pointer].equals("-toBp")){
+                       if(this.args[pointer-2].equals("-fromBp")){
+                       if(!(this.args[pointer-4].equals("-chr")) && !(this.args[pointer-4].equals("-notChr"))){
+                           System.err.println("1b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
+                           System.exit(0);
+                        } 
+                       } else if(this.args[pointer+2].equals("-fromBp")){
+                       if(!(this.args[pointer-2].equals("-chr")) && !(this.args[pointer-2].equals("-notChr"))){
+                           System.err.println("2b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
+                           System.exit(0);
+                       }
+                       } else{System.err.println("3b It is required to use -fromBp in conjunction with -toBp");
+                                System.exit(0);
+                       }
+                     
+                   }
+                    
+                }
+            }
+
+//        }
         if (this.cmd.hasOption("removeFilteredAll") && (this.cmd.hasOption("removeFiltered") || this.cmd.hasOption("keepFiltered"))) {
             System.err.println("When option -removeFilteredAll is given the options -removeFilterd or -keepFilterd are not allowed");
             System.exit(0);
@@ -165,23 +210,23 @@ public class Cli {
                     + " the -keepFiltered option will be executed first.");
         }
 
-        if (cmd.hasOption("minMeanDP") && !(cmd.hasOption("maxMeanDP")) || cmd.hasOption("maxMeanDP") && !(cmd.hasOption("minMeanDP"))) {
-            System.err.println("It is obliged to use the options -minMeanDP and -maxMeanDP together");
+        if (cmd.hasOption("minMeanDp") && !(cmd.hasOption("maxMeanDp")) || cmd.hasOption("maxMeanDp") && !(cmd.hasOption("minMeanDp"))) {
+            System.err.println("It is required to use the options -minMeanDp and -maxMeanDp together");
             System.exit(0);
         }
         if (cmd.hasOption("maf") && !(cmd.hasOption("maxMaf")) || cmd.hasOption("maxMaf") && !(cmd.hasOption("maf"))) {
-            System.err.println("It is obliged to use the options -maf and -maxMaf together");
+            System.err.println("It is required to use the options -maf and -maxMaf together");
         }
         if (cmd.hasOption("nonRefAf") && !(cmd.hasOption("maxNonRefAf")) || cmd.hasOption("maxNonRefAf") && !(cmd.hasOption("nonRefAf"))) {
-            System.err.println("It is obliged to use the options -nonRefAf and -maxNonRefAf together");
+            System.err.println("It is required to use the options -nonRefAf and -maxNonRefAf together");
             System.exit(0);
         }
         if (cmd.hasOption("mac") && !(cmd.hasOption("maxMac")) || cmd.hasOption("maxMac") && !(cmd.hasOption("mac"))) {
-            System.err.println("It is obliged to use the options -mac and -maxMac together");
+            System.err.println("It is required to use the options -mac and -maxMac together");
             System.exit(0);
         }
         if (cmd.hasOption("nonRefAc") && !(cmd.hasOption("maxNonRefAc")) || cmd.hasOption("maxNonRefAc") && !(cmd.hasOption("nonRefAc"))) {
-            System.err.println("It is obliged to use the options -nonRefAc and -maxNonRefAc together");
+            System.err.println("It is required to use the options -nonRefAc and -maxNonRefAc together");
             System.exit(0);
         }
         if (cmd.hasOption("geno")) {
@@ -192,13 +237,22 @@ public class Cli {
             }
         }
         if (cmd.hasOption("minAlleles") && !(cmd.hasOption("maxAlleles")) || cmd.hasOption("maxAlleles") && !(cmd.hasOption("minAlleles"))) {
-            System.err.println("It is obliged to use the options -minAlleles and -maxAlleles together and vice-versa");
+            System.err.println("It is required to use the options -minAlleles and -maxAlleles together and vice-versa");
             System.exit(0);
         }
 
         if (this.cmd.hasOption("minIndvMeanDp") && !(this.cmd.hasOption("maxIndvMeanDP")) || this.cmd.hasOption("maxIndvMeanDP") && !(this.cmd.hasOption("minIndvMeanDp"))) {
-            System.err.println("It is obliged to use the options -minIndvMeanDp and -maxIndvMeanDP together and vice-versa");
+            System.err.println("It is required to use the options -minIndvMeanDp and -maxIndvMeanDP together and vice-versa");
             System.exit(0);
+        }
+
+        if (this.cmd.hasOption("thin")) {
+            int thinValue = Integer.parseInt(this.cmd.getOptionValue("thin"));
+            if (thinValue < 1) {
+                System.err.println("The argument for the option -thin can not be less than 1");
+                System.exit(0);
+            }
+
         }
 
         if (cmd.hasOption("vcf")) {
@@ -287,7 +341,7 @@ public class Cli {
     /**
      * Function to set the Settings
      */
-    public void procesOptions() {
+    private void procesOptions() {
 
 //         Settings settings = new Settings();
         if (this.cmd.hasOption("h")) {
@@ -311,21 +365,40 @@ public class Cli {
             for (int pointer = 0; pointer < this.args.length; pointer++) {
                 if (this.args[pointer].equals("-chr")) {
 
-                    int fromValuePointer = pointer + 2;
-                    int toValueFactor = pointer + 4;
-
+                    int fromValuePointer = 0;
+                    int toValueFactor = 0;
                     if (pointer + 2 == this.args.length) {
-
                         settings.addChr(this.args[pointer + 1]);
                         break;
                     }
+                    if (!this.args[pointer + 2].equals("-fromBp")
+                            || !this.args[pointer + 2].equals("-chr")
+                            || !this.args[pointer + 2].equals("-toBp")) {
+                    } else {
+                        settings.addChr(this.args[pointer + 1]);
+                    }
+
+                    if (args[pointer + 2].equals("-fromBp")) {
+                        fromValuePointer = pointer + 2;
+                    } else if (args[pointer + 4].equals("-fromBp")) {
+                        fromValuePointer = pointer + 4;
+                    }
+
+                    if (args[pointer + 2].equals("-toBp")) {
+                        toValueFactor = pointer + 2;
+                    } else if (args[pointer + 4].equals("-toBp")) {
+                        toValueFactor = pointer + 4;
+                    }
+
                     if (this.args[fromValuePointer].equals("-fromBp") && this.args[toValueFactor].equals("-toBp")) {
                         int fromBp = Integer.parseInt(this.args[fromValuePointer + 1]);
                         int toBp = Integer.parseInt(this.args[toValueFactor + 1]);
                         settings.addChr(this.args[pointer + 1], fromBp, toBp);
+
                     } else {
 
                         settings.addChr(this.args[pointer + 1]);
+
                     }
 
                 }
@@ -338,21 +411,41 @@ public class Cli {
             for (int pointer = 0; pointer < this.args.length; pointer++) {
                 if (this.args[pointer].equals("-notChr")) {
 
-                    int fromValuePointer = pointer + 2;
-                    int toValueFactor = pointer + 4;
-
+                    int fromValuePointer = 0;
+                    int toValueFactor = 0;
                     if (pointer + 2 == this.args.length) {
 
                         settings.addNotChr(this.args[pointer + 1]);
                         break;
                     }
+                    if (!this.args[pointer + 2].equals("-fromBp")
+                            || !this.args[pointer + 2].equals("-notChr")
+                            || !this.args[pointer + 2].equals("-toBp")) {
+                    } else {
+                        settings.addNotChr(this.args[pointer + 1]);
+                    }
+
+                    if (args[pointer + 2].equals("-fromBp")) {
+                        fromValuePointer = pointer + 2;
+                    } else if (args[pointer + 4].equals("-fromBp")) {
+                        fromValuePointer = pointer + 4;
+                    }
+
+                    if (args[pointer + 2].equals("-toBp")) {
+                        toValueFactor = pointer + 2;
+                    } else if (args[pointer + 4].equals("-toBp")) {
+                        toValueFactor = pointer + 4;
+                    }
+
                     if (this.args[fromValuePointer].equals("-fromBp") && this.args[toValueFactor].equals("-toBp")) {
                         int fromBp = Integer.parseInt(this.args[fromValuePointer + 1]);
                         int toBp = Integer.parseInt(this.args[toValueFactor + 1]);
                         settings.addNotChr(this.args[pointer + 1], fromBp, toBp);
+
                     } else {
 
                         settings.addNotChr(this.args[pointer + 1]);
+
                     }
 
                 }
@@ -452,13 +545,13 @@ public class Cli {
             settings.setMinQ(minQValue);
         }
 
-        if (this.cmd.hasOption("minMeanDP")) {
-            Double minMeanDP = Double.parseDouble(this.cmd.getOptionValue("minMeanDP"));
-            settings.setMinMeanDp(minMeanDP);
+        if (this.cmd.hasOption("minMeanDp")) {
+            Double minMeanDp = Double.parseDouble(this.cmd.getOptionValue("minMeanDp"));
+            settings.setMinMeanDp(minMeanDp);
         }
-        if (this.cmd.hasOption("maxMeanDP")) {
-            Double maxMeanDP = Double.parseDouble(this.cmd.getOptionValue("maxMeanDP"));
-            settings.setMaxMeanDp(maxMeanDP);
+        if (this.cmd.hasOption("maxMeanDp")) {
+            Double maxMeanDp = Double.parseDouble(this.cmd.getOptionValue("maxMeanDp"));
+            settings.setMaxMeanDp(maxMeanDp);
 
         }
         if (this.cmd.hasOption("maf")) {
