@@ -6,6 +6,7 @@
 
 package nl.bioinf.vcftools.filehandlers;
 
+import java.util.List;
 import org.broadinstitute.variant.vcf.VCFHeader;
 
 /**
@@ -22,7 +23,7 @@ public class VcfHeader {
     public VcfHeader(VCFHeader header) {
         this.header = header;
     }
-    
+
     /**
      * Get original GATK VCFHeader for internal use
      * @return 
@@ -31,6 +32,9 @@ public class VcfHeader {
         return this.header;
     }
 
+    public List<String> getGenotypeSamples() {
+        return this.header.getGenotypeSamples();
+    }
     @Override
     public String toString() {
         return "VcfHeader{" + "header=" + header + '}';
