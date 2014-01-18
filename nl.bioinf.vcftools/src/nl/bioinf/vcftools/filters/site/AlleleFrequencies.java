@@ -20,12 +20,18 @@ public class AlleleFrequencies extends AbstractSiteFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-            Object valObj = vcfLine.getAttributeAsDouble("AF");
+            Object valObj = vcfLine.getAttribute("AF");
             //System.out.println(valObj.getClass().getName());
-            
+            System.out.println(valObj.getClass().getName());
             if (valObj instanceof String) {
                 //handle single value
-                Double val = Double.valueOf((String) valObj);
+
+	
+
+                //System.out.println(valObj.getClass().getName());
+
+
+                double val = Double.valueOf((String) valObj);
                 //if val is between threshold approve line, else reject line
                 if (val < settings.getMaxMaf() && val > settings.getMaf()) {
                     return true;
@@ -36,11 +42,14 @@ public class AlleleFrequencies extends AbstractSiteFilter{
             } else {
                 boolean keep = true;
                 //ArrayList value
-                ArrayList<Double> values = (ArrayList<Double>) valObj;
+                System.out.println("test1");
+                System.out.println(valObj);
+                ArrayList<String> values = (ArrayList<String>) valObj;
+                System.out.println("test2");
                 List<Double> valuesDoubles = new ArrayList<Double>();
                 //set String ArrayList to Double ArrayList            
-                for (Double d : values) {
-                    valuesDoubles.add(d != null ? d : null);
+                for (String str : values) {
+                    valuesDoubles.add(str != null ? Double.parseDouble(str) : null);
                 }
                 //for every double in ArrayList check if between threshold
                 for (double dValue : valuesDoubles) {
