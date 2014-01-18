@@ -25,7 +25,7 @@ public class MeanDepth extends AbstractSiteFilter {
             VcfGenotype genotype = vcfLine.getGenotype(i);
             genoDept = genoDept + genotype.getDp();
         }
-        return settings.getMinMeanDp() <= (genoDept / (double) vcfLine.getGenotypeNumber()) && settings.getMaxMeanDp() >= (genoDept / (double) vcfLine.getGenotypeNumber());
+        return settings.getMinMeanDp() <= ((double) genoDept / (double) vcfLine.getGenotypeNumber()) && settings.getMaxMeanDp() >= ((double) genoDept / (double) vcfLine.getGenotypeNumber());
 
     }
 

@@ -36,11 +36,11 @@ public class AlleleFrequencies extends AbstractSiteFilter{
             } else {
                 boolean keep = true;
                 //ArrayList value
-                ArrayList<String> values = (ArrayList<String>) valObj;
+                ArrayList<Double> values = (ArrayList<Double>) valObj;
                 List<Double> valuesDoubles = new ArrayList<Double>();
                 //set String ArrayList to Double ArrayList            
-                for (String str : values) {
-                    valuesDoubles.add(str != null ? Double.parseDouble(str) : null);
+                for (Double d : values) {
+                    valuesDoubles.add(d != null ? d : null);
                 }
                 //for every double in ArrayList check if between threshold
                 for (double dValue : valuesDoubles) {
