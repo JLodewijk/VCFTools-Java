@@ -218,6 +218,16 @@ public class VcfLine {
     public String getAttributeAsString(String attribute) {
         return this.vc.getAttributeAsString(attribute, null);
     }
+     /**
+     * Get an attribute of the SNP of the line.
+     * @param attribute The attribute to return its value of.
+     * @return Attribute value
+     * @author Marco Roelfes <marcoroelfes@gamil.com>
+     */
+    public Object getAttribute(String attribute) {
+        return this.vc.getAttribute(attribute);
+    }
+    
     
     /**
      * Get the genotype using the specified index number
@@ -225,6 +235,7 @@ public class VcfLine {
      * @return 
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
+    
     public VcfGenotype getGenotype(int index) {
         return new VcfGenotype(this.vc.getGenotype(index));
     }
