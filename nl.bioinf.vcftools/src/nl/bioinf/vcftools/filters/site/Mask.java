@@ -9,7 +9,6 @@ package nl.bioinf.vcftools.filters.site;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import nl.bioinf.vcftools.filehandlers.MaskFileReader;
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
@@ -35,7 +34,7 @@ public class Mask extends AbstractSiteFilter {
              digitList.add(Integer.parseInt(String.valueOf(digit)));
           }
           /*if value of chromosome is higher than -min mask, VCF line is removed*/
-          if(digitList.get(vcfLine.getPosition()-1) >= settings.getMaskMin()){
+          if(digitList.get(vcfLine.getPosition()-1) >= settings.getMaskMin()+1){
               test = false;}
 
         }
