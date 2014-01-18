@@ -28,6 +28,17 @@ public class VcfGenotype {
         this.gt = genotype;
     }
     
+    
+    /**
+     * Get original GATK Genotype for internal use
+     * @return 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
+     */
+    public Genotype getBroadinstituteGenotype() {
+        return this.gt;
+    } 
+    
+    
     /**
      * Get the alleles.
      * 
