@@ -1,7 +1,7 @@
 package nl.bioinf.vcftools.filters;
+
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
-
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -10,21 +10,13 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  */
 
 /**
- *
+ * Abstract class for non-context dependant (simple) filters.
+ * 
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+ * @author Sergio Bondietti <sergio@bondietti.nl>
  */
-public abstract class AbstractFilter {
-    int count;
-
-    /**
-     * 
-     * @param vcfLine
-     * @param settings
-     * @return
-     */
+public abstract class AbstractSiteFilter {
+    
     public abstract boolean filter(VcfLine vcfLine, Settings settings);
-        
-    public String toString() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 }

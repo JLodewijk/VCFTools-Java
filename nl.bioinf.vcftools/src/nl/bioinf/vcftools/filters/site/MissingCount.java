@@ -7,14 +7,14 @@
 package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
-import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
+import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
  *
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
-public class MissingCount extends AbstractSimpleFilter{
+public class MissingCount extends AbstractSiteFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {

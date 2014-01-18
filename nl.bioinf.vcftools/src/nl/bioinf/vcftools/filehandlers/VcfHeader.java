@@ -30,6 +30,11 @@ public class VcfHeader {
     public VCFHeader getBroadinstituteVCFHeader() {
         return this.header;
     }
+
+    @Override
+    public String toString() {
+        return "VcfHeader{" + "header=" + header + '}';
+    }
     
     
 }

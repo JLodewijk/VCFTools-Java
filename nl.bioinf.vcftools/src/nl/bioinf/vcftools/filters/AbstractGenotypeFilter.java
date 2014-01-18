@@ -5,23 +5,23 @@
  */
 
 package nl.bioinf.vcftools.filters;
+
+import java.util.List;
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
-
 /**
- * Abstract class for context dependent filters.
- * 
- * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+ *
+ * @author Sergio Bondietti <sergio@bondietti.nl>
  */
-public abstract class AbstractContextDependentFilter extends AbstractFilter{
-
+public abstract class AbstractGenotypeFilter {
+    
     /**
-     * 
+     * Abstract filter for genotypes
      * @param vcfLine
      * @param settings
-     * @param FilterDependencies
-     * @return
+     * @return 
      */
-    public abstract boolean filter(VcfLine vcfLine, Settings settings, Object filterDependencies);
+    public abstract List<Boolean> filter(VcfLine vcfLine, Settings settings);
+    
 }

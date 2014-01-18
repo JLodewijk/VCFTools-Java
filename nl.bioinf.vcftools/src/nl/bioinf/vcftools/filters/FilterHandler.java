@@ -11,26 +11,27 @@ import nl.bioinf.vcftools.filters.FilterFactory;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
- *
+ * Perform filters and return conditions
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class FilterHandler {
     private Settings settings;
-    private ArrayList<AbstractSimpleFilter> simpleFilters;
+    private ArrayList<AbstractSiteFilter> siteFilters;
 
     public FilterHandler(Settings settings) {
         this.settings = settings;
         FilterFactory filterFactory = new FilterFactory(this.settings);
-        this.simpleFilters = filterFactory.getSimpleFilters();
-        
-
-
+        this.siteFilters = filterFactory.getSimpleFilters();
     }
 
-    public boolean performFilters(VcfLine vcfLine) {
+    /**
+     * Perform all the filters
+     * @param vcfLine
+     * @return 
+     */
+    public boolean performSiteFilters(VcfLine vcfLine) {
         // perform filters
-        
-       for (AbstractSimpleFilter i : this.simpleFilters) {
+       for (AbstractSiteFilter i : this.siteFilters) {
             if (i.filter(vcfLine, settings) == false) {
                 return false;
             }

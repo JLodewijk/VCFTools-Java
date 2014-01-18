@@ -9,14 +9,14 @@ package nl.bioinf.vcftools.filters.site;
 import java.util.Collection;
 import java.util.List;
 import nl.bioinf.vcftools.Settings;
-import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
+import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
  *
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
-public class IncludeChromosome extends AbstractSimpleFilter{
+public class IncludeChromosome extends AbstractSiteFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {

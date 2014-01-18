@@ -7,7 +7,7 @@
 package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
-import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
+import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
@@ -15,7 +15,7 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
-public class MinimalQuality extends AbstractSimpleFilter{
+public class MinimalQuality extends AbstractSiteFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {

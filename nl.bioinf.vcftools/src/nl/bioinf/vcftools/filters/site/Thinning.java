@@ -6,14 +6,14 @@
 package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
-import nl.bioinf.vcftools.filters.AbstractSimpleFilter;
+import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
  * This class filters a vcf line based on position of the SNP, if a SNP is too close to another it returns false and the line is rejected.
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
-public class Thinning extends AbstractSimpleFilter {
+public class Thinning extends AbstractSiteFilter {
 
     int positionPreviousSnp;
 
