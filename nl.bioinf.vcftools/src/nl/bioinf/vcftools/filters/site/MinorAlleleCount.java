@@ -20,7 +20,7 @@ public class MinorAlleleCount extends AbstractSiteFilter {
     
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        Object valObj = vcfLine.getAttributeAsDouble("AC");
+        Object valObj = vcfLine.getAttribute("AC");
         //System.out.println(valObj.getClass().getName());
         if (valObj instanceof String) {
             //handle single value
