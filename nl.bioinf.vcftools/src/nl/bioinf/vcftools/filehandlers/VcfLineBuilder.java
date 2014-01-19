@@ -6,6 +6,9 @@
 
 package nl.bioinf.vcftools.filehandlers;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.broadinstitute.variant.variantcontext.Genotype;
 import org.broadinstitute.variant.variantcontext.VariantContextBuilder;
 
 /**
@@ -14,14 +17,7 @@ import org.broadinstitute.variant.variantcontext.VariantContextBuilder;
  */
 public class VcfLineBuilder {
     private VariantContextBuilder vcb;
-
-    /**
-     * Default Constructor making empty builder object
-     */
-    public VcfLineBuilder() {
-        this.vcb = new VariantContextBuilder();
-    }
-  
+ 
     /**
      * Constructor using VcfLine as base
      * @param vcfline 
@@ -32,9 +28,14 @@ public class VcfLineBuilder {
     
     /**
      * Set the genotypes of this VcfLine
+     * @param genotypes
      */
-    public void setGenotypes() {
-        // to do insert/replace genotypes
+    public void setGenotypes(List<VcfGenotype> genotypes) {
+        List<Genotype> biGenotypes = new ArrayList<>();
+        for (VcfGenotype i : genotypes) {
+            biGenotypes.add(i.getBroadinstituteGenotype());
+        }
+        this.vcb.genotypes(biGenotypes);
     }
     
     /**
