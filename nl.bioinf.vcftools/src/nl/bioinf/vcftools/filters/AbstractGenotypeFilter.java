@@ -17,7 +17,7 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
 public abstract class AbstractGenotypeFilter {
     
     /**
-     * Abstract filter for genotypes
+     * Abstract class for genotype filters
      * @param vcfLine
      * @param settings
      * @return 

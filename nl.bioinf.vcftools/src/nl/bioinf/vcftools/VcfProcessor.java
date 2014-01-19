@@ -52,6 +52,7 @@ public class VcfProcessor {
      * Perform all Dependency calculations
      *
      * @author Sergio Bondietti <sergio@bondietti.nl>
+     * @throws java.io.IOException
      */
     public void performDependencyCalculations() throws IOException {
         /*

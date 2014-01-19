@@ -17,7 +17,7 @@ import nl.bioinf.vcftools.Settings;
 public abstract class AbstractIndividualFilter {
 
     /**
-     * Abstract filter for Individuals
+     * Abstract class for individual filters
      * @param settings
      * @param filterDependencies
      * @return

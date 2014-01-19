@@ -20,6 +20,7 @@ public class VcfTools {
 
     /**
      * @param args the command line arguments
+     * @throws org.apache.commons.cli.ParseException
      */
     public static void main(String[] args) throws ParseException {
         // TODO code application logic here
