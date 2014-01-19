@@ -6,7 +6,9 @@
 
 package nl.bioinf.vcftools.filters;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import nl.bioinf.vcftools.filehandlers.VcfGenotype;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
@@ -15,9 +17,9 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class FilterDependencies {
-    private HashMap<Integer, Integer> totalDp;
-    private HashMap<Integer, Double> meanDp;
-    private HashMap<Integer, Boolean> Phased;
+    private List<Integer> totalDp;
+    private List<Double> meanDp;
+    private List<Boolean> Phased;
     private int siteCount;
     
     
@@ -25,9 +27,9 @@ public class FilterDependencies {
      * Default constructor
      */
     public FilterDependencies() {
-        this.totalDp = new HashMap<>();
-        this.meanDp = new HashMap<>();
-        this.Phased = new HashMap<>();
+        this.totalDp = new ArrayList<>();
+        this.meanDp = new ArrayList<>();
+        this.Phased = new ArrayList<>();
         this.siteCount = 0;
     }
              
@@ -41,13 +43,13 @@ public class FilterDependencies {
             VcfGenotype genotype = vcfLine.getGenotype(i);           
             // If first collection of data then prefil datasets
             if (this.siteCount == 0) {
-                this.totalDp.put(i, 0);
-                this.Phased.put(i, false);
+                this.totalDp.set(i, 0);
+                this.Phased.set(i, false);
             }        
             // Store depths total
-            this.totalDp.put(i, (this.totalDp.get(i) + genotype.getDp()));
+            this.totalDp.set(i, (this.totalDp.get(i) + genotype.getDp()));
             // When we find a phased the whole individual is one totally unphased and can be kept
-            if (genotype.isPhased() == true) { this.Phased.put(i, true); }    
+            if (genotype.isPhased() == true) { this.Phased.set(i, true); }    
         }
         // The original vcftools also calculates size when genotype is empty so one combined total counter will be okay
         this.siteCount++;
@@ -57,8 +59,10 @@ public class FilterDependencies {
      * Calculate dependencies after all collecting is finished
      */
     public void calculateDependencies() {
-        for (Integer key : this.totalDp.keySet()) {
-            this.meanDp.put(key, ((double)this.totalDp.get(key) / (double)this.siteCount));
+        int index = 0;
+        for (Integer i : this.totalDp) {
+            this.meanDp.set(index, ((double)i / (double)this.siteCount));
+            index++;
         }
     }
 
@@ -66,7 +70,7 @@ public class FilterDependencies {
      * Get a list of meanDP per individual
      * @return 
      */
-    public HashMap<Integer, Double> getMeanDp() {
+    public List<Double> getMeanDp() {
         return meanDp;
     }
     
@@ -74,7 +78,7 @@ public class FilterDependencies {
      * Get if there is phased data per individual, if its all unphased it returns false
      * @return 
      */
-    public HashMap<Integer, Boolean> getPhased() {
+    public List<Boolean> getPhased() {
         return Phased;
     } 
     
