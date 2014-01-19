@@ -11,7 +11,7 @@ import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
- *
+ * Check if meandepth is between threshold given by the user
  * @author mhroelfes <marcoroelfes@gmail.com>
  * 
  */
@@ -19,12 +19,15 @@ public class MeanDepth extends AbstractSiteFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
+        
         int genoNum = vcfLine.getGenotypeNumber();
         double genoDept = 0;
+        // calculate total depth
         for (int i = 0; i < genoNum; i++) {
             VcfGenotype genotype = vcfLine.getGenotype(i);
             genoDept = genoDept + genotype.getDp();
         }
+        //check if depth is between range
         return settings.getMinMeanDp() <= ((double) genoDept / (double) vcfLine.getGenotypeNumber()) && settings.getMaxMeanDp() >= ((double) genoDept / (double) vcfLine.getGenotypeNumber());
 
     }
