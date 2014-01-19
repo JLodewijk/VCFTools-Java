@@ -84,8 +84,8 @@ public class Cli {
         opt.addOption("positionsFile", true, "include a set of sites on the basis of a list of positions in a file");
         opt.addOption("excludePositions", true, "exclude a set of sites on the basis of a list of positions in a file");
         opt.addOption("excludePositionsFile", true, "exclude a set of sites on the basis of a list of positions in a file");
-        opt.addOption("keepOnlyIndels", false, "include or exclude sites that contain an indel");
-        opt.addOption("removeIndels", false, "exclude or exclude sites that contain an indel");
+        opt.addOption("keepOnlyIndels", true, "include or exclude sites that contain an indel");
+        opt.addOption("removeIndels", true, "exclude or exclude sites that contain an indel");
         opt.addOption("bed", true, "include a set of sites on the basis of a BED files");
         opt.addOption("exludeBed", true, "exclude a set of sites on the basis of a BED files");
         opt.addOption("removeFilteredAll", false, "this option removes all sites with a FILTER flag");
@@ -125,6 +125,13 @@ public class Cli {
         opt.addOption("phased", true, "first excludes all individuals having all genotypes unphased, and subsequently excludes all sites with unphased genotypes. The remaining data therefore consists of phased data only");
         opt.addOption("maxIndv", true, "randomly thins individuals so that only the specified number are retained. An integer is expected");
 
+//         Genotype
+        opt.addOption("removeFilteredGenoAll", false, "this option removes all genotypes based on a filter flag. Default filter flag is '.' or everything not equal to PASS");
+        opt.addOption("removeFilteredGeno", true, "this option removes all genotypes based on a specific filter flag.");
+        opt.addOption("minGq", true, "exclude all genotypes with a quality below the threshold specified by this option");
+        opt.addOption("minDp", true, "exclude all genotypes with a sequencing depth outside the range defined by -minDp and -maxDp");
+        opt.addOption("maxDp", true, "exclude all genotypes with a sequencing depth outside the range defined by -minDp and -maxDp");
+
 //         Statistics 
         opt.addOption("count", false, "this option results a file with a raw count of allele per site of a given VCF file with the suffix .frq.count");
         opt.addOption("freq", false, "outputs the allele frequency in a file with the suffix .frq");
@@ -151,52 +158,103 @@ public class Cli {
             System.err.println("The options -fromBp and -toBp can only be used in conjunction with -chr or -notChr");
             System.exit(0);
         }
-        
-            /*Check if fromBp is used with toBp and vice-verca and if fromBp and
-              toBp is used with chr or notChr
-             Only last missing fromBp or toBp gives ArrayOutOfBounceError   */
-        if(this.cmd.hasOption("fromBp") || this.cmd.hasOption("toBp")){  
-            
-            for (int pointer = 0; pointer < this.args.length; pointer++) {
-         
-                    if(this.args[pointer].equals("-fromBp")){
-                        if(this.args[pointer+2].equals("-toBp")){
-                        if(!(this.args[pointer-2].equals("-notChr")) && !(this.args[pointer-2].equals("-chr"))){
-                            System.err.println("1 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-                            System.exit(0);
-                        } 
-                        }
-                        else if(this.args[pointer-2].equals("-toBp")){
-                            if(!(this.args[pointer-4].equals("-chr")) && !(this.args[pointer-4].equals("-notChr"))){
-                            System.err.println("2 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-                            System.exit(0);
-                           }
-                        } else{System.err.println("3 It is required to use -fromBp in conjunction with -toBp");
-                                System.exit(0);
-                        }
-                    }
-                   
-                   if(this.args[pointer].equals("-toBp")){
-                       if(this.args[pointer-2].equals("-fromBp")){
-                       if(!(this.args[pointer-4].equals("-chr")) && !(this.args[pointer-4].equals("-notChr"))){
-                           System.err.println("1b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-                           System.exit(0);
-                        } 
-                       } else if(this.args[pointer+2].equals("-fromBp")){
-                       if(!(this.args[pointer-2].equals("-chr")) && !(this.args[pointer-2].equals("-notChr"))){
-                           System.err.println("2b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-                           System.exit(0);
-                       }
-                       } else{System.err.println("3b It is required to use -fromBp in conjunction with -toBp");
-                                System.exit(0);
-                       }
-                     
-                   }
-                    
-                }
+
+        /*Check if fromBp is used with toBp and vice-verca and if fromBp and
+         toBp is used with chr or notChr
+         Only last missing fromBp or toBp gives ArrayOutOfBounceError   */
+        if (this.cmd.hasOption("fromBp") || this.cmd.hasOption("toBp")) {
+            if (this.cmd.getOptionValues("fromBp").length != this.cmd.getOptionValues("toBp").length) {
+                System.err.println("It is required to use the option -fromBp and -toBp together");
+                System.exit(0);
             }
 
-//        }
+            for (int pointer = 0; pointer < this.args.length; pointer++) {
+//                System.out.println(this.args[pointer]);
+                    if(this.args[pointer].equals("-fromBp")){
+                       
+                        if(pointer+4 == this.args.length){
+                            if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
+                                System.err.println("error 1");
+                                System.exit(0);
+                            }
+                     }
+                        if(pointer+2 == this.args.length){
+                         if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
+                                System.err.println("error 2");
+                                System.exit(0);
+                            }
+                        }
+                    if(this.args[pointer-2].equals("-toBp")){
+                        System.out.println(this.args[pointer+1]);
+                        if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
+                                System.err.println("error 1b");
+                                System.exit(0);
+                            }
+                    }
+                    if(this.args[pointer+2].equals("-toBp")){
+                     if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
+                                System.err.println("error 2b");
+                                System.exit(0);
+                            }
+                    }
+                        
+                        
+                        
+                    }
+//                       
+//                        if(this.args[pointer+2].equals("-toBp") || this.args[pointer-2].equals("-to")){
+//                            if(Integer.parseInt(this.args[pointer+1]) > Integer.parseInt(this.args[pointer+3])){
+//                                System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
+//                                System.exit(0);
+//                            }
+//                        if(!(this.args[pointer-2].equals("-notChr")) && !(this.args[pointer-2].equals("-chr"))){
+//                            System.err.println("1 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
+//                            System.exit(0);
+//                        } 
+//                        }
+//                        else if(this.args[pointer-2].equals("-toBp")){
+//                            if(Integer.parseInt(this.args[pointer+1]) > Integer.parseInt(this.args[pointer-3])){
+//                            System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
+//                            System.exit(0);
+//                            }
+//                            if(!(this.args[pointer-4].equals("-chr")) && !(this.args[pointer-4].equals("-notChr"))){
+//                            System.err.println("2 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
+//                            System.exit(0);
+//                           }
+//                        } else{System.err.println("3 It is required to use -fromBp in conjunction with -toBp");
+//                                System.exit(0);
+//                        }
+//                    }
+//                   
+//                   if(this.args[pointer].equals("-toBp")){
+//                       if(this.args[pointer-2].equals("-fromBp")){
+//                           if(Integer.parseInt(this.args[pointer+1]) < Integer.parseInt(this.args[pointer-1])){
+//                                System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
+//                                System.exit(0);
+//                           }
+//                       if(!(this.args[pointer-4].equals("-chr")) && !(this.args[pointer-4].equals("-notChr"))){
+//                           System.err.println("1b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
+//                           System.exit(0);
+//                        } 
+//                       } else if(this.args[pointer+2].equals("-fromBp")){
+//                           if(Integer.parseInt(this.args[pointer+1]) < Integer.parseInt(this.args[pointer+3])){
+//                               System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
+//                               System.exit(0);
+//                           }
+//                       if(!(this.args[pointer-2].equals("-chr")) && !(this.args[pointer-2].equals("-notChr"))){
+//                           System.err.println("2b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
+//                           System.exit(0);
+//                       }
+//                       } else{System.err.println("3b It is required to use -fromBp in conjunction with -toBp");
+//                                System.exit(0);
+//                       }
+//                     
+//                   }
+                    
+                
+        }
+
+        }
         if (this.cmd.hasOption("removeFilteredAll") && (this.cmd.hasOption("removeFiltered") || this.cmd.hasOption("keepFiltered"))) {
             System.err.println("When option -removeFilteredAll is given the options -removeFilterd or -keepFilterd are not allowed");
             System.exit(0);
@@ -231,11 +289,9 @@ public class Cli {
         }
         if (cmd.hasOption("geno")) {
             String geno = cmd.getOptionValue("geno");
-            if(!geno.equals("1")){
-                if(!(geno.equals("0"))){
+            if (!(geno.equals("1")) || !(geno.equals("0"))) {
                 System.err.println("The option -geno only allows 1 or 0. Where 1 indicates no missing data allowed");
-                System.exit(0);                
-                }
+                System.exit(0);
             }
         }
         if (cmd.hasOption("minAlleles") && !(cmd.hasOption("maxAlleles")) || cmd.hasOption("maxAlleles") && !(cmd.hasOption("minAlleles"))) {
@@ -499,7 +555,7 @@ public class Cli {
             settings.setBedFile(this.cmd.getOptionValue("bed"));
         }
         if (this.cmd.hasOption("exludeBed")) {
-//      Bed bed = new Bed()
+//      Bed bed = new Bed();
 //        settings.setExludeBed(this.cmd.getOptionValue("exludeBed"));
         }
         if (this.cmd.hasOption("removeFilteredAll")) {
@@ -624,7 +680,7 @@ public class Cli {
         }
         if (this.cmd.hasOption("keepIndv")) {
             String keepIndv = this.cmd.getOptionValue("keepIndv");
-            String[] splitedKeptIndv = this.cmd.getOptionValues("keepIndv");
+            String[] splitedKeptIndv = keepIndv.split(",");
 
             for (String keepIndvItem : splitedKeptIndv) {
                 settings.addKeepIndv(keepIndvItem);
@@ -642,7 +698,6 @@ public class Cli {
             for (String removedIndvItem : splitedRemovedIndv) {
                 settings.addRemoveIndv(removedIndvItem);
             }
-
         }
         if (this.cmd.hasOption("removeIndvFile")) {
             settings.setRemoveIndvFile(this.cmd.getOptionValue("removeIndvFile"));
@@ -666,6 +721,33 @@ public class Cli {
             int maxIndv = Integer.parseInt(this.cmd.getOptionValue("maxIndv"));
             settings.setMaxIndv(maxIndv);
         }
+
+        if (this.cmd.hasOption("removeFilteredGenoAll")) {
+            settings.setRemoveFilteredGenoAll(Boolean.TRUE);
+        }
+
+        if (this.cmd.hasOption("removeFilteredGeno")) {
+            String removeFilteredGeno = this.cmd.getOptionValue("removeFilteredGeno");
+            String[] splitedRemoveFilteredGeno = removeFilteredGeno.split(",");
+
+            for (String removedFilterFlag : splitedRemoveFilteredGeno) {
+                settings.addRemoveFilteredGeno(removedFilterFlag);
+            }
+        }
+        if (this.cmd.hasOption("minGq")) {
+            Double minGq = Double.parseDouble(this.cmd.getOptionValue("minGq"));
+            settings.setMinGq(minGq);
+        }
+        if (this.cmd.hasOption("minDp")) {
+            Double minDp = Double.parseDouble(this.cmd.getOptionValue("minDp"));
+            settings.setMinDp(minDp);
+        }
+
+        if (this.cmd.hasOption("maxDp")) {
+            Double maxDp = Double.parseDouble(this.cmd.getOptionValue("maxDp"));
+            settings.setMaxDp(maxDp);
+        }
+
         if (this.cmd.hasOption("count")) {
             settings.setCount(true);
         }
