@@ -6,6 +6,7 @@
 package nl.bioinf.vcftools;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.bioinf.vcftools.filters.FilterDependencies;
@@ -99,16 +100,20 @@ public class VcfProcessor {
             // Perform all the site filters
             boolean siteFilterResult = filterHandler.performSiteFilters(iteration);
             
-
+            
             // Perform all the genotype filters
-            System.out.println(filterHandler.performGenotypeFilters(iteration));
+            List<Boolean> genotypeFilterResult = filterHandler.performGenotypeFilters(iteration);
+            
             
             // TODO: Perform the needed VcfLine editing here
             
             // Write the line away if SiteFilter allowed it
             if (siteFilterResult == true) {
                 writer.writeVcfLine(iteration);
+                System.out.println("GenotypeFilter for the line above: " + genotypeFilterResult);
             }
+            
+            
         }
         
         // close the reader and writer
