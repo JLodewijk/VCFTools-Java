@@ -231,9 +231,11 @@ public class Cli {
         }
         if (cmd.hasOption("geno")) {
             String geno = cmd.getOptionValue("geno");
-            if (!(geno.equals("1")) || !(geno.equals("0"))) {
+            if(!geno.equals("1")){
+                if(!(geno.equals("0"))){
                 System.err.println("The option -geno only allows 1 or 0. Where 1 indicates no missing data allowed");
-                System.exit(0);
+                System.exit(0);                
+                }
             }
         }
         if (cmd.hasOption("minAlleles") && !(cmd.hasOption("maxAlleles")) || cmd.hasOption("maxAlleles") && !(cmd.hasOption("minAlleles"))) {
