@@ -21,8 +21,8 @@ public class AlleleFrequencies extends AbstractSiteFilter{
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
             Object valObj = vcfLine.getAttribute("AF");
-            //System.out.println(valObj.getClass().getName());
-            System.out.println(valObj.getClass().getName());
+            
+            
             if (valObj instanceof String) {
                 //handle single value
 
@@ -42,10 +42,10 @@ public class AlleleFrequencies extends AbstractSiteFilter{
             } else {
                 boolean keep = true;
                 //ArrayList value
-                System.out.println("test1");
-                System.out.println(valObj);
+                
+                
                 ArrayList<String> values = (ArrayList<String>) valObj;
-                System.out.println("test2");
+                
                 List<Double> valuesDoubles = new ArrayList<Double>();
                 //set String ArrayList to Double ArrayList            
                 for (String str : values) {

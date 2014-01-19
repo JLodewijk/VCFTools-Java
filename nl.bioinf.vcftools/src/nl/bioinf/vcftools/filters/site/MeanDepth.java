@@ -13,7 +13,7 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
 /**
  *
  * @author mhroelfes <marcoroelfes@gmail.com>
- * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+ * 
  */
 public class MeanDepth extends AbstractSiteFilter {
 
