@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
@@ -16,9 +15,16 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  */
 public class MaximalAllelicRange extends AbstractSiteFilter {
 
+    /**
+     * Include only sites with allelic range lower than the maximal range.
+     *
+     * @param vcfLine
+     * @param settings
+     * @return boolean
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         return vcfLine.getNAllels() < settings.getMaxAlleles();
     }
-    
+
 }

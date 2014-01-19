@@ -16,6 +16,13 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  */
 public class RemoveFiltered extends AbstractSiteFilter {
 
+    /**
+     * Removes all sites with a FILTER flag (not PASS/.)
+     * 
+     * @param vcfLine
+     * @param settings
+     * @return boolean
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
 	return vcfLine.getNotFiltered();

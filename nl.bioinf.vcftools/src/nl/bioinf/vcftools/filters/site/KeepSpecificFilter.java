@@ -15,6 +15,13 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  */
 public class KeepSpecificFilter extends AbstractSiteFilter {
 
+    /**
+     * Select sites on the basis of specific filter flags.
+     *
+     * @param vcfLine
+     * @param settings
+     * @return boolean
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         for (String filterSatus : vcfLine.getSpecificFilter()) {
