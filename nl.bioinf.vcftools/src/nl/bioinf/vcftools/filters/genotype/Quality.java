@@ -24,7 +24,7 @@ public class Quality extends AbstractGenotypeFilter{
         List<Boolean> keep = new ArrayList<Boolean>();
         for(int i=1; i<number++; i++){
            double gq = vcfLine.getGenotype(i).getGq();
-            if(gq>minGQ){
+            if(gq>settings.getMinGQ()){
                 keep.add(true);
             }else{
                 keep.add(false);

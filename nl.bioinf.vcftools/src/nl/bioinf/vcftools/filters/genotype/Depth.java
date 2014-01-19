@@ -24,7 +24,7 @@ public class Depth extends AbstractGenotypeFilter{
         List<Boolean> keep = new ArrayList<Boolean>();
         for(int i=1; i<number++; i++){
             double dp = vcfLine.getGenotype(i).getDp();
-            if((dp>minDp && dp<maxDp)){
+            if((dp>settings.getMinDp()) && (dp<settings.getMaxDp())){
                 keep.add(true);
             } else{
                 keep.add(false);
