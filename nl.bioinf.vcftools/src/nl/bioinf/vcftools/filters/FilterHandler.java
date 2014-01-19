@@ -6,10 +6,8 @@
 package nl.bioinf.vcftools.filters;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import nl.bioinf.vcftools.Settings;
-import nl.bioinf.vcftools.filters.FilterFactory;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**

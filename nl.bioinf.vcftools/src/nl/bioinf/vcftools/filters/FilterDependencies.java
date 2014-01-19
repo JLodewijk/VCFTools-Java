@@ -7,7 +7,7 @@
 package nl.bioinf.vcftools.filters;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 import nl.bioinf.vcftools.filehandlers.VcfGenotype;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
