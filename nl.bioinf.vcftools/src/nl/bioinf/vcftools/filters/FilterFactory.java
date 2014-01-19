@@ -80,6 +80,7 @@ public class FilterFactory {
     }
     
     public void createGenotypeFilters() {
+        this.genotypeFilters = new ArrayList<>();
         if ((this.settings.getMinDp() != null) && (this.settings.getMaxDp() != null)) { this.genotypeFilters.add(new Depth()); }
         if (this.settings.getMinGq() != null) { this.genotypeFilters.add(new Quality()); }
     }
@@ -90,10 +91,6 @@ public class FilterFactory {
 
     public ArrayList<AbstractGenotypeFilter> getGenotypeFilters() {
         return genotypeFilters;
-    }
-
-    
-    
-    
+    } 
     
 }
