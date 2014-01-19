@@ -13,18 +13,21 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
 import nl.bioinf.vcftools.filters.AbstractGenotypeFilter;
 
 /**
- *
+ * checks if genotype quality is above threshold
  * @author Marco
  */
 public class Quality extends AbstractGenotypeFilter{
 
     @Override
     public List<Boolean> filter(VcfLine vcfLine, Settings settings) {
-        int number = vcfLine.getGenotypeNumber();
+        
+        int genoNum = vcfLine.getGenotypeNumber();
         List<Boolean> keep = new ArrayList<Boolean>();
-        for(int i=1; i<number++; i++){
+        //loops through genotypes in vcfLine
+        for(int i=0; i<genoNum; i++){
            double gq = vcfLine.getGenotype(i).getGq();
-            if(gq>settings.getMinGq()){
+           //checks if Quality is above thershold, if true add true to boolean list
+           if(gq>settings.getMinGq()){
                 keep.add(true);
             }else{
                 keep.add(false);
