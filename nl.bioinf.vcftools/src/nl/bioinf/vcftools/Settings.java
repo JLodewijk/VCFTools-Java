@@ -87,6 +87,13 @@ public class Settings {
     private Boolean phased;
     private Integer maxIndv;
     
+    /* Genotype filters */
+    private Boolean removeFilteredGenoAll;
+    private ArrayList<String> removeFilteredGeno;
+    private Double minGq;
+    private Double minDp;
+    private Double maxDp;
+      
     /* Statistics */
     private Boolean count;
     private Boolean freq;
@@ -115,6 +122,7 @@ public class Settings {
         this.invertMask = new MultiValueMap();
         this.keepIndv = new ArrayList<>();
         this.removeIndv = new ArrayList<>();
+        this.removeFilteredGeno = new ArrayList<>();
     }
 
     /**
@@ -1431,5 +1439,93 @@ public class Settings {
         this.depth = depth;
     }
 
+    /**
+     *
+     * @return
+     */
+    public Boolean isRemoveFilteredGenoAll() {
+        return removeFilteredGenoAll;
+    }
+
+    /**
+     *
+     * @param removeFilteredGenoAll
+     */
+    public void setRemoveFilteredGenoAll(Boolean removeFilteredGenoAll) {
+        this.removeFilteredGenoAll = removeFilteredGenoAll;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public ArrayList<String> getRemoveFilteredGeno() {
+        return removeFilteredGeno;
+    }
+
+    /**
+     *
+     * @param removeGenoFiltered
+     */
+    public void setRemoveFilteredGeno(ArrayList<String> removeGenoFiltered) {
+        this.removeFilteredGeno = removeGenoFiltered;
+    }
+    
+    /**
+     *
+     * @param removeGenoFiltered
+     */
+    public void addRemoveFilteredGeno(String removeGenoFiltered) {
+        this.removeFilteredGeno.add(removeGenoFiltered);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Double getMinGq() {
+        return minGq;
+    }
+
+    /**
+     *
+     * @param minGq
+     */
+    public void setMinGq(Double minGq) {
+        this.minGq = minGq;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Double getMinDp() {
+        return minDp;
+    }
+
+    /**
+     *
+     * @param minDp
+     */
+    public void setMinDp(Double minDp) {
+        this.minDp = minDp;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Double getMaxDp() {
+        return maxDp;
+    }
+
+    /**
+     *
+     * @param maxDp
+     */
+    public void setMaxDp(Double maxDp) {
+        this.maxDp = maxDp;
+    }
+    
 
 }
