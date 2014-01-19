@@ -95,9 +95,18 @@ public class VcfProcessor {
         // While reader file has next iteration get next iteration
         while (reader.hasNextIter()) {
             VcfLine iteration = reader.getNextIter();
+            
+            // Perform all the site filters
+            boolean siteFilterResult = filterHandler.performSiteFilters(iteration);
+            
 
-            // Perform all the site filters and write it away if it may stay
-            if (filterHandler.performSiteFilters(iteration) == true) {
+            // Perform all the genotype filters
+            System.out.println(filterHandler.performGenotypeFilters(iteration));
+            
+            // TODO: Perform the needed VcfLine editing here
+            
+            // Write the line away if SiteFilter allowed it
+            if (siteFilterResult == true) {
                 writer.writeVcfLine(iteration);
             }
         }
