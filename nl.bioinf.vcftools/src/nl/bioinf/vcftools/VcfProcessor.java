@@ -132,25 +132,24 @@ public class VcfProcessor {
         // When result is all true return original vcfLine
         if (!genotypeFilterResult.contains(false)) {
             return vcfLine;
-        } else {
-             
-            // Create list of Genotypes
+        } 
+        // When there are results contains false elements, store mutated genotypes
+        else {
+            // Create new list of Genotypes
             List<VcfGenotype> genoTypes = new ArrayList<>();
             int index = 0;
             // loop trough results
             for (Boolean i : genotypeFilterResult) {
-                // When result is true then add original genotype, else add an empty genotype
-                if (i == true) {
-                    genoTypes.add(vcfLine.getGenotype(index));
-                } else {
-                    // Create genotype object and clear the alleles then write it down
-                    VcfGenotype genotype = vcfLine.getGenotype(index);
-                    genotype.clearAlleles();
-                    genoTypes.add(genotype);
-                }
+                // When result is false remove alleles from original genotype
+                VcfGenotype genotype = vcfLine.getGenotype(index);
+                if (i == false) {
+                    genotype.clearAlleles();   
+                } 
+                // Store genotype in new list   
+                genoTypes.add(genotype); 
                 index++;
             }
-            // Build new vcfLine with changed genotypes
+            // Build new vcfLine with changed genotypes and return it
             vcfLine.setGenotypes(genoTypes);
             return vcfLine;
         }
