@@ -18,7 +18,8 @@ public class KeepIndels extends AbstractSiteFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-	return vcfLine.getIndel();
+        return vcfLine.getIndel();
+      
     }
     
 }
