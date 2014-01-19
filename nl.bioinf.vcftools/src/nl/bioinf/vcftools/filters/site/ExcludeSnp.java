@@ -18,7 +18,11 @@ public class ExcludeSnp extends AbstractSiteFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        return !settings.getExcludeSnp().contains(vcfLine.getId());
+        if(vcfLine.getId() != null){
+            return !settings.getExcludeSnp().contains(vcfLine.getId());
+        } else{
+            return false;
+        }
     }
     
 }

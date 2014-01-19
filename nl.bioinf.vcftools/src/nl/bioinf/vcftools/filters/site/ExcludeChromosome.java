@@ -21,6 +21,8 @@ public class ExcludeChromosome extends AbstractSiteFilter{
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         // chr input implementation (gets priority over the bed file)
+        
+        
         if (settings.getNotChr().containsKey(vcfLine.getChr())) {
             // loop trough list of positions in chromosome
             for (Object i:(Collection) settings.getNotChr().get(vcfLine.getChr())) {
@@ -32,6 +34,7 @@ public class ExcludeChromosome extends AbstractSiteFilter{
                 if((vcfLine.getPosition() >= (Integer) il.get(0)) && (vcfLine.getPosition() <= (Integer) il.get(1))) { return false; }          
             }
         }
+        
         // bed implementation 
         if (settings.getExludeBed().containsKey(vcfLine.getChr())) {
             // loop trough list of positions in chromosome
