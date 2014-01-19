@@ -15,6 +15,13 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  */
 public class RemoveSpecificFilter extends AbstractSiteFilter {
 
+    /**
+     * Removes specific filter statuses if it matches the condition given by the user.
+     * 
+     * @param vcfLine
+     * @param settings
+     * @return boolean
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         for (String filterSatus : vcfLine.getSpecificFilter()) {

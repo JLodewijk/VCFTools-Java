@@ -16,6 +16,13 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  */
 public class KeepIndels extends AbstractSiteFilter {
 
+    /**
+     * Include sites that contain an indel. This van mean any variant that alters the length of the REF allele.
+     *
+     * @param vcfLine
+     * @param settings
+     * @return boolean
+     */    
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         return vcfLine.getIndel();

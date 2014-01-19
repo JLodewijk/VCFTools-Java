@@ -16,6 +16,13 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  */
     public class NonRefAlleleCount extends AbstractSiteFilter {
 
+    /**
+     * Include only sites with all Non-Reference Allele Frequencies within the specified range.
+     * 
+     * @param vcfLine
+     * @param settings
+     * @return boolean
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
 	return vcfLine.getMinorAlleleCount() > settings.getMac();
