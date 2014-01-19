@@ -11,13 +11,14 @@ import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
- *
+ * check if the missingcount is not too high
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class MissingCount extends AbstractSiteFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
+        //if missingcount is not higher than threshold return true, else false
         return vcfLine.getAttributeAsDouble("Dels") < settings.getMaxMissingCount();
     }
     
