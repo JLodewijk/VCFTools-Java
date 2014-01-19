@@ -43,8 +43,8 @@ public class FilterDependencies {
             VcfGenotype genotype = vcfLine.getGenotype(i);           
             // If first collection of data then prefil datasets
             if (this.siteCount == 0) {
-                this.totalDp.set(i, 0);
-                this.Phased.set(i, false);
+                this.totalDp.add(0);
+                this.Phased.add(false);
             }        
             // Store depths total
             this.totalDp.set(i, (this.totalDp.get(i) + genotype.getDp()));
@@ -59,10 +59,8 @@ public class FilterDependencies {
      * Calculate dependencies after all collecting is finished
      */
     public void calculateDependencies() {
-        int index = 0;
         for (Integer i : this.totalDp) {
-            this.meanDp.set(index, ((double)i / (double)this.siteCount));
-            index++;
+            this.meanDp.add((double)i / (double)this.siteCount);
         }
     }
 
