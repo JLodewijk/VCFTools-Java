@@ -7,9 +7,6 @@ package nl.bioinf.vcftools;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.CommandLine;
@@ -47,7 +44,7 @@ public class Cli {
             this.cmd = parser.parse(this.option, args);
         } catch (ParseException e) {
             System.err.println(e.getLocalizedMessage());
-            System.exit(0);
+            System.exit(1);
         }
 
         checkOptions();
@@ -120,7 +117,7 @@ public class Cli {
         opt.addOption("removeIndv", true, "specify an individual to be removed from the analysis. A string is expected. If --indv also used, --indv will be applied first.");
         opt.addOption("removeIndvFile", true, "provide a file containing a list of individuals to exclude in subsequent analysis. Each individual ID (as defined in the VCF headerline) should be included on a separate line If --keep also used, --keep will be applied first");
         opt.addOption("minIndvMeanDp", true, "calculate the mean coverage on a per-individual basis. Only individuals with coverage of a minimal thresshold specified by these options are included in subsequent analyses. A Double is expected");
-        opt.addOption("maxIndvMeanDP", true, "calculate the mean coverage on a per-individual basis. Only individuals with coverage of a maximal thresshold specified by these options are included in subsequent analyses. A Double is expected");
+        opt.addOption("maxIndvMeanDp", true, "calculate the mean coverage on a per-individual basis. Only individuals with coverage of a maximal thresshold specified by these options are included in subsequent analyses. A Double is expected");
         opt.addOption("mind", true, "specify the minimum call rate threshold for each individual. A Double is expected");
         opt.addOption("phased", true, "first excludes all individuals having all genotypes unphased, and subsequently excludes all sites with unphased genotypes. The remaining data therefore consists of phased data only");
         opt.addOption("maxIndv", true, "randomly thins individuals so that only the specified number are retained. An integer is expected");
@@ -152,11 +149,11 @@ public class Cli {
 
         if (!this.cmd.hasOption("vcf")) {
             System.err.println("To run this program a VCF file is required");
-            System.exit(0);
+            System.exit(1);
         }
         if (((this.cmd.hasOption("fromBp")) || (this.cmd.hasOption("toBp"))) && ((!this.cmd.hasOption("chr")) && (!this.cmd.hasOption("notChr")))) {
             System.err.println("The options -fromBp and -toBp can only be used in conjunction with -chr or -notChr");
-            System.exit(0);
+            System.exit(1);
         }
 
         /*Check if fromBp is used with toBp and vice-verca and if fromBp and
@@ -165,64 +162,65 @@ public class Cli {
         if (this.cmd.hasOption("fromBp") || this.cmd.hasOption("toBp")) {
             if (this.cmd.getOptionValues("fromBp").length != this.cmd.getOptionValues("toBp").length) {
                 System.err.println("It is required to use the option -fromBp and -toBp together");
-                System.exit(0);
+                System.exit(1);
             }
+        }
 
-            for (int pointer = 0; pointer < this.args.length; pointer++) {
-//                System.out.println(this.args[pointer]);
-                    if(this.args[pointer].equals("-fromBp")){
-                       
-                        if(pointer+4 == this.args.length){
-                            if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
-                                System.err.println("error 1");
-                                System.exit(0);
-                            }
-                     }
-                        if(pointer+2 == this.args.length){
-                         if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
-                                System.err.println("error 2");
-                                System.exit(0);
-                            }
-                        }
-                    if(this.args[pointer-2].equals("-toBp")){
-                        System.out.println(this.args[pointer+1]);
-                        if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
-                                System.err.println("error 1b");
-                                System.exit(0);
-                            }
-                    }
-                    if(this.args[pointer+2].equals("-toBp")){
-                     if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
-                                System.err.println("error 2b");
-                                System.exit(0);
-                            }
-                    }
-                        
-                        
-                        
-                    }
+//            for (int pointer = 0; pointer < this.args.length; pointer++) {
+////                System.out.println(this.args[pointer]);
+//                    if(this.args[pointer].equals("-fromBp")){
+//                       
+//                        if(pointer+4 == this.args.length){
+//                            if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
+//                                System.err.println("error 1");
+//                                System.exit(1);
+//                            }
+//                     }
+//                        if(pointer+2 == this.args.length){
+//                         if(!(this.args[pointer-2].equals("-chr")) && !(this.args[pointer-2].equals("-notChr"))){
+//                                System.err.println("error 2");
+//                                System.exit(1);
+//                            }
+//                        }
+//                    if(this.args[pointer-2].equals("-toBp")){
+//                        System.out.println(this.args[pointer+1]);
+//                        if(!(this.args[pointer-4].equals("-chr"))){
+//                                System.err.println("error 1b");
+//                                System.exit(1);
+//                            }
+//                    }
+//                    if(this.args[pointer+2].equals("-toBp")){
+//                     if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
+//                                System.err.println("error 2b");
+//                                System.exit(1);
+//                            }
+//                    }
+//                        
+//                        
+//                        
+//                    }
 //                       
 //                        if(this.args[pointer+2].equals("-toBp") || this.args[pointer-2].equals("-to")){
 //                            if(Integer.parseInt(this.args[pointer+1]) > Integer.parseInt(this.args[pointer+3])){
 //                                System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
-//                                System.exit(0);
+//                                System.exit(1);
 //                            }
 //                        if(!(this.args[pointer-2].equals("-notChr")) && !(this.args[pointer-2].equals("-chr"))){
 //                            System.err.println("1 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-//                            System.exit(0);
+//                            System.exit(1);
 //                        } 
 //                        }
 //                        else if(this.args[pointer-2].equals("-toBp")){
 //                            if(Integer.parseInt(this.args[pointer+1]) > Integer.parseInt(this.args[pointer-3])){
 //                            System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
-//                            System.exit(0);
+//                            System.exit(1);
 //                            }
 //                            if(!(this.args[pointer-4].equals("-chr")) && !(this.args[pointer-4].equals("-notChr"))){
 //                            System.err.println("2 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-//                            System.exit(0);
+//                            System.exit(1);
 //                           }
 //                        } else{System.err.println("3 It is required to use -fromBp in conjunction with -toBp");
-//                                System.exit(0);
+//                                System.exit(1);
 //                        }
 //                    }
 //                   
@@ -230,34 +228,29 @@ public class Cli {
 //                       if(this.args[pointer-2].equals("-fromBp")){
 //                           if(Integer.parseInt(this.args[pointer+1]) < Integer.parseInt(this.args[pointer-1])){
 //                                System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
-//                                System.exit(0);
+//                                System.exit(1);
 //                           }
 //                       if(!(this.args[pointer-4].equals("-chr")) && !(this.args[pointer-4].equals("-notChr"))){
 //                           System.err.println("1b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-//                           System.exit(0);
+//                           System.exit(1);
 //                        } 
 //                       } else if(this.args[pointer+2].equals("-fromBp")){
 //                           if(Integer.parseInt(this.args[pointer+1]) < Integer.parseInt(this.args[pointer+3])){
 //                               System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
-//                               System.exit(0);
+//                               System.exit(1);
 //                           }
 //                       if(!(this.args[pointer-2].equals("-chr")) && !(this.args[pointer-2].equals("-notChr"))){
 //                           System.err.println("2b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-//                           System.exit(0);
+//                           System.exit(1);
 //                       }
 //                       } else{System.err.println("3b It is required to use -fromBp in conjunction with -toBp");
-//                                System.exit(0);
+//                                System.exit(1);
 //                       }
 //                     
 //                   }
-                    
-                
-        }
-
-        }
         if (this.cmd.hasOption("removeFilteredAll") && (this.cmd.hasOption("removeFiltered") || this.cmd.hasOption("keepFiltered"))) {
             System.err.println("When option -removeFilteredAll is given the options -removeFilterd or -keepFilterd are not allowed");
-            System.exit(0);
+            System.exit(1);
         }
         if (cmd.hasOption("keepInfo") && cmd.hasOption("removeInfo")) {
             System.out.println("For the options: -keepInfo and -removeInfo"
@@ -269,101 +262,177 @@ public class Cli {
         }
 
         if (cmd.hasOption("minMeanDp") && !(cmd.hasOption("maxMeanDp")) || cmd.hasOption("maxMeanDp") && !(cmd.hasOption("minMeanDp"))) {
-            System.err.println("It is required to use the options -minMeanDp and -maxMeanDp together");
-            System.exit(0);
+            System.err.println("it is required to use the options -minMeanDp and -maxMeanDp together");
+            System.exit(1);
         }
+
+        if (cmd.hasOption("minMeanDp") && cmd.hasOption("maxMeanDp")) {
+            int minMeanDp = Integer.parseInt(this.cmd.getOptionValue("minMeanDp"));
+            int maxMeanDp = Integer.parseInt(this.cmd.getOptionValue("maxMeanDp"));
+            if (minMeanDp > maxMeanDp) {
+                System.err.println("the value of the option -minMeanDp can not be higher than the value of the option -MaxMeanDp");
+                System.exit(1);
+            }
+        }
+
         if (cmd.hasOption("maf") && !(cmd.hasOption("maxMaf")) || cmd.hasOption("maxMaf") && !(cmd.hasOption("maf"))) {
             System.err.println("It is required to use the options -maf and -maxMaf together");
+            System.exit(1);
         }
+        if (cmd.hasOption("maf") && cmd.hasOption("maxMaf")) {
+            int maf = Integer.parseInt(this.cmd.getOptionValue("maf"));
+            int maxMaf = Integer.parseInt(this.cmd.getOptionValue("maxMaf"));
+            if (maf > maxMaf) {
+                System.err.println("the value of the option -maf can not be higher than the value of the option -maxMaf");
+                System.exit(1);
+            }
+        }
+
         if (cmd.hasOption("nonRefAf") && !(cmd.hasOption("maxNonRefAf")) || cmd.hasOption("maxNonRefAf") && !(cmd.hasOption("nonRefAf"))) {
             System.err.println("It is required to use the options -nonRefAf and -maxNonRefAf together");
-            System.exit(0);
+            System.exit(1);
         }
+
+        if (cmd.hasOption("nonRefAf") && cmd.hasOption("maxNonRefAf")) {
+            int nonRefAf = Integer.parseInt(this.cmd.getOptionValue("nonRefAf"));
+            int maxNonRefAf = Integer.parseInt(this.cmd.getOptionValue("maxNonRefAf"));
+            if (nonRefAf > maxNonRefAf) {
+                System.err.println("the value of the option -nonRefAf can not be higher than the value of the option -maxNonRefAf");
+                System.exit(1);
+            }
+        }
+
         if (cmd.hasOption("mac") && !(cmd.hasOption("maxMac")) || cmd.hasOption("maxMac") && !(cmd.hasOption("mac"))) {
             System.err.println("It is required to use the options -mac and -maxMac together");
-            System.exit(0);
+            System.exit(1);
+        }
+        if (cmd.hasOption("mac") && cmd.hasOption("maxMac")) {
+            int mac = Integer.parseInt(this.cmd.getOptionValue("mac"));
+            int maxMac = Integer.parseInt(this.cmd.getOptionValue("maxMac"));
+            if (mac > maxMac) {
+                System.err.println("the value of the option -mac can not be higher than the value of the option -maxMac");
+                System.exit(1);
+            }
         }
         if (cmd.hasOption("nonRefAc") && !(cmd.hasOption("maxNonRefAc")) || cmd.hasOption("maxNonRefAc") && !(cmd.hasOption("nonRefAc"))) {
             System.err.println("It is required to use the options -nonRefAc and -maxNonRefAc together");
-            System.exit(0);
+            System.exit(1);
         }
+        if (cmd.hasOption("nonRefAc") && cmd.hasOption("maxNonRefAc")) {
+            int nonRefAc = Integer.parseInt(this.cmd.getOptionValue("nonRefAc"));
+            int maxNonRefAc = Integer.parseInt(this.cmd.getOptionValue("maxNonRefAc"));
+            if (nonRefAc > maxNonRefAc) {
+                System.err.println("the value of the option -nonRefAc can not be higher than the value of the option -maxNonRefAc");
+                System.exit(1);
+            }
+        }
+
         if (cmd.hasOption("geno")) {
             String geno = cmd.getOptionValue("geno");
             if (!(geno.equals("1")) || !(geno.equals("0"))) {
                 System.err.println("The option -geno only allows 1 or 0. Where 1 indicates no missing data allowed");
-                System.exit(0);
+                System.exit(1);
             }
         }
         if (cmd.hasOption("minAlleles") && !(cmd.hasOption("maxAlleles")) || cmd.hasOption("maxAlleles") && !(cmd.hasOption("minAlleles"))) {
             System.err.println("It is required to use the options -minAlleles and -maxAlleles together and vice-versa");
-            System.exit(0);
+            System.exit(1);
         }
 
-        if (this.cmd.hasOption("minIndvMeanDp") && !(this.cmd.hasOption("maxIndvMeanDP")) || this.cmd.hasOption("maxIndvMeanDP") && !(this.cmd.hasOption("minIndvMeanDp"))) {
-            System.err.println("It is required to use the options -minIndvMeanDp and -maxIndvMeanDP together and vice-versa");
-            System.exit(0);
+        if (cmd.hasOption("minAlleles") && cmd.hasOption("maxAlleles")) {
+            int minAlleles = Integer.parseInt(this.cmd.getOptionValue("minAlleles"));
+            int maxAlleles = Integer.parseInt(this.cmd.getOptionValue("maxAlleles"));
+            if (minAlleles > maxAlleles) {
+                System.err.println("the value of the option -minAlleles can not be higher than the value of the option -maxAlleles");
+                System.exit(1);
+            }
+        }
+
+        if (this.cmd.hasOption("minIndvMeanDp") && !(this.cmd.hasOption("maxIndvMeanDp")) || this.cmd.hasOption("maxIndvMeanDp") && !(this.cmd.hasOption("minIndvMeanDp"))) {
+            System.err.println("It is required to use the options -minIndvMeanDp and -maxIndvMeanDp together");
+            System.exit(1);
+        }
+
+        if (cmd.hasOption("minIndvMeanDp") && cmd.hasOption("maxIndvMeanDp")) {
+            int minIndvMeanDp = Integer.parseInt(this.cmd.getOptionValue("minIndvMeanDp"));
+            int maxIndvMeanDp = Integer.parseInt(this.cmd.getOptionValue("maxIndvMeanDp"));
+            if (minIndvMeanDp > maxIndvMeanDp) {
+                System.err.println("the value of the option -minIndvMeanDp can not be higher than the value of the option -maxIndvMeanDp");
+                System.exit(1);
+            }
         }
 
         if (this.cmd.hasOption("thin")) {
             int thinValue = Integer.parseInt(this.cmd.getOptionValue("thin"));
             if (thinValue < 1) {
                 System.err.println("The argument for the option -thin can not be less than 1");
-                System.exit(0);
+                System.exit(1);
             }
 
         }
 
+        if (this.cmd.hasOption("minDp") && !(this.cmd.hasOption("maxDp")) || this.cmd.hasOption("maxDp") && !(this.cmd.hasOption("minDp"))) {
+            System.err.println("It is required to use the options -minDp and -maxDp together");
+            System.exit(1);
+        }
+
+        if (cmd.hasOption("minDp") && cmd.hasOption("maxDp")) {
+            int minDp = Integer.parseInt(this.cmd.getOptionValue("minDp"));
+            int maxDp = Integer.parseInt(this.cmd.getOptionValue("maxDp"));
+            if (minDp > maxDp) {
+                System.err.println("the value of the option -minDp can not be higher than the value of the option -maxDp");
+                System.exit(1);
+            }
+        }
         if (cmd.hasOption("vcf")) {
             File file = new File(cmd.getOptionValue("vcf"));
             if (!(file.exists())) {
                 System.err.println("file " + cmd.getOptionValue("vcf") + " can not be opend");
-                System.exit(0);
+                System.exit(1);
             }
         }
         if (cmd.hasOption("excludeSnpFile")) {
             File file = new File(cmd.getOptionValue("excludeSnpFile"));
             if (!(file.exists())) {
                 System.err.println("file " + cmd.getOptionValue("excludeSnpFile") + " can not be opend");
-                System.exit(0);
+                System.exit(1);
             }
         }
         if (cmd.hasOption("positionsFile")) {
             File file = new File(cmd.getOptionValue("positionsFile"));
             if (!(file.exists())) {
                 System.err.println("file " + cmd.getOptionValue("positionsFile") + " can not be opend");
-                System.exit(0);
+                System.exit(1);
             }
         }
         if (cmd.hasOption("excludePositionsFile")) {
             File file = new File(cmd.getOptionValue("excludePositionsFile"));
             if (!(file.exists())) {
                 System.err.println("file " + cmd.getOptionValue("excludePositionsFile") + " can not be opend");
-                System.exit(0);
+                System.exit(1);
             }
         }
         if (cmd.hasOption("mask")) {
             File file = new File(cmd.getOptionValue("mask"));
             if (!(file.exists())) {
                 System.err.println("file " + cmd.getOptionValue("mask") + " can not be opend");
-                System.exit(0);
+                System.exit(1);
             }
         }
         if (cmd.hasOption("keepIndvFile")) {
             File file = new File(cmd.getOptionValue("keepIndvFile"));
             if (!(file.exists())) {
                 System.err.println("file " + cmd.getOptionValue("keepIndvFile") + " can not be opend");
-                System.exit(0);
+                System.exit(1);
             }
         }
         if (cmd.hasOption("removeIndvFile")) {
             File file = new File(cmd.getOptionValue("removeIndvFile"));
             if (!(file.exists())) {
                 System.err.println("file " + cmd.getOptionValue("removeIndvFile") + " can not be opend");
-                System.exit(0);
+                System.exit(1);
             }
         }
-//        System.out.println("bleep");
-//        System.out.println(cmd.getArgList());
 
     }
 
@@ -393,7 +462,7 @@ public class Cli {
         helpFormatter.printHelp("For analysing the VCF file several options can be used."
                 + "This tool supports version higher than 4.0 . This tool is also"
                 + "compatible for snp analysis in poliploid cells", this.option);
-        System.exit(0);
+        System.exit(1);
     }
 
     /**
