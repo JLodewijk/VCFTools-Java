@@ -15,7 +15,6 @@ import nl.bioinf.vcftools.filters.FilterDependencies;
 import nl.bioinf.vcftools.filters.FilterHandler;
 import nl.bioinf.vcftools.filehandlers.VcfReader;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
-import nl.bioinf.vcftools.filehandlers.VcfLineBuilder;
 import nl.bioinf.vcftools.filehandlers.VcfWriter;
 
 /**
@@ -152,9 +151,8 @@ public class VcfProcessor {
                 index++;
             }
             // Build new vcfLine with changed genotypes
-            VcfLineBuilder vcfb = new VcfLineBuilder(vcfLine);
-            vcfb.setGenotypes(genoTypes);
-            return vcfb.make();
+            vcfLine.setGenotypes(genoTypes);
+            return vcfLine;
         }
     }
 }
