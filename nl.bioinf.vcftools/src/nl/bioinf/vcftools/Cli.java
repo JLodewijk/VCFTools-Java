@@ -84,8 +84,8 @@ public class Cli {
         opt.addOption("positionsFile", true, "include a set of sites on the basis of a list of positions in a file");
         opt.addOption("excludePositions", true, "exclude a set of sites on the basis of a list of positions in a file");
         opt.addOption("excludePositionsFile", true, "exclude a set of sites on the basis of a list of positions in a file");
-        opt.addOption("keepOnlyIndels", true, "include or exclude sites that contain an indel");
-        opt.addOption("removeIndels", true, "exclude or exclude sites that contain an indel");
+        opt.addOption("keepOnlyIndels", false, "include or exclude sites that contain an indel");
+        opt.addOption("removeIndels", false, "exclude or exclude sites that contain an indel");
         opt.addOption("bed", true, "include a set of sites on the basis of a BED files");
         opt.addOption("exludeBed", true, "exclude a set of sites on the basis of a BED files");
         opt.addOption("removeFilteredAll", false, "this option removes all sites with a FILTER flag");
