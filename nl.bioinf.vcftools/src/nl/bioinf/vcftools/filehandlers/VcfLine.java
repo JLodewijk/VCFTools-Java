@@ -245,6 +245,7 @@ public class VcfLine {
     /**
      * Set the genotypes for this line
      * @param genotypes 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public void setGenotypes(List<VcfGenotype> genotypes) {
         // Create VariantContextBuilder using current VariantContext as base

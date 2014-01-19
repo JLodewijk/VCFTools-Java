@@ -13,14 +13,19 @@ import nl.bioinf.vcftools.filters.FilterFactory;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
- * Perform filters and return conditions
+ * Class used to perform all the filters and return conditions
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class FilterHandler {
     private Settings settings;
-    private ArrayList<AbstractSiteFilter> siteFilters;
-    private ArrayList<AbstractGenotypeFilter> genotypeFilters;
+    private List<AbstractSiteFilter> siteFilters;
+    private List<AbstractGenotypeFilter> genotypeFilters;
 
+    /**
+     * Default constructor. Pre loads all the filters.
+     * @param settings 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
+     */
     public FilterHandler(Settings settings) {
         this.settings = settings;
         FilterFactory filterFactory = new FilterFactory(this.settings);
@@ -29,9 +34,10 @@ public class FilterHandler {
     }
 
     /**
-     * Perform all the filters
+     * Perform all the site filters
      * @param vcfLine
      * @return 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public boolean performSiteFilters(VcfLine vcfLine) {
         // perform filters
@@ -43,6 +49,12 @@ public class FilterHandler {
        return true;
     }
     
+    /**
+     * Perform all the genotype filters
+     * @param vcfLine
+     * @return 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
+     */
     public List<Boolean> performGenotypeFilters(VcfLine vcfLine) {
        // Create and prefull hashmap with true values 
        List<Boolean> result = new ArrayList<>();

@@ -59,6 +59,7 @@ public class VcfGenotype {
    
     /**
      * Clear all the oldAlleles of this genotype
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public void clearAlleles () {
         // create genotype builder using current GATK genotype object and make datasets
