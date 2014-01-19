@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.broadinstitute.variant.variantcontext.Allele;
 import org.broadinstitute.variant.variantcontext.Genotype;
+import org.broadinstitute.variant.variantcontext.GenotypeBuilder;
 
 /**
  *
@@ -40,7 +41,7 @@ public class VcfGenotype {
     
     
     /**
-     * Get the alleles.
+     * Get the oldAlleles.
      * 
      * @return Alleles 
      * @author Sergio Bondietti <sergio@bondietti.nl>
@@ -54,6 +55,23 @@ public class VcfGenotype {
         }
         // return list of strings
         return allelesStrings;
+    }
+   
+    /**
+     * Clear all the oldAlleles of this genotype
+     */
+    public void clearAlleles () {
+        // create genotype builder using current GATK genotype object and make datasets
+        GenotypeBuilder gtb = new GenotypeBuilder(this.gt);
+        List<Allele> oldAlleles = this.gt.getAlleles();
+        List<Allele> newAlleles = new ArrayList<>();
+        // for each old allele element create an empty new one
+        for (Allele i : oldAlleles) {
+            newAlleles.add(Allele.NO_CALL);
+        }
+        // set the new alleles in genotypebuilder object and overwrite old genotype object with new one
+        gtb.alleles(newAlleles);
+        this.gt = gtb.make();
     }
     
     /**

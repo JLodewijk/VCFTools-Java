@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.bioinf.vcftools.filehandlers.VcfGenotype;
-import nl.bioinf.vcftools.filehandlers.VcfGenotypeBuilder;
 import nl.bioinf.vcftools.filters.FilterDependencies;
 import nl.bioinf.vcftools.filters.FilterHandler;
 import nl.bioinf.vcftools.filehandlers.VcfReader;
@@ -145,10 +144,10 @@ public class VcfProcessor {
                 if (i == true) {
                     genoTypes.add(vcfLine.getGenotype(index));
                 } else {
-                    // Create genotype builder object using current genotype and clear the alleles
-                    VcfGenotypeBuilder gtb = new VcfGenotypeBuilder(vcfLine.getGenotype(index));
-                    gtb.clearAlleles();
-                    genoTypes.add(gtb.make());
+                    // Create genotype object and clear the alleles then write it down
+                    VcfGenotype genotype = vcfLine.getGenotype(index);
+                    genotype.clearAlleles();
+                    genoTypes.add(genotype);
                 }
                 index++;
             }
