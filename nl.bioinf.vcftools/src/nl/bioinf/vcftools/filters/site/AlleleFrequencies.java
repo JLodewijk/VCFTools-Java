@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.bioinf.vcftools.filters.site;
 
 import java.util.ArrayList;
@@ -16,21 +15,19 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  *
  * @author mhroelfes
  */
-public class AlleleFrequencies extends AbstractSiteFilter{
+public class AlleleFrequencies extends AbstractSiteFilter {
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-            Object valObj = vcfLine.getAttribute("AF");
-            
-            
+        Object valObj = vcfLine.getAttribute("AF");
+        if (valObj != null) {
+            //This check is made because GATK, which read vcf files, gives more than one return type
+            //the two types, arraylist and String, are handled in this check
+            //first it chechs if it is a String type and if it it not then it handles it as ArrayList
             if (valObj instanceof String) {
                 //handle single value
 
-	
-
                 //System.out.println(valObj.getClass().getName());
-
-
                 double val = Double.valueOf((String) valObj);
                 //if val is between threshold approve line, else reject line
                 if (val < settings.getMaxMaf() && val > settings.getMaf()) {
@@ -42,10 +39,9 @@ public class AlleleFrequencies extends AbstractSiteFilter{
             } else {
                 boolean keep = true;
                 //ArrayList value
-                
-                
+
                 ArrayList<String> values = (ArrayList<String>) valObj;
-                
+
                 List<Double> valuesDoubles = new ArrayList<Double>();
                 //set String ArrayList to Double ArrayList            
                 for (String str : values) {
@@ -61,11 +57,13 @@ public class AlleleFrequencies extends AbstractSiteFilter{
 
                     }
                 }
-                
+
                 return keep;
 
-              
             }
+        } else{
+            return false;
+        }
     }
-    
+
 }
