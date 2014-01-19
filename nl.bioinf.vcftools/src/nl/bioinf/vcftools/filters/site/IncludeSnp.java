@@ -18,8 +18,13 @@ public class IncludeSnp extends AbstractSiteFilter{
 
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-          return settings.getSnp().contains(vcfLine.getId());
-          
+        //checks if vcfline has a ID
+        if(vcfLine.getId() != null){
+            //returns true if the vcfline Id is given by the user
+            return settings.getSnp().contains(vcfLine.getId());
+        } else{
+            return false;
+        }
     }
     
 }
