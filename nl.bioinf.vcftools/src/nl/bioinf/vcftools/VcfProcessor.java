@@ -114,7 +114,12 @@ public class VcfProcessor {
                 // Addapt genotypes
                 VcfLine vcfLine = this.processGenotypeChanges(iteration, genotypeFilterResult);
                 // Write line
+                System.out.println("Kept:");
                 writer.writeVcfLine(vcfLine);
+            }
+            else {
+                System.out.println("Removed:");
+                writer.writeVcfLine(iteration);
             }
         }
 
