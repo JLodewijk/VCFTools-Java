@@ -513,10 +513,15 @@ public class Cli {
 
                     int fromValuePointer = 0;
                     int toValueFactor = 0;
-                    if (pointer + 4 == this.args.length) {
+                    if (pointer + 2 == this.args.length) {
+                        settings.addChr(this.args[pointer + 1]);
+                        break;
+                    } else if (pointer + 4 == this.args.length) {
                         settings.addChr(this.args[pointer + 1]);
                         break;
                     }
+                    
+                    
                     if (!this.args[pointer + 2].equals("-fromBp")
                             || !this.args[pointer + 2].equals("-chr")
                             || !this.args[pointer + 2].equals("-toBp")) {
@@ -559,7 +564,11 @@ public class Cli {
                     if (pointer + 4 == this.args.length) {
                         settings.addNotChr(this.args[pointer + 1]);
                         break;
+                    } else if (pointer + 4 == this.args.length) {
+                        settings.addNotChr(this.args[pointer + 1]);
+                        break;
                     }
+                    
                     if (!this.args[pointer + 2].equals("-fromBp")
                             || !this.args[pointer + 2].equals("-notChr")
                             || !this.args[pointer + 2].equals("-toBp")) {
