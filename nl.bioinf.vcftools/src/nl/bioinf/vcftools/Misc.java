@@ -8,7 +8,6 @@ package nl.bioinf.vcftools;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.broadinstitute.variant.variantcontext.Allele;
 
 /**
  * Miscellaneous static methods

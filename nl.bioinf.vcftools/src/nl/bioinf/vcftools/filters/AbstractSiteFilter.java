@@ -17,6 +17,12 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  */
 public abstract class AbstractSiteFilter {
     
+    /**
+     * Abstract class for site filters
+     * @param vcfLine
+     * @param settings
+     * @return
+     */
     public abstract boolean filter(VcfLine vcfLine, Settings settings);
     
 }

@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.broadinstitute.variant.variantcontext.Allele;
+import org.broadinstitute.variant.variantcontext.Genotype;
 import org.broadinstitute.variant.variantcontext.VariantContext;
+import org.broadinstitute.variant.variantcontext.VariantContextBuilder;
 
 /**
  *
@@ -238,6 +240,25 @@ public class VcfLine {
     
     public VcfGenotype getGenotype(int index) {
         return new VcfGenotype(this.vc.getGenotype(index));
+    }
+    
+    /**
+     * Set the genotypes for this line
+     * @param genotypes 
+     * @author Sergio Bondietti <sergio@bondietti.nl>
+     */
+    public void setGenotypes(List<VcfGenotype> genotypes) {
+        // Create VariantContextBuilder using current VariantContext as base
+        VariantContextBuilder vcb = new VariantContextBuilder(this.vc);
+        
+        List<Genotype> newGenotypes = new ArrayList<>();
+        // Loop trough genotypes and store as GATK genotypes
+        for (VcfGenotype i : genotypes) {
+            newGenotypes.add(i.getBroadinstituteGenotype());
+        }
+        // store in builder object and set current replace VariantContext object with the builder one
+        vcb.genotypes(newGenotypes);
+        this.vc = vcb.make();
     }
      
 

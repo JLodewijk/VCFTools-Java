@@ -11,12 +11,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.bioinf.vcftools.filehandlers.VcfGenotype;
-import nl.bioinf.vcftools.filehandlers.VcfGenotypeBuilder;
 import nl.bioinf.vcftools.filters.FilterDependencies;
 import nl.bioinf.vcftools.filters.FilterHandler;
 import nl.bioinf.vcftools.filehandlers.VcfReader;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
-import nl.bioinf.vcftools.filehandlers.VcfLineBuilder;
 import nl.bioinf.vcftools.filehandlers.VcfWriter;
 
 /**
@@ -54,6 +52,7 @@ public class VcfProcessor {
      * Perform all Dependency calculations
      *
      * @author Sergio Bondietti <sergio@bondietti.nl>
+     * @throws java.io.IOException
      */
     public void performDependencyCalculations() throws IOException {
         /*
@@ -134,28 +133,26 @@ public class VcfProcessor {
         // When result is all true return original vcfLine
         if (!genotypeFilterResult.contains(false)) {
             return vcfLine;
-        } else {
-             
-            // Create list of Genotypes
+        } 
+        // When there are results contains false elements, store mutated genotypes
+        else {
+            // Create new list of Genotypes
             List<VcfGenotype> genoTypes = new ArrayList<>();
             int index = 0;
             // loop trough results
             for (Boolean i : genotypeFilterResult) {
-                // When result is true then add original genotype, else add an empty genotype
-                if (i == true) {
-                    genoTypes.add(vcfLine.getGenotype(index));
-                } else {
-                    // Create genotype builder object using current genotype and clear the alleles
-                    VcfGenotypeBuilder gtb = new VcfGenotypeBuilder(vcfLine.getGenotype(index));
-                    gtb.clearAlleles();
-                    genoTypes.add(gtb.make());
-                }
+                // When result is false remove alleles from original genotype
+                VcfGenotype genotype = vcfLine.getGenotype(index);
+                if (i == false) {
+                    genotype.clearAlleles();   
+                } 
+                // Store genotype in new list   
+                genoTypes.add(genotype); 
                 index++;
             }
-            // Build new vcfLine with changed genotypes
-            VcfLineBuilder vcfb = new VcfLineBuilder(vcfLine);
-            vcfb.setGenotypes(genoTypes);
-            return vcfb.make();
+            // Build new vcfLine with changed genotypes and return it
+            vcfLine.setGenotypes(genoTypes);
+            return vcfLine;
         }
     }
 }

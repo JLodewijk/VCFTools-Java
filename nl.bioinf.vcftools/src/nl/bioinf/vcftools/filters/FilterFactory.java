@@ -25,6 +25,7 @@ import nl.bioinf.vcftools.filters.site.MissingCount;
 import nl.bioinf.vcftools.filters.site.RemoveFiltered;
 import nl.bioinf.vcftools.filters.site.NonRefAlleleFrequencies;
 import java.util.ArrayList;
+import java.util.List;
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filters.genotype.Depth;
 import nl.bioinf.vcftools.filters.genotype.Quality;
@@ -33,7 +34,7 @@ import nl.bioinf.vcftools.filters.site.Geno;
 import nl.bioinf.vcftools.filters.site.Mask;
 
 /**
- *
+ *  This factory creates all the filters used in vcftools
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class FilterFactory {
@@ -41,13 +42,22 @@ public class FilterFactory {
     private ArrayList<AbstractSiteFilter> siteFilters;
     private ArrayList<AbstractGenotypeFilter> genotypeFilters;
     
+    /**
+     * Default constructor
+     * @param settings vcftools settings used to only build the filters that are needed
+     * @author Sergio Bondietti <sergio@bondietti.nl>
+     */
     public FilterFactory(Settings settings) {
         this.settings = settings;
         this.createSiteFilters();
         this.createGenotypeFilters();
     }
     
-    public void createSiteFilters() {
+    /**
+     * Creates all the site filters
+     * @author Sergio Bondietti <sergio@bondietti.nl>
+     */
+    private void createSiteFilters() {
         this.siteFilters = new ArrayList<>();
         if ((!this.settings.getChr().isEmpty()) || (!this.settings.getBed().isEmpty())) { this.siteFilters.add(new IncludeChromosome()); }
         if ((!this.settings.getNotChr().isEmpty()) || (!this.settings.getExludeBed().isEmpty())) { this.siteFilters.add(new ExcludeChromosome()); }
@@ -80,17 +90,29 @@ public class FilterFactory {
         if (this.settings.getMaskFile() != null) {this.siteFilters.add(new Mask());}
     }
     
-    public void createGenotypeFilters() {
+    /**
+     * Creates all the genotype filters
+     * @author Sergio Bondietti <sergio@bondietti.nl>
+     */
+    private void createGenotypeFilters() {
         this.genotypeFilters = new ArrayList<>();
         if ((this.settings.getMinDp() != null) && (this.settings.getMaxDp() != null)) { this.genotypeFilters.add(new Depth()); }
         if (this.settings.getMinGq() != null) { this.genotypeFilters.add(new Quality()); }
     }
 
-    public ArrayList<AbstractSiteFilter> getSiteFilters() {
+    /**
+     * Get the list of site filters
+     * @return 
+     */
+    public List<AbstractSiteFilter> getSiteFilters() {
         return siteFilters;
     }
 
-    public ArrayList<AbstractGenotypeFilter> getGenotypeFilters() {
+    /**
+     * Get the list of genotype filters
+     * @return 
+     */
+    public List<AbstractGenotypeFilter> getGenotypeFilters() {
         return genotypeFilters;
     } 
     
