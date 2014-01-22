@@ -17,7 +17,7 @@ import org.apache.commons.cli.HelpFormatter;
 
 /**
  *
- * @author aponnudurai
+ * @author aponnudurai <as.ponnudurai@st.hanze.nl>
  */
 public class Cli {
 
@@ -141,7 +141,6 @@ public class Cli {
      * Function to check if valid options are given
      */
     private void checkOptions() {
-        System.out.println("checking options....");
 
         if (this.args.length < 1) {
             usage();
@@ -159,38 +158,56 @@ public class Cli {
         /*Check if fromBp is used with toBp and vice-verca and if fromBp and
          toBp is used with chr or notChr
          Only last missing fromBp or toBp gives ArrayOutOfBounceError   */
-        if (this.cmd.hasOption("fromBp") || this.cmd.hasOption("toBp")) {
-            if (this.cmd.getOptionValues("fromBp").length != this.cmd.getOptionValues("toBp").length) {
-                System.err.println("It is required to use the option -fromBp and -toBp together");
-                System.exit(1);
-            }
+//        if (this.cmd.hasOption("fromBp") || this.cmd.hasOption("toBp")) {
+//            if (this.cmd.getOptionValues("fromBp").length != this.cmd.getOptionValues("toBp").length) {
+//                System.err.println("It is required to use the option -fromBp and -toBp together");
+//                System.exit(1);
+//            }
+//        }
+        if ((this.args[0].equals("-fromBp")) || (this.args[0].equals("-toBp")) || (this.args[1].equals("-fromBp")) || (this.args[1].equals("-toBp"))) {
+            System.err.println("ERROR 1");
         }
 
-//            for (int pointer = 0; pointer < this.args.length; pointer++) {
-////                System.out.println(this.args[pointer]);
-//                    if(this.args[pointer].equals("-fromBp")){
+        for (int i = 2; i < this.args.length; i++) {
+            if (this.args[i].equals("-fromBp")) {
+
+                if (((!this.args[i - 2].equals("-chr")) && (!this.args[i - 2].equals("-notChr"))) && (!this.args[i - 2].equals("-toBp"))) {
+                    System.err.println("ERROR 2a");
+                }
+            }
+
+            if (this.args[i].equals("-toBp")) {
+                if (((!this.args[i - 2].equals("-chr")) && (!this.args[i - 2].equals("-notChr"))) && (!this.args[i - 2].equals("-fromBp"))) {
+                    System.err.println("ERROR 2b");
+                }
+            }
+
+        }
+
+//                System.out.println(this.args[i]);
+//                    if(this.args[i].equals("-fromBp")){
 //                       
-//                        if(pointer+4 == this.args.length){
-//                            if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
+//                        if(i+4 == this.args.length){
+//                            if(!this.args[i-2].equals("-chr") || !this.args[i-2].equals("-notChr")){
 //                                System.err.println("error 1");
 //                                System.exit(1);
 //                            }
 //                     }
-//                        if(pointer+2 == this.args.length){
-//                         if(!(this.args[pointer-2].equals("-chr")) && !(this.args[pointer-2].equals("-notChr"))){
+//                        if(i+2 == this.args.length){
+//                         if(!(this.args[i-2].equals("-chr")) && !(this.args[i-2].equals("-notChr"))){
 //                                System.err.println("error 2");
 //                                System.exit(1);
 //                            }
 //                        }
-//                    if(this.args[pointer-2].equals("-toBp")){
-//                        System.out.println(this.args[pointer+1]);
-//                        if(!(this.args[pointer-4].equals("-chr"))){
+//                    if(this.args[i-2].equals("-toBp")){
+//                        System.out.println(this.args[i+1]);
+//                        if(!(this.args[i-4].equals("-chr"))){
 //                                System.err.println("error 1b");
 //                                System.exit(1);
 //                            }
 //                    }
-//                    if(this.args[pointer+2].equals("-toBp")){
-//                     if(!this.args[pointer-2].equals("-chr") || !this.args[pointer-2].equals("-notChr")){
+//                    if(this.args[i+2].equals("-toBp")){
+//                     if(!this.args[i-2].equals("-chr") || !this.args[i-2].equals("-notChr")){
 //                                System.err.println("error 2b");
 //                                System.exit(1);
 //                            }
@@ -200,22 +217,22 @@ public class Cli {
 //                        
 //                    }
 //                       
-//                        if(this.args[pointer+2].equals("-toBp") || this.args[pointer-2].equals("-to")){
-//                            if(Integer.parseInt(this.args[pointer+1]) > Integer.parseInt(this.args[pointer+3])){
+//                        if(this.args[i+2].equals("-toBp") || this.args[i-2].equals("-to")){
+//                            if(Integer.parseInt(this.args[i+1]) > Integer.parseInt(this.args[i+3])){
 //                                System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
 //                                System.exit(1);
 //                            }
-//                        if(!(this.args[pointer-2].equals("-notChr")) && !(this.args[pointer-2].equals("-chr"))){
+//                        if(!(this.args[i-2].equals("-notChr")) && !(this.args[i-2].equals("-chr"))){
 //                            System.err.println("1 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
 //                            System.exit(1);
 //                        } 
 //                        }
-//                        else if(this.args[pointer-2].equals("-toBp")){
-//                            if(Integer.parseInt(this.args[pointer+1]) > Integer.parseInt(this.args[pointer-3])){
+//                        else if(this.args[i-2].equals("-toBp")){
+//                            if(Integer.parseInt(this.args[i+1]) > Integer.parseInt(this.args[i-3])){
 //                            System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
 //                            System.exit(1);
 //                            }
-//                            if(!(this.args[pointer-4].equals("-chr")) && !(this.args[pointer-4].equals("-notChr"))){
+//                            if(!(this.args[i-4].equals("-chr")) && !(this.args[i-4].equals("-notChr"))){
 //                            System.err.println("2 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
 //                            System.exit(1);
 //                           }
@@ -224,22 +241,22 @@ public class Cli {
 //                        }
 //                    }
 //                   
-//                   if(this.args[pointer].equals("-toBp")){
-//                       if(this.args[pointer-2].equals("-fromBp")){
-//                           if(Integer.parseInt(this.args[pointer+1]) < Integer.parseInt(this.args[pointer-1])){
+//                   if(this.args[i].equals("-toBp")){
+//                       if(this.args[i-2].equals("-fromBp")){
+//                           if(Integer.parseInt(this.args[i+1]) < Integer.parseInt(this.args[i-1])){
 //                                System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
 //                                System.exit(1);
 //                           }
-//                       if(!(this.args[pointer-4].equals("-chr")) && !(this.args[pointer-4].equals("-notChr"))){
+//                       if(!(this.args[i-4].equals("-chr")) && !(this.args[i-4].equals("-notChr"))){
 //                           System.err.println("1b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
 //                           System.exit(1);
 //                        } 
-//                       } else if(this.args[pointer+2].equals("-fromBp")){
-//                           if(Integer.parseInt(this.args[pointer+1]) < Integer.parseInt(this.args[pointer+3])){
+//                       } else if(this.args[i+2].equals("-fromBp")){
+//                           if(Integer.parseInt(this.args[i+1]) < Integer.parseInt(this.args[i+3])){
 //                               System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
 //                               System.exit(1);
 //                           }
-//                       if(!(this.args[pointer-2].equals("-chr")) && !(this.args[pointer-2].equals("-notChr"))){
+//                       if(!(this.args[i-2].equals("-chr")) && !(this.args[i-2].equals("-notChr"))){
 //                           System.err.println("2b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
 //                           System.exit(1);
 //                       }
@@ -490,11 +507,13 @@ public class Cli {
         if (this.cmd.hasOption("chr")) {
 
             for (int pointer = 0; pointer < this.args.length; pointer++) {
+//                System.out.println(this.args[pointer+1] +" "+pointer + " length args = " + this.args.length);
+                
                 if (this.args[pointer].equals("-chr")) {
 
                     int fromValuePointer = 0;
                     int toValueFactor = 0;
-                    if (pointer + 2 == this.args.length) {
+                    if (pointer + 4 == this.args.length) {
                         settings.addChr(this.args[pointer + 1]);
                         break;
                     }
@@ -532,16 +551,12 @@ public class Cli {
             }
 
         }
-
         if (this.cmd.hasOption("notChr")) {
-
             for (int pointer = 0; pointer < this.args.length; pointer++) {
                 if (this.args[pointer].equals("-notChr")) {
-
                     int fromValuePointer = 0;
                     int toValueFactor = 0;
-                    if (pointer + 2 == this.args.length) {
-
+                    if (pointer + 4 == this.args.length) {
                         settings.addNotChr(this.args[pointer + 1]);
                         break;
                     }
@@ -551,19 +566,16 @@ public class Cli {
                     } else {
                         settings.addNotChr(this.args[pointer + 1]);
                     }
-
                     if (args[pointer + 2].equals("-fromBp")) {
                         fromValuePointer = pointer + 2;
                     } else if (args[pointer + 4].equals("-fromBp")) {
                         fromValuePointer = pointer + 4;
                     }
-
                     if (args[pointer + 2].equals("-toBp")) {
                         toValueFactor = pointer + 2;
                     } else if (args[pointer + 4].equals("-toBp")) {
                         toValueFactor = pointer + 4;
                     }
-
                     if (this.args[fromValuePointer].equals("-fromBp") && this.args[toValueFactor].equals("-toBp")) {
                         int fromBp = Integer.parseInt(this.args[fromValuePointer + 1]);
                         int toBp = Integer.parseInt(this.args[toValueFactor + 1]);
@@ -572,12 +584,9 @@ public class Cli {
                     } else {
 
                         settings.addNotChr(this.args[pointer + 1]);
-
                     }
-
                 }
             }
-
         }
 
         if (this.cmd.hasOption("snp")) {
@@ -588,7 +597,6 @@ public class Cli {
                 settings.addSnp(identifier);
 
             }
-
         }
         if (this.cmd.hasOption("snpFile")) {
             settings.setSnpFile(this.cmd.getOptionValue("snpFile"));
@@ -600,7 +608,6 @@ public class Cli {
             for (String identifiers : splitedExcludedIdentifiers) {
                 settings.addExcludeSnp(identifiers);
             }
-
         }
         if (this.cmd.hasOption("excludeSnpFile")) {
             settings.setExcludeSnpFile(this.cmd.getOptionValue("excludeSnpFile"));
@@ -655,7 +662,6 @@ public class Cli {
             for (String removedInfoItem : splitedRemovedInfo) {
                 settings.addRemoveInfo(removedInfoItem);
             }
-
         }
         if (this.cmd.hasOption("keepInfo")) {
             String keepInfo = this.cmd.getOptionValue("keepInfo");

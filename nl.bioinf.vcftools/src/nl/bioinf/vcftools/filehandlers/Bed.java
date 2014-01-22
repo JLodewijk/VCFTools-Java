@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author ashvin ponnudurai
+ * @author ashvin ponnudurai <as.ponnudurai@st.hanze.nl>
  */
 public class Bed {
 

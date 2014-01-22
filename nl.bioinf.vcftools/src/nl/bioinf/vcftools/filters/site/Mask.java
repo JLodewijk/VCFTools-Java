@@ -16,7 +16,8 @@ import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 
 /**
  *
- * @author Ashvin
+ * Check if sites of a chromosome can be excluded based on the mask file
+ * @author Ashvin <as.ponnudurai@st.hanze.nl>
  */
 public class Mask extends AbstractSiteFilter {
 

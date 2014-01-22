@@ -30,13 +30,14 @@ public class VcfTools {
 //        } catch (IOException ex) {
 //            Logger.getLogger(VcfTools.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        
+//        -notChr momo -notChr lastNot -fromBp 50 -toBp 100 -chr bleep -fromBp 5 -toBp 9 -chr blub -notChr bobiie
         
         Cli cli = new Cli(args);
         Settings settings = cli.getSettings();
-        System.out.println("bleep");
-        
-        VcfProcessor vcfReader = new VcfProcessor(settings);
+        System.out.println("chr = "+settings.getChr());
+        System.out.println("not chr ="+settings.getNotChr());
+//        System.out.println(settings.getNotChr());
+//        VcfProcessor vcfReader = new VcfProcessor(settings);
 
 //        System.out.println("bleep");
 //        System.out.println(settings.getInputFile());
