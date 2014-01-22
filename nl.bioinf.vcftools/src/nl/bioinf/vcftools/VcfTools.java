@@ -32,10 +32,10 @@ public class VcfTools {
         
         Cli cli = new Cli(args);
         Settings settings = cli.getSettings();
-        System.out.println("chr = "+settings.getChr());
-        System.out.println("not chr ="+settings.getNotChr());
+        //System.out.println("chr = "+settings.getChr());
+        //System.out.println("not chr ="+settings.getNotChr());
 //        System.out.println(settings.getNotChr());
-//        VcfProcessor vcfReader = new VcfProcessor(settings);
+        VcfProcessor vcfReader = new VcfProcessor(settings);
 
 //        System.out.println("bleep");
 //        System.out.println(settings.getInputFile());
