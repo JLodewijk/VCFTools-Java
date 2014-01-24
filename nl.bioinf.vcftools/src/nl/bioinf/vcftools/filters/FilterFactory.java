@@ -39,8 +39,9 @@ import nl.bioinf.vcftools.filters.site.Mask;
  */
 public class FilterFactory {
     private Settings settings;
-    private ArrayList<AbstractSiteFilter> siteFilters;
-    private ArrayList<AbstractGenotypeFilter> genotypeFilters;
+    private List<AbstractSiteFilter> siteFilters;
+    private List<AbstractGenotypeFilter> genotypeFilters;
+    private List<AbstractIndividualFilter> individualFilters;
     
     /**
      * Default constructor
@@ -51,6 +52,7 @@ public class FilterFactory {
         this.settings = settings;
         this.createSiteFilters();
         this.createGenotypeFilters();
+        this.createIndividualFilters();
     }
     
     /**
@@ -99,7 +101,16 @@ public class FilterFactory {
         if ((this.settings.getMinDp() != null) && (this.settings.getMaxDp() != null)) { this.genotypeFilters.add(new Depth()); }
         if (this.settings.getMinGq() != null) { this.genotypeFilters.add(new Quality()); }
     }
+    
+    /**
+     * Creates all the individual filters
+     * @author Sergio Bondietti <sergio@bondietti.nl>
+     */
+    private void createIndividualFilters() {
+        this.individualFilters = new ArrayList<>();
+    }
 
+    
     /**
      * Get the list of site filters
      * @return 
@@ -115,5 +126,17 @@ public class FilterFactory {
     public List<AbstractGenotypeFilter> getGenotypeFilters() {
         return genotypeFilters;
     } 
+    
+    /**
+     * Get the list of individual filters
+     * @return 
+     */
+    public List<AbstractIndividualFilter> getIndividualFilters() {
+        return individualFilters;
+    }
+    
+    
+    
+    
     
 }
