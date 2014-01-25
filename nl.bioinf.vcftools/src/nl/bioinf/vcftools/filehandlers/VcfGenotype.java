@@ -137,11 +137,11 @@ public class VcfGenotype {
      /**
      * Check if there is any missing data
      * 
-     * @return true when there is missing data, false when not.
+     * @return true when there is missing false, true when not.
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     public boolean isCorrectGenotype(){
-        return this.gt.isNonInformative();
+        return !this.gt.isNonInformative();
     }
     
     

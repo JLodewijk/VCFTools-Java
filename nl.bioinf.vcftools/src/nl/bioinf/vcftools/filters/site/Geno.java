@@ -29,7 +29,7 @@ public class Geno extends AbstractSiteFilter {
         for (int i = 0; i < genoNum; i++) {
             boolean geno = vcfLine.getGenotype(i).isCorrectGenotype();
             //If data is missing geno = true, than reject entry
-            if (geno == true && settings.getGeno() == 1) {
+            if (geno == false && settings.getGeno() == 1) {
                 keep = false;
             }
         }
