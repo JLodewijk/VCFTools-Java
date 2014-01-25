@@ -52,7 +52,7 @@ public class MaxIndividuals extends AbstractIndividualFilter {
                 // If the list of indexes is longer than the max individuals wanted 
                 if (leftIndividualsIndexes.size() > settings.getMaxIndv()) {
                     // pick a random individual to remove
-                    individualsLeft.set((int) (Math.random() * leftIndividualsIndexes.size()), false);
+                    individualsLeft.set(leftIndividualsIndexes.get((int) (Math.random() * leftIndividualsIndexes.size())), false);
                 } // if list of indexes is shorter then break out of the loop
                 else {
                     breakout = true;
