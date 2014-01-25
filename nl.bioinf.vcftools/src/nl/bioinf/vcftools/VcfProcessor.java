@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.bioinf.vcftools.filehandlers.VcfGenotype;
+import nl.bioinf.vcftools.filehandlers.VcfHeader;
 import nl.bioinf.vcftools.filters.FilterDependencies;
 import nl.bioinf.vcftools.filters.FilterHandler;
 import nl.bioinf.vcftools.filehandlers.VcfReader;
@@ -91,13 +92,16 @@ public class VcfProcessor {
         // build reader and writer
         VcfReader reader = new VcfReader(settings.getInputFile());
         VcfWriter writer = new VcfWriter();
-
+        VcfHeader header = reader.getHeader();
         // Write header to output
-        writer.writeHeader(reader.getHeader());
+        writer.writeHeader(header);
 
         // Build the FilterHandler
         FilterHandler filterHandler = new FilterHandler(this.settings);
 
+        // Perform Individual filters
+        System.out.println("Individual Filters Result: " + filterHandler.performIndividualFilters(header, filterDependencies));
+        
         // While reader file has next iteration get next iteration
         while (reader.hasNextIter()) {
             VcfLine iteration = reader.getNextIter();
@@ -114,12 +118,7 @@ public class VcfProcessor {
                 // Addapt genotypes
                 VcfLine vcfLine = this.processGenotypeChanges(iteration, genotypeFilterResult);
                 // Write line
-                System.out.println("Kept:");
                 writer.writeVcfLine(vcfLine);
-            }
-            else {
-                System.out.println("Removed:");
-                writer.writeVcfLine(iteration);
             }
         }
 
