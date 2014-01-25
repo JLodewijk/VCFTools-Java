@@ -24,16 +24,15 @@ public class Geno extends AbstractSiteFilter {
      */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        boolean keep = true;
         int genoNum = vcfLine.getGenotypeNumber();
         for (int i = 0; i < genoNum; i++) {
             boolean geno = vcfLine.getGenotype(i).isCorrectGenotype();
-            //If data is missing geno = true, than reject entry
-            if (geno == false && settings.getGeno() == 1) {
-                keep = false;
+            //If data is missing geno = false, than reject entry
+            if (geno == false) {
+                return false;
             }
         }
-        return keep;
+        return true;
     }
 
 }
