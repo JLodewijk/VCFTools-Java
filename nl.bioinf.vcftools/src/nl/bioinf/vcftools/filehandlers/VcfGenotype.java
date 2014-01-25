@@ -134,6 +134,15 @@ public class VcfGenotype {
     public boolean isPhased() {
         return this.gt.isPhased();
     }
+     /**
+     * Check if there is any missing data
+     * 
+     * @return true when there is missing data, false when not.
+     * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
+     */
+    public boolean isCorrectGenotype(){
+        return this.gt.isNonInformative();
+    }
     
     
     
