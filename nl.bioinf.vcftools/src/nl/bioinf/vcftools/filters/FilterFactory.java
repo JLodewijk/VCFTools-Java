@@ -29,6 +29,7 @@ import java.util.List;
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filters.genotype.Depth;
 import nl.bioinf.vcftools.filters.genotype.Quality;
+import nl.bioinf.vcftools.filters.individual.MaxIndividuals;
 import nl.bioinf.vcftools.filters.site.ExcludeSnp;
 import nl.bioinf.vcftools.filters.site.Geno;
 import nl.bioinf.vcftools.filters.site.Mask;
@@ -108,6 +109,10 @@ public class FilterFactory {
      */
     private void createIndividualFilters() {
         this.individualFilters = new ArrayList<>();
+        
+        // insert extra filters HERE on this line and not below maxIndv because thats the final individual filter to be performed
+        
+        if (this.settings.getMaxIndv() != null) { this.individualFilters.add(new MaxIndividuals()); }
     }
 
     
