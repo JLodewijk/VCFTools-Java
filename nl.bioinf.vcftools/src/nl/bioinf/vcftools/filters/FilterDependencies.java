@@ -19,7 +19,8 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
 public class FilterDependencies {
     private List<Integer> totalDp;
     private List<Double> meanDp;
-    private List<Boolean> Phased;
+    private List<Boolean> phased;
+    private List<Boolean> individualsLeft;
     private int siteCount;
     
     
@@ -29,7 +30,8 @@ public class FilterDependencies {
     public FilterDependencies() {
         this.totalDp = new ArrayList<>();
         this.meanDp = new ArrayList<>();
-        this.Phased = new ArrayList<>();
+        this.phased = new ArrayList<>();
+        this.individualsLeft = new ArrayList<>();
         this.siteCount = 0;
     }
              
@@ -44,12 +46,12 @@ public class FilterDependencies {
             // If first collection of data then prefil datasets
             if (this.siteCount == 0) {
                 this.totalDp.add(0);
-                this.Phased.add(false);
+                this.phased.add(false);
             }        
             // Store depths total
             this.totalDp.set(i, (this.totalDp.get(i) + genotype.getDp()));
             // When we find a phased the whole individual is one totally unphased and can be kept
-            if (genotype.isPhased() == true) { this.Phased.set(i, true); }    
+            if (genotype.isPhased() == true) { this.phased.set(i, true); }    
         }
         // The original vcftools also calculates size when genotype is empty so one combined total counter will be okay
         this.siteCount++;
@@ -77,7 +79,25 @@ public class FilterDependencies {
      * @return 
      */
     public List<Boolean> getPhased() {
-        return Phased;
+        return phased;
     } 
+    
+    /**
+     * Get the list of individuals left after previous filter steps
+     * @return 
+     */
+    public List<Boolean> getIndividualsLeft() {
+        return individualsLeft;
+    }
+
+    /**
+     * Set the list of individuals left after previous filter steps
+     * @param individualsLeft 
+     */
+    public void setIndividualsLeft(List<Boolean> individualsLeft) {
+        this.individualsLeft = individualsLeft;
+    }
+    
+    
     
 }
