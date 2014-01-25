@@ -33,11 +33,19 @@ public class VcfHeader {
     }
 
     /**
-     * Get the genotype Samples
+     * Get the genotype samples
      * @return 
      */
     public List<String> getGenotypeSamples() {
         return this.header.getGenotypeSamples();
+    }
+    
+    /**
+     * Get the number of genotype samples
+     * @return 
+     */
+    public int getGenotypeSampleNumber() {
+        return this.header.getNGenotypeSamples();
     }
     
     @Override
