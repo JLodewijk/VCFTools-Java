@@ -7,6 +7,7 @@
 package nl.bioinf.vcftools.filters;
 import java.util.List;
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filehandlers.VcfHeader;
 
 /**
  * Abstract class for context dependent filters.
@@ -19,8 +20,9 @@ public abstract class AbstractIndividualFilter {
     /**
      * Abstract class for individual filters
      * @param settings
+     * @param vcfHeader
      * @param filterDependencies
      * @return
      */
-    public abstract List<Boolean> filter(Settings settings, FilterDependencies filterDependencies);
+    public abstract List<Boolean> filter(Settings settings, VcfHeader vcfHeader, FilterDependencies filterDependencies);
 }
