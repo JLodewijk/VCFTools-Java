@@ -37,11 +37,12 @@ public class MaxIndividuals extends AbstractIndividualFilter {
             }
         } else {
             individualsLeft = filterDependencies.getIndividualsLeft();
+            List<Integer> leftIndividualsIndexes;
             // else we loop untill we randomly excluded individuals till we are at the max individuals
             while (breakout == false) {
                 // Create a list of index numbers of individuals that are left
                 int index = 0;
-                List<Integer> leftIndividualsIndexes = new ArrayList<>();
+                leftIndividualsIndexes = new ArrayList<>();
                 for (Boolean left : individualsLeft) {
                     if (left == true) {
                         leftIndividualsIndexes.add(index);
