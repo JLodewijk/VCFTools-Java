@@ -30,7 +30,6 @@ import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filters.genotype.Depth;
 import nl.bioinf.vcftools.filters.genotype.Quality;
 import nl.bioinf.vcftools.filters.individual.MaxIndividuals;
-import nl.bioinf.vcftools.filters.individual.Phased;
 import nl.bioinf.vcftools.filters.site.ExcludeSnp;
 import nl.bioinf.vcftools.filters.site.Geno;
 import nl.bioinf.vcftools.filters.site.Mask;
@@ -87,7 +86,7 @@ public class FilterFactory {
         if ((this.settings.getMac() != null) && (this.settings.getMaxMac() != null)) {  }
         if ((this.settings.getNonRefAc() != null) && (this.settings.getMaxNonRefAc() != null)) { /* NonRefAlleleCount() */ }
         if (this.settings.getHwe() != null) { /* Hardy() */ }
-        if (this.settings.getGeno() != null && this.settings.getGeno() == 1)  { this.siteFilters.add(new Geno()); }
+        if (this.settings.getGeno() != null & this.settings.getGeno() == 1)  { this.siteFilters.add(new Geno()); }
         if (this.settings.getMaxMissingCount() != null) { this.siteFilters.add(new MissingCount()); }
         if ((this.settings.getMinAlleles() != null) && (this.settings.getMaxAlleles() != null)) { this.siteFilters.add(new MinorAlleleCount()); }
         if (this.settings.getThin() != null) { this.siteFilters.add(new Thinning()); }
