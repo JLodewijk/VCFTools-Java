@@ -34,6 +34,7 @@ import nl.bioinf.vcftools.filters.individual.Phased;
 import nl.bioinf.vcftools.filters.site.ExcludeSnp;
 import nl.bioinf.vcftools.filters.site.Geno;
 import nl.bioinf.vcftools.filters.site.Mask;
+import nl.bioinf.vcftools.filters.site.RemovePhased;
 
 /**
  *  This factory creates all the filters used in vcftools
@@ -69,6 +70,7 @@ public class FilterFactory {
         if (!this.settings.getExcludeSnp().isEmpty()) { this.siteFilters.add(new ExcludeSnp()); }
         if (!this.settings.getPositions().isEmpty()) { this.siteFilters.add(new IncludePositions()); }
         if (this.settings.getKeepInfo() != null) { this.siteFilters.add(new KeepInfo()); }
+        if (this.settings.isPhased() != null) { this.siteFilters.add(new RemovePhased()); }
         if (this.settings.isKeepIndels() != null) {
             if (this.settings.isKeepIndels() == true) { this.siteFilters.add(new KeepIndels()); }
             if (this.settings.isKeepIndels() == false) { this.siteFilters.add(new RemoveIndels()); }

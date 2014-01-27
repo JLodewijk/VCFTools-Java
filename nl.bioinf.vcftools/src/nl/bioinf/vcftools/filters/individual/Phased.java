@@ -11,6 +11,7 @@ import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filehandlers.VcfHeader;
 import nl.bioinf.vcftools.filters.AbstractIndividualFilter;
 import nl.bioinf.vcftools.filters.FilterDependencies;
+import nl.bioinf.vcftools.filters.site.RemovePhased;
 
 /**
  *
@@ -27,6 +28,11 @@ public class Phased extends AbstractIndividualFilter {
      */
     @Override
     public List<Boolean> filter(Settings settings, VcfHeader vcfHeader, FilterDependencies filterDependencies) {
+        if(filterDependencies.getPhased().contains(false)){
+             RemovePhased r =  new RemovePhased();
+             r.filter(null, settings);
+        
+        }
         return filterDependencies.getPhased();
     }
     
