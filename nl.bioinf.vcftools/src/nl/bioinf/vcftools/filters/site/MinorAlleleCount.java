@@ -17,7 +17,13 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class MinorAlleleCount extends AbstractSiteFilter {
-    
+     /**
+     * filters a vcf line on allele count, returns true if line has to be kept, returns false if line is rejected
+     * @param vcfLine
+     * @param settings
+     * @return
+     * @author mhroelfes <marcoroelfes@gmail.com>
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         Object valObj = vcfLine.getAttribute("AC");
