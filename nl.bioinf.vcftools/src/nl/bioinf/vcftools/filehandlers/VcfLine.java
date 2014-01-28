@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import org.broadinstitute.variant.variantcontext.Allele;
 import org.broadinstitute.variant.variantcontext.Genotype;
+import org.broadinstitute.variant.variantcontext.GenotypeBuilder;
 import org.broadinstitute.variant.variantcontext.VariantContext;
 import org.broadinstitute.variant.variantcontext.VariantContextBuilder;
 
@@ -35,6 +36,33 @@ public class VcfLine {
     public String toString() {
         return "VcfLine{" + "vc=" + vc + '}';
     }
+    
+    
+    public void filterIndividuals(List<Boolean> filterList) {
+        // Create VariantContextBuilder using current VariantContext as base
+        VariantContextBuilder vcb = new VariantContextBuilder(this.vc);
+        
+        List<Genotype> newGenotypes = new ArrayList<>();
+        
+        // create empty GATK genotype
+        GenotypeBuilder gtb = new GenotypeBuilder();
+        Genotype emptyGenotype = gtb.make();
+        
+        // Loop trough filter list and keep genotype when true
+        int i = 0;
+        for (Boolean filter : filterList) {
+            if (filter == true) { 
+                newGenotypes.add(vc.getGenotype(i));
+            } else {
+                newGenotypes.add(emptyGenotype);
+            }
+            i++;
+        }
+        // store in builder object and set current replace VariantContext object with the builder one
+        vcb.genotypes(newGenotypes);
+        this.vc = vcb.make();
+    }
+    
     
     /**
      * Get original GATK VariantContext for internal use

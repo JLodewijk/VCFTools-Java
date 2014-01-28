@@ -71,7 +71,7 @@ public class VcfProcessor {
         VcfReader reader = new VcfReader(settings.getInputFile());
         this.filterDependencies = new FilterDependencies();
 
-        // While reader file has next iteration get next iteration
+        // While reader file has next vcfLine get next vcfLine
         while (reader.hasNextIter()) {
             VcfLine iteration = reader.getNextIter();
             // Collect the dependencies of the reader line
@@ -100,23 +100,26 @@ public class VcfProcessor {
         FilterHandler filterHandler = new FilterHandler(this.settings);
 
         // Perform Individual filters
-        System.out.println("Individual Filters Result: " + filterHandler.performIndividualFilters(header, filterDependencies));
+        List<Boolean> individualFilterResults = filterHandler.performIndividualFilters(header, filterDependencies);
         
-        // While reader file has next iteration get next iteration
+        // While reader file has next vcfLine get next vcfLine
         while (reader.hasNextIter()) {
-            VcfLine iteration = reader.getNextIter();
+            VcfLine vcfLine = reader.getNextIter();
+            
+            // Filter away individuals that are not needed anymore
+            vcfLine.filterIndividuals(individualFilterResults);
 
             // Perform all the site filters
-            boolean siteFilterResult = filterHandler.performSiteFilters(iteration);
+            boolean siteFilterResult = filterHandler.performSiteFilters(vcfLine);
 
             // Perform all the genotype filters
-            List<Boolean> genotypeFilterResult = filterHandler.performGenotypeFilters(iteration);
+            List<Boolean> genotypeFilterResult = filterHandler.performGenotypeFilters(vcfLine);
 
             // TODO: Perform the needed VcfLine editing here
             // Write the line away if SiteFilter allowed it
             if (siteFilterResult == true) {
                 // Addapt genotypes
-                VcfLine vcfLine = this.processGenotypeChanges(iteration, genotypeFilterResult);
+                vcfLine = this.processGenotypeChanges(vcfLine, genotypeFilterResult);
                 // Write line
                 writer.writeVcfLine(vcfLine);
             }
