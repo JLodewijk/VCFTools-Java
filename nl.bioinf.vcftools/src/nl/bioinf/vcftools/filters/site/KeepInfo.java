@@ -14,7 +14,13 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class KeepInfo extends AbstractSiteFilter {
-
+     /**
+     * Check if info exists in vcfLine and rejects if not
+     * @param vcfLine
+     * @param settings
+     * @return
+     * @author mhroelfes <marcoroelfes@gmail.com>
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         //loop through info which needs to be kept
