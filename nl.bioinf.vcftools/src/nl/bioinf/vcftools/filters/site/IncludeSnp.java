@@ -15,7 +15,13 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class IncludeSnp extends AbstractSiteFilter{
-
+     /**
+     * include a specific snp on their ID, returns false if line has to be removed.
+     * @param vcfLine
+     * @param settings
+     * @return
+     * @author mhroelfes <marcoroelfes@gmail.com>
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         //checks if vcfline has a ID
