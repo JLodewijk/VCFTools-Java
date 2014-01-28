@@ -28,11 +28,6 @@ public class Phased extends AbstractIndividualFilter {
      */
     @Override
     public List<Boolean> filter(Settings settings, VcfHeader vcfHeader, FilterDependencies filterDependencies) {
-        if(filterDependencies.getPhased().contains(false)){
-             RemovePhased r =  new RemovePhased();
-             r.filter(null, settings);
-        
-        }
         return filterDependencies.getPhased();
     }
     

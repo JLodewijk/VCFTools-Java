@@ -7,6 +7,7 @@
 package nl.bioinf.vcftools.filters.site;
 
 import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.filehandlers.VcfGenotype;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 
@@ -24,6 +25,12 @@ public class RemovePhased extends AbstractSiteFilter{
      */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-        return false;
+        int genoNum = vcfLine.getGenotypeNumber();
+        for (int i=0;i<genoNum;i++) {
+            if (vcfLine.getGenotype(i).isPhased() == false) {
+                return false;
+            }
+        }
+        return true; 
     }   
 }

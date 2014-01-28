@@ -50,7 +50,7 @@ public class FilterDependencies {
             }        
             // Store depths total
             this.totalDp.set(i, (this.totalDp.get(i) + genotype.getDp()));
-            // When we find a phased the whole individual is one totally unphased and can be kept
+            // When we find a phased the whole individual is not totally unphased and can be kept
             if (genotype.isPhased() == true) { this.phased.set(i, true); }    
         }
         // The original vcftools also calculates size when genotype is empty so one combined total counter will be okay
