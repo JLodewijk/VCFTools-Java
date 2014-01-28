@@ -11,7 +11,7 @@ import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filehandlers.VcfHeader;
 import nl.bioinf.vcftools.filters.AbstractIndividualFilter;
 import nl.bioinf.vcftools.filters.FilterDependencies;
-import nl.bioinf.vcftools.filters.site.RemovePhased;
+import nl.bioinf.vcftools.filters.site.RemoveUnphased;
 
 /**
  *
