@@ -8,6 +8,8 @@ package nl.bioinf.vcftools;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.collections4.MultiMap;
@@ -35,9 +37,9 @@ public class Settings {
     private MultiMap chr;
     private MultiMap notChr;
 
-    private ArrayList<String> snp;
+    private List<String> snp;
     private String snpFile;
-    private ArrayList<String> excludeSnp;
+    private List<String> excludeSnp;
     private String excludeSnpFile;
     private MultiMap positions;
     private String positionsFile;
@@ -49,10 +51,10 @@ public class Settings {
     private MultiMap bed;
     private MultiMap exludeBed;
     private Boolean removeFilteredAll;
-    private ArrayList<String> removeFiltered;
-    private ArrayList<String> keepFiltered;
-    private ArrayList<String> removeInfo;
-    private ArrayList<String> keepInfo;
+    private List<String> removeFiltered;
+    private List<String> keepFiltered;
+    private List<String> removeInfo;
+    private List<String> keepInfo;
     private Double minQ;
     private Double minMeanDp;
     private Double maxMeanDp;
@@ -77,9 +79,9 @@ public class Settings {
     private Integer maskMin;
 
     /* Individual filters */
-    private ArrayList<String> keepIndv;
+    private List<String> keepIndv;
     private String keepIndvFile;
-    private ArrayList<String> removeIndv;
+    private List<String> removeIndv;
     private String removeIndvFile;
     private Double minIndvMeanDp;
     private Double maxIndvMeanDp;
@@ -89,7 +91,7 @@ public class Settings {
     
     /* Genotype filters */
     private Boolean removeFilteredGenoAll;
-    private ArrayList<String> removeFilteredGeno;
+    private List<String> removeFilteredGeno;
     private Double minGq;
     private Double minDp;
     private Double maxDp;
@@ -423,7 +425,7 @@ public class Settings {
      *
      * @return
      */
-    public ArrayList<String> getSnp() {
+    public List<String> getSnp() {
         return snp;
     }
 
@@ -431,7 +433,7 @@ public class Settings {
      *
      * @param snp
      */
-    public void setSnp(ArrayList<String> snp) {
+    public void setSnp(List<String> snp) {
         this.snp = snp;
     }
 
@@ -439,7 +441,7 @@ public class Settings {
      *
      * @param snp
      */
-    public void addSnp(ArrayList<String> snp) {
+    public void addSnp(List<String> snp) {
         this.snp.addAll(snp);
     }
 
@@ -471,7 +473,7 @@ public class Settings {
      *
      * @return
      */
-    public ArrayList<String> getExcludeSnp() {
+    public List<String> getExcludeSnp() {
         return excludeSnp;
     }
 
@@ -479,7 +481,7 @@ public class Settings {
      *
      * @param excludeSnp
      */
-    public void setExcludeSnp(ArrayList<String> excludeSnp) {
+    public void setExcludeSnp(List<String> excludeSnp) {
         this.excludeSnp = excludeSnp;
     }
 
@@ -487,7 +489,7 @@ public class Settings {
      *
      * @param excludeSnp
      */
-    public void addExcludeSnp(ArrayList<String> excludeSnp) {
+    public void addExcludeSnp(List<String> excludeSnp) {
         this.excludeSnp.addAll(excludeSnp);
     }
 
@@ -547,7 +549,7 @@ public class Settings {
      * @return 
      */
     public boolean containsPositions(String chr, int position) {
-        ArrayList chrPos = (ArrayList) this.positions.get(chr);
+        List chrPos = (List) this.positions.get(chr);
         return chrPos.contains(position);
     }
     
@@ -599,7 +601,7 @@ public class Settings {
      * @return 
      */
     public boolean containsExcludePositions(String chr, int position) {
-        ArrayList chrPos = (ArrayList) this.excludePositions.get(chr);
+        List chrPos = (List) this.excludePositions.get(chr);
         return chrPos.contains(position);
     }
 
@@ -721,7 +723,7 @@ public class Settings {
      *
      * @return
      */
-    public ArrayList<String> getRemoveFiltered() {
+    public List<String> getRemoveFiltered() {
         return removeFiltered;
     }
 
@@ -729,7 +731,7 @@ public class Settings {
      *
      * @param removeFiltered
      */
-    public void setRemoveFiltered(ArrayList<String> removeFiltered) {
+    public void setRemoveFiltered(List<String> removeFiltered) {
         this.removeFiltered = removeFiltered;
     }
 
@@ -737,7 +739,7 @@ public class Settings {
      *
      * @param removeFiltered
      */
-    public void addRemoveFiltered(ArrayList<String> removeFiltered) {
+    public void addRemoveFiltered(List<String> removeFiltered) {
         this.removeFiltered.addAll(removeFiltered);
     }
 
@@ -753,7 +755,7 @@ public class Settings {
      *
      * @return
      */
-    public ArrayList<String> getKeepFiltered() {
+    public List<String> getKeepFiltered() {
         return keepFiltered;
     }
 
@@ -761,7 +763,7 @@ public class Settings {
      *
      * @param keepFiltered
      */
-    public void setKeepFiltered(ArrayList<String> keepFiltered) {
+    public void setKeepFiltered(List<String> keepFiltered) {
         this.keepFiltered = keepFiltered;
     }
 
@@ -769,7 +771,7 @@ public class Settings {
      *
      * @param keepFiltered
      */
-    public void addKeepFiltered(ArrayList<String> keepFiltered) {
+    public void addKeepFiltered(List<String> keepFiltered) {
         this.keepFiltered.addAll(keepFiltered);
     }
 
@@ -785,7 +787,7 @@ public class Settings {
      *
      * @return
      */
-    public ArrayList<String> getRemoveInfo() {
+    public List<String> getRemoveInfo() {
         return removeInfo;
     }
 
@@ -793,7 +795,7 @@ public class Settings {
      *
      * @param removeInfo
      */
-    public void setRemoveInfo(ArrayList<String> removeInfo) {
+    public void setRemoveInfo(List<String> removeInfo) {
         this.removeInfo = removeInfo;
     }
 
@@ -801,7 +803,7 @@ public class Settings {
      *
      * @param removeInfo
      */
-    public void addRemoveInfo(ArrayList<String> removeInfo) {
+    public void addRemoveInfo(List<String> removeInfo) {
         this.removeInfo.addAll(removeInfo);
     }
 
@@ -817,7 +819,7 @@ public class Settings {
      *
      * @return
      */
-    public ArrayList<String> getKeepInfo() {
+    public List<String> getKeepInfo() {
         return keepInfo;
     }
 
@@ -825,7 +827,7 @@ public class Settings {
      *
      * @param keepInfo
      */
-    public void setKeepInfo(ArrayList<String> keepInfo) {
+    public void setKeepInfo(List<String> keepInfo) {
         this.keepInfo = keepInfo;
     }
 
@@ -833,7 +835,7 @@ public class Settings {
      *
      * @param keepInfo
      */
-    public void addKeepInfo(ArrayList<String> keepInfo) {
+    public void addKeepInfo(List<String> keepInfo) {
         this.keepInfo.addAll(keepInfo);
     }
     
@@ -1219,7 +1221,7 @@ public class Settings {
      *
      * @return
      */
-    public ArrayList<String> getKeepIndv() {
+    public List<String> getKeepIndv() {
         return keepIndv;
     }
 
@@ -1227,7 +1229,7 @@ public class Settings {
      *
      * @param keepIndv
      */
-    public void setKeepIndv(ArrayList<String> keepIndv) {
+    public void setKeepIndv(List<String> keepIndv) {
         this.keepIndv = keepIndv;
     }
 
@@ -1235,7 +1237,7 @@ public class Settings {
      *
      * @param keepIndv
      */
-    public void addKeepIndv(ArrayList<String> keepIndv) {
+    public void addKeepIndv(List<String> keepIndv) {
         this.keepIndv.addAll(keepIndv);
     }
     
@@ -1267,7 +1269,7 @@ public class Settings {
      *
      * @return
      */
-    public ArrayList<String> getRemoveIndv() {
+    public List<String> getRemoveIndv() {
         return removeIndv;
     }
 
@@ -1275,7 +1277,7 @@ public class Settings {
      *
      * @param removeIndv
      */
-    public void setRemoveIndv(ArrayList<String> removeIndv) {
+    public void setRemoveIndv(List<String> removeIndv) {
         this.removeIndv = removeIndv;
     }
 
@@ -1283,7 +1285,7 @@ public class Settings {
      *
      * @param removeIndv
      */
-    public void addRemoveIndv(ArrayList<String> removeIndv) {
+    public void addRemoveIndv(List<String> removeIndv) {
         this.removeIndv.addAll(removeIndv);
     }
     
@@ -1459,7 +1461,7 @@ public class Settings {
      *
      * @return
      */
-    public ArrayList<String> getRemoveFilteredGeno() {
+    public List<String> getRemoveFilteredGeno() {
         return removeFilteredGeno;
     }
 
@@ -1467,7 +1469,7 @@ public class Settings {
      *
      * @param removeGenoFiltered
      */
-    public void setRemoveFilteredGeno(ArrayList<String> removeGenoFiltered) {
+    public void setRemoveFilteredGeno(List<String> removeGenoFiltered) {
         this.removeFilteredGeno = removeGenoFiltered;
     }
     
