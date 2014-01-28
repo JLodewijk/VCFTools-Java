@@ -70,7 +70,6 @@ public class FilterFactory {
         if (!this.settings.getExcludeSnp().isEmpty()) { this.siteFilters.add(new ExcludeSnp()); }
         if (!this.settings.getPositions().isEmpty()) { this.siteFilters.add(new IncludePositions()); }
         if (this.settings.getKeepInfo() != null) { this.siteFilters.add(new KeepInfo()); }
-        if (this.settings.isPhased() != null) { this.siteFilters.add(new RemovePhased()); }
         if (this.settings.isKeepIndels() != null) {
             if (this.settings.isKeepIndels() == true) { this.siteFilters.add(new KeepIndels()); }
             if (this.settings.isKeepIndels() == false) { this.siteFilters.add(new RemoveIndels()); }
@@ -94,6 +93,7 @@ public class FilterFactory {
         if ((this.settings.getMinAlleles() != null) && (this.settings.getMaxAlleles() != null)) { this.siteFilters.add(new MinorAlleleCount()); }
         if (this.settings.getThin() != null) { this.siteFilters.add(new Thinning()); }
         if (this.settings.getMaskFile() != null) {this.siteFilters.add(new Mask());}
+        if (this.settings.isPhased() != null) { this.siteFilters.add(new RemovePhased()); }
     }
     
     /**
