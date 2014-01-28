@@ -19,7 +19,7 @@ import nl.bioinf.vcftools.filters.FilterDependencies;
  */
 public class IncludeIndividuals extends AbstractIndividualFilter{
     /**
-     * Includes a individual if given by the user, else remove individual
+     * Includes an individual if given by the user, else remove individual
      * @param settings
      * @param vcfHeader
      * @param filterDependencies
