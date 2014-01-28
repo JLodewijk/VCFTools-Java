@@ -58,7 +58,7 @@ public class VcfGenotype {
     }
    
     /**
-     * Clear all the oldAlleles of this genotype
+     * Clear all the alleles of this genotype
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public void clearAlleles () {
