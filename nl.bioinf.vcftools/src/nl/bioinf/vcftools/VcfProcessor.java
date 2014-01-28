@@ -133,37 +133,4 @@ public class VcfProcessor {
         reader.close();
         writer.close();
     }
-
-    /**
-     * Gets vcfLine and genotypefilter results and returns genotypefilter processed vcfline
-     * @param vcfLine
-     * @param genotypeFilterResult
-     * @return 
-     */
-    private VcfLine processGenotypeChanges(VcfLine vcfLine, List<Boolean> genotypeFilterResult) {
-        // When result is all true return original vcfLine
-        if (!genotypeFilterResult.contains(false)) {
-            return vcfLine;
-        } 
-        // When there are results contains false elements, store mutated genotypes
-        else {
-            // Create new list of Genotypes
-            List<VcfGenotype> genoTypes = new ArrayList<>();
-            int index = 0;
-            // loop trough results
-            for (Boolean i : genotypeFilterResult) {
-                // When result is false remove alleles from original genotype
-                VcfGenotype genotype = vcfLine.getGenotype(index);
-                if (i == false) {
-                    genotype.clearAlleles();   
-                } 
-                // Store genotype in new list   
-                genoTypes.add(genotype); 
-                index++;
-            }
-            // Build new vcfLine with changed genotypes and return it
-            vcfLine.setGenotypes(genoTypes);
-            return vcfLine;
-        }
-    }
 }
