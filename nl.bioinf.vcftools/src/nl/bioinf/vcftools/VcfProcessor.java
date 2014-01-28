@@ -43,6 +43,7 @@ public class VcfProcessor {
     public VcfProcessor(Settings settings) throws IOException {
         this.settings = settings;
         this.performIndividualFilters = false;
+        
         // check once if individual filters have to be performed
         if ((this.settings.isPhased() != null) && (this.settings.isPhased() == true)) { this.performIndividualFilters = true; }
         else if ((this.settings.getMinIndvMeanDp() != null) && (this.settings.getMaxIndvMeanDp() != null)) { this.performIndividualFilters = true; }
@@ -52,7 +53,6 @@ public class VcfProcessor {
         else if (this.settings.getMaxIndv() != null) { this.performIndividualFilters = true;  }           
         
         // Perform all the filters and precalculations
-
         if (this.performIndividualFilters == true) { performDependencyCalculations(); }
         performFilters();
     }
