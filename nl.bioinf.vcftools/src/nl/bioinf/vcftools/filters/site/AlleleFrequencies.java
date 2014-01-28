@@ -12,11 +12,17 @@ import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
- *
+ * checks if allele frequency is between threshold
  * @author mhroelfes
  */
 public class AlleleFrequencies extends AbstractSiteFilter {
 
+    /**
+     * checks if allele frequency is between threshold
+     * @param vcfLine
+     * @param settings
+     * @return boolean , true is keep site
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         Object valObj = vcfLine.getAttribute("AF");

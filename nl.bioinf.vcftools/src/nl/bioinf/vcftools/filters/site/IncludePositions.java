@@ -14,7 +14,7 @@ import org.apache.commons.collections4.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 /**
- *
+ * 
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class IncludePositions extends AbstractSiteFilter{

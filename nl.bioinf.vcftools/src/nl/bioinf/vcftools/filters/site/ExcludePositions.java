@@ -10,14 +10,20 @@ import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
- *
+ * excludes SNPs based on position
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class ExcludePositions extends AbstractSiteFilter {
 
+    /**
+     * excludes SNPs based on position
+     * @param vcfLine
+     * @param settings
+     * @return boolean, true is keeping a site
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
-
+        //checks if postion is given by the user
         return !settings.containsExcludePositions(vcfLine.getChr(), vcfLine.getPosition());
 
     }

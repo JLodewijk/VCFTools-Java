@@ -29,7 +29,6 @@ public class MaxIndividuals extends AbstractIndividualFilter {
     public List<Boolean> filter(Settings settings, VcfHeader vcfHeader, FilterDependencies filterDependencies) {
         boolean breakout = false;
         List<Boolean> individualsLeft = new ArrayList<>();
-
         // If max indv is 0 then just put all items to false
         if (settings.getMaxIndv() <= 0) {
             for (Boolean i : filterDependencies.getIndividualsLeft()) {

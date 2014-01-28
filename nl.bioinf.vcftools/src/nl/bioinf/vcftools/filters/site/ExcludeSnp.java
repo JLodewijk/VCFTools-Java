@@ -16,6 +16,12 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  */
 public class ExcludeSnp extends AbstractSiteFilter{
 
+    /**
+     * This class can exclude a specific snp on their ID, returns false if line has to be removed.
+     * @param vcfLine
+     * @param settings
+     * @return boolean, true is keeping a site
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         //checks if vcfline has a ID
