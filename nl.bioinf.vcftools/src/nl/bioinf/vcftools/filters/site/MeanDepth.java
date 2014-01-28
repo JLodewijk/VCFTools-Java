@@ -16,7 +16,13 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  * 
  */
 public class MeanDepth extends AbstractSiteFilter {
-
+     /**
+     * Check if meandepth is between threshold given by the user
+     * @param vcfLine
+     * @param settings
+     * @return
+     * @author mhroelfes <marcoroelfes@gmail.com>
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         
