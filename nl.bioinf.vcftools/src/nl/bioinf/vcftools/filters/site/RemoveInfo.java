@@ -10,14 +10,22 @@ import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
- *
+ * check if keep info exists
  * @author mhroelfes <macoroelfes@gmail.com>
  */
 public class RemoveInfo extends AbstractSiteFilter {
-
+     /**
+     * check if keep info exists
+     * @param vcfLine
+     * @param settings
+     * @return
+     * @author mhroelfes <marcoroelfes@gmail.com>
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
+        //loop through all info to be kept
         for (String i : settings.getKeepInfo()) {
+           //if info exists return false
             if (vcfLine.getAttributeAsString(i) != null) {
                 return false;
             }
