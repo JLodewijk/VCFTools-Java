@@ -24,8 +24,8 @@ public class VcfLine {
 
     /**
      * Constructor using GATK VariantContext.
-     * 
-     * @param vc 
+     *
+     * @param vc
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     VcfLine(VariantContext vc) {
@@ -36,81 +36,128 @@ public class VcfLine {
     public String toString() {
         return "VcfLine{" + "vc=" + vc + '}';
     }
-    
-    
+
+    /**
+     * Replaces individuals with totally empty genotypes when filter list contains False
+     *
+     * @param filterList
+     */
     public void filterIndividuals(List<Boolean> filterList) {
-        // Create VariantContextBuilder using current VariantContext as base
-        VariantContextBuilder vcb = new VariantContextBuilder(this.vc);
-        
-        List<Genotype> newGenotypes = new ArrayList<>();
-        
-        // create empty GATK genotype
-        GenotypeBuilder gtb = new GenotypeBuilder();
-        Genotype emptyGenotype = gtb.make();
-        
-        // Loop trough filter list and keep genotype when true
-        int i = 0;
-        for (Boolean filter : filterList) {
-            if (filter == true) { 
-                newGenotypes.add(vc.getGenotype(i));
-            } else {
-                newGenotypes.add(emptyGenotype);
+        // Only peform this action when where are actual individuals to be filtered
+        if (filterList.contains(false)) {
+            VariantContextBuilder vcb = new VariantContextBuilder(this.vc);
+            List<Genotype> newGenotypes = new ArrayList<>();
+
+            // create empty GATK genotype
+            GenotypeBuilder gtb = new GenotypeBuilder();
+            Genotype emptyGenotype = gtb.make();
+
+            // Loop trough filter list and keep genotype when true
+            int i = 0;
+            for (Boolean filter : filterList) {
+                if (filter == true) {
+                    newGenotypes.add(vc.getGenotype(i));
+                } else {
+                    newGenotypes.add(emptyGenotype);
+                }
+                i++;
             }
-            i++;
+            // store in builder object and set current replace VariantContext object with the builder one
+            vcb.genotypes(newGenotypes);
+            this.vc = vcb.make();
         }
-        // store in builder object and set current replace VariantContext object with the builder one
-        vcb.genotypes(newGenotypes);
-        this.vc = vcb.make();
     }
-    
-    
+
+    /**
+     * Replaces genotypes with empty alleles version of original genotypes when filter list contains false items
+     *
+     * @param filterList
+     */
+    public void filterGenotypes(List<Boolean> filterList) {
+        // Only peform this action when where are actual genotypes to be filtered
+        if (filterList.contains(false)) {
+            // Create VariantContextBuilder using current VariantContext as base
+            VariantContextBuilder vcb = new VariantContextBuilder(this.vc);
+            List<Genotype> newGenotypes = new ArrayList<>();
+            Genotype oldGenotype;
+
+            // Loop trough filter list and keep genotype when true
+            int i = 0;
+            for (Boolean filter : filterList) {
+                if (filter == true) {
+                    newGenotypes.add(vc.getGenotype(i));
+                } else {
+                    // Get the old genotype and build a new genotype from it
+                    oldGenotype = vc.getGenotype(i);
+                    GenotypeBuilder gtb = new GenotypeBuilder(oldGenotype);
+
+                    // Replace the alleles of the new genotype with empty ones
+                    List<Allele> oldAlleles = oldGenotype.getAlleles();
+                    List<Allele> newAlleles = new ArrayList<>();
+                    // for each old allele element create an empty new one
+                    for (Allele allele : oldAlleles) {
+                        newAlleles.add(Allele.NO_CALL);
+                    }
+                    // set the new alleles in genotypebuilder object and add to the new genotype
+                    gtb.alleles(newAlleles);
+                    newGenotypes.add(gtb.make());
+                }
+                i++;
+            }
+            // finally we are implementing the new genotypes in the new VariantContext and updating the current one with the new one
+            vcb.genotypes(newGenotypes);
+            this.vc = vcb.make();
+        }
+    }
+
     /**
      * Get original GATK VariantContext for internal use
-     * @return 
+     *
+     * @return
      */
     public VariantContext getBroadinstituteVariantContext() {
         return this.vc;
     }
-    
+
     /**
      * Get the identifier of the SNP of the line.
-     * 
+     *
      * @return Identifier
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public String getId() {
         return vc.getID();
     }
-    
+
     /**
      * Get the chromosome of the SNP of the line.
-     * 
+     *
      * @return Chromosome
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public String getChr() {
         return vc.getChr();
     }
-    
+
     /**
      * Get the reference of the SNP of the line.
-     * 
+     *
      * @return Allele
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public String getReferenceAllele() {
         return vc.getReference().toString();
     }
-    
+
     /**
      * Get the alt alleles of the SNP of the line.
-     * 
+     *
      * @return Alleles
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public List<String> getAltAlleles() {
         // convert list of objects to list of strings
-        List<Allele> allelesObjects = this.vc.getAlternateAlleles(); 
+        List<Allele> allelesObjects = this.vc.getAlternateAlleles();
         List<String> allelesStrings = new ArrayList<String>();
         for (Object object : allelesObjects) {
             allelesStrings.add(object != null ? object.toString() : null);
@@ -118,40 +165,40 @@ public class VcfLine {
         // Return list of strings
         return allelesStrings;
     }
-    
+
     /**
      * Get the position of the SNP of the line.
-     * 
+     *
      * @return Position
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int getPosition() {
         return this.vc.getStart();
     }
-    
+
     /**
      * Get the Quality of the SNP of the line.
-     * 
+     *
      * @return Quality
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public double getQual() {
         return this.vc.getPhredScaledQual();
     }
-    
-     /**
+
+    /**
      * Get the depth.
-     * 
+     *
      * @return depth
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int getDp() {
         return this.vc.getAttributeAsInt("DP", 0);
     }
-    
-     /**
+
+    /**
      * Get the number of genotypes.
-     * 
+     *
      * @return Number of genotypes
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
@@ -166,7 +213,7 @@ public class VcfLine {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     public boolean getIndel() {
-	return vc.isIndel();
+        return vc.isIndel();
     }
 
     /**
@@ -176,7 +223,7 @@ public class VcfLine {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     public boolean getNotFiltered() {
-	return vc.isNotFiltered();
+        return vc.isNotFiltered();
     }
 
     /**
@@ -186,9 +233,9 @@ public class VcfLine {
      * @author Jeroen Lodewijk <j.lodewijk@st.hanze.nl>
      */
     public Set<String> getSpecificFilter() {
-	return vc.getFilters();
+        return vc.getFilters();
     }
-    
+
     /**
      * Get the amount of allels.
      *
@@ -198,7 +245,7 @@ public class VcfLine {
     public int getNAllels() {
         return vc.getNAlleles();
     }
-    
+
     /**
      * Get the minor allele count.
      *
@@ -208,10 +255,10 @@ public class VcfLine {
     public double getMinorAlleleCount() {
         return (double) vc.getAttribute("AC");
     }
-    
+
     /**
      * Get an attribute as boolean of the SNP of the line.
-     * 
+     *
      * @param attribute The attribute to return its value of.
      * @return Attribute value
      * @author Sergio Bondietti <sergio@bondietti.nl>
@@ -219,9 +266,10 @@ public class VcfLine {
     public boolean getAttributeAsBoolean(String attribute) {
         return this.vc.getAttributeAsBoolean(attribute, false);
     }
-    
+
     /**
      * Get an attribute as double of the SNP of the line.
+     *
      * @param attribute The attribute to return its value of.
      * @return Attribute value
      * @author Sergio Bondietti <sergio@bondietti.nl>
@@ -229,18 +277,21 @@ public class VcfLine {
     public double getAttributeAsDouble(String attribute) {
         return this.vc.getAttributeAsDouble(attribute, 0.0);
     }
+
     /**
      * Get an attribute as int of the SNP of the line.
+     *
      * @param attribute The attribute to return its value of.
-     * @return  Attribute value
+     * @return Attribute value
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public int getAttributeAsInt(String attribute) {
         return this.vc.getAttributeAsInt(attribute, 0);
     }
-    
+
     /**
      * Get an attribute as string of the SNP of the line.
+     *
      * @param attribute The attribute to return its value of.
      * @return Attribute value
      * @author Sergio Bondietti <sergio@bondietti.nl>
@@ -248,8 +299,10 @@ public class VcfLine {
     public String getAttributeAsString(String attribute) {
         return this.vc.getAttributeAsString(attribute, null);
     }
-     /**
+
+    /**
      * Get an attribute of the SNP of the line.
+     *
      * @param attribute The attribute to return its value of.
      * @return Attribute value
      * @author Marco Roelfes <marcoroelfes@gamil.com>
@@ -257,28 +310,28 @@ public class VcfLine {
     public Object getAttribute(String attribute) {
         return this.vc.getAttribute(attribute);
     }
-    
-    
+
     /**
      * Get the genotype using the specified index number
+     *
      * @param index
-     * @return 
+     * @return
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
-    
     public VcfGenotype getGenotype(int index) {
         return new VcfGenotype(this.vc.getGenotype(index));
     }
-    
+
     /**
      * Set the genotypes for this line
-     * @param genotypes 
+     *
+     * @param genotypes
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public void setGenotypes(List<VcfGenotype> genotypes) {
         // Create VariantContextBuilder using current VariantContext as base
         VariantContextBuilder vcb = new VariantContextBuilder(this.vc);
-        
+
         List<Genotype> newGenotypes = new ArrayList<>();
         // Loop trough genotypes and store as GATK genotypes
         for (VcfGenotype i : genotypes) {
@@ -288,7 +341,5 @@ public class VcfLine {
         vcb.genotypes(newGenotypes);
         this.vc = vcb.make();
     }
-     
 
-    
 }
