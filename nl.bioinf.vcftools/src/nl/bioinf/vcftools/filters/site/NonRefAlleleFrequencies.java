@@ -12,11 +12,17 @@ import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 import nl.bioinf.vcftools.filehandlers.VcfLine;
 
 /**
- *
+ * check if the NonRefAlleleFrequencies is between given range
  * @author mhroelfes
  */
 public class NonRefAlleleFrequencies extends AbstractSiteFilter {
-
+     /**
+     * check if the NonRefAlleleFrequencies is between given range
+     * @param vcfLine
+     * @param settings
+     * @return
+     * @author mhroelfes <marcoroelfes@gmail.com>
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
 
