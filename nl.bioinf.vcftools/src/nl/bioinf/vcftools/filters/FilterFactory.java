@@ -30,9 +30,11 @@ import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filters.genotype.Depth;
 import nl.bioinf.vcftools.filters.genotype.Quality;
 import nl.bioinf.vcftools.filters.individual.MaxIndividuals;
+import nl.bioinf.vcftools.filters.individual.Phased;
 import nl.bioinf.vcftools.filters.site.ExcludeSnp;
 import nl.bioinf.vcftools.filters.site.Geno;
 import nl.bioinf.vcftools.filters.site.Mask;
+import nl.bioinf.vcftools.filters.site.RemovePhased;
 
 /**
  *  This factory creates all the filters used in vcftools
@@ -68,6 +70,7 @@ public class FilterFactory {
         if (!this.settings.getExcludeSnp().isEmpty()) { this.siteFilters.add(new ExcludeSnp()); }
         if (!this.settings.getPositions().isEmpty()) { this.siteFilters.add(new IncludePositions()); }
         if (this.settings.getKeepInfo() != null) { this.siteFilters.add(new KeepInfo()); }
+        if (this.settings.isPhased() != null) { this.siteFilters.add(new RemovePhased()); }
         if (this.settings.isKeepIndels() != null) {
             if (this.settings.isKeepIndels() == true) { this.siteFilters.add(new KeepIndels()); }
             if (this.settings.isKeepIndels() == false) { this.siteFilters.add(new RemoveIndels()); }
@@ -86,7 +89,7 @@ public class FilterFactory {
         if ((this.settings.getMac() != null) && (this.settings.getMaxMac() != null)) {  }
         if ((this.settings.getNonRefAc() != null) && (this.settings.getMaxNonRefAc() != null)) { /* NonRefAlleleCount() */ }
         if (this.settings.getHwe() != null) { /* Hardy() */ }
-        if (this.settings.getGeno() != null & this.settings.getGeno() == 1)  { this.siteFilters.add(new Geno()); }
+        if (this.settings.getGeno() != null && this.settings.getGeno() == 1)  { this.siteFilters.add(new Geno()); }
         if (this.settings.getMaxMissingCount() != null) { this.siteFilters.add(new MissingCount()); }
         if ((this.settings.getMinAlleles() != null) && (this.settings.getMaxAlleles() != null)) { this.siteFilters.add(new MinorAlleleCount()); }
         if (this.settings.getThin() != null) { this.siteFilters.add(new Thinning()); }
@@ -110,6 +113,7 @@ public class FilterFactory {
     private void createIndividualFilters() {
         this.individualFilters = new ArrayList<>();
         
+        if (this.settings.isPhased() != null) { this.individualFilters.add(new Phased()); }
         // insert extra filters HERE on this line and not below maxIndv because thats the final individual filter to be performed
         
         if (this.settings.getMaxIndv() != null) { this.individualFilters.add(new MaxIndividuals()); }
