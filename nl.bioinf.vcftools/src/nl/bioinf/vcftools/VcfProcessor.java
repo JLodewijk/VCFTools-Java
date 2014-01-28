@@ -93,6 +93,11 @@ public class VcfProcessor {
         VcfReader reader = new VcfReader(settings.getInputFile());
         VcfWriter writer = new VcfWriter();
         VcfHeader header = reader.getHeader();
+        // Prebuild recurring variable addresses
+        boolean siteFilterResult;
+        VcfLine vcfLine;
+        List<Boolean> genotypeFilterResult;
+        
         // Write header to output
         writer.writeHeader(header);
 
@@ -104,22 +109,21 @@ public class VcfProcessor {
         
         // While reader file has next vcfLine get next vcfLine
         while (reader.hasNextIter()) {
-            VcfLine vcfLine = reader.getNextIter();
+            vcfLine = reader.getNextIter();
             
             // Filter away individuals that are not needed anymore
             vcfLine.filterIndividuals(individualFilterResults);
 
             // Perform all the site filters
-            boolean siteFilterResult = filterHandler.performSiteFilters(vcfLine);
+            siteFilterResult = filterHandler.performSiteFilters(vcfLine);
 
-            // Perform all the genotype filters
-            List<Boolean> genotypeFilterResult = filterHandler.performGenotypeFilters(vcfLine);
-
-            // TODO: Perform the needed VcfLine editing here
-            // Write the line away if SiteFilter allowed it
             if (siteFilterResult == true) {
+                // Perform all the genotype filters
+                genotypeFilterResult = filterHandler.performGenotypeFilters(vcfLine);
+                
                 // Addapt genotypes
-                vcfLine = this.processGenotypeChanges(vcfLine, genotypeFilterResult);
+                vcfLine.filterGenotypes(genotypeFilterResult);
+
                 // Write line
                 writer.writeVcfLine(vcfLine);
             }
