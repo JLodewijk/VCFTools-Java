@@ -32,6 +32,7 @@ public class VcfProcessor {
      */
     private Settings settings;
     private FilterDependencies filterDependencies;
+    private Boolean performIndividualFilters;
 
     /**
      * The default constructor always needs the settings.
@@ -39,14 +40,21 @@ public class VcfProcessor {
      * @param settings
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
-    public VcfProcessor(Settings settings) {
+    public VcfProcessor(Settings settings) throws IOException {
         this.settings = settings;
-        try {
-            performDependencyCalculations();
-            performFilters();
-        } catch (IOException ex) {
-            Logger.getLogger(VcfProcessor.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.performIndividualFilters = false;
+        // check once if individual filters have to be performed
+        if ((this.settings.isPhased() != null) && (this.settings.isPhased() == true)) { this.performIndividualFilters = true; }
+        else if ((this.settings.getMinIndvMeanDp() != null) && (this.settings.getMaxIndvMeanDp() != null)) { this.performIndividualFilters = true; }
+        else if (!this.settings.getKeepIndv().isEmpty()) { this.performIndividualFilters = true; }
+        else if (!this.settings.getRemoveIndv().isEmpty()) { this.performIndividualFilters = true; }
+        else if (this.settings.getMind() != null) { this.performIndividualFilters = true; }
+        else if (this.settings.getMaxIndv() != null) { this.performIndividualFilters = true;  }           
+        
+        // Perform all the filters and precalculations
+
+        if (this.performIndividualFilters == true) { performDependencyCalculations(); }
+        performFilters();
     }
 
     /**
@@ -97,6 +105,7 @@ public class VcfProcessor {
         boolean siteFilterResult;
         VcfLine vcfLine;
         List<Boolean> genotypeFilterResult;
+        List<Boolean> individualFilterResults = null;
         
         // Write header to output
         writer.writeHeader(header);
@@ -105,14 +114,14 @@ public class VcfProcessor {
         FilterHandler filterHandler = new FilterHandler(this.settings);
 
         // Perform Individual filters
-        List<Boolean> individualFilterResults = filterHandler.performIndividualFilters(header, filterDependencies);
+        if (this.performIndividualFilters == true) { individualFilterResults = filterHandler.performIndividualFilters(header, filterDependencies); }
         
         // While reader file has next vcfLine get next vcfLine
         while (reader.hasNextIter()) {
             vcfLine = reader.getNextIter();
             
             // Filter away individuals that are not needed anymore
-            vcfLine.filterIndividuals(individualFilterResults);
+            if (this.performIndividualFilters == true) { vcfLine.filterIndividuals(individualFilterResults); }
 
             // Perform all the site filters
             if (filterHandler.performSiteFilters(vcfLine) == true) {

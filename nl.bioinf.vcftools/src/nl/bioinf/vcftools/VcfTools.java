@@ -5,6 +5,9 @@
  */
 package nl.bioinf.vcftools;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.cli.ParseException;
 
 /**
@@ -23,7 +26,11 @@ public class VcfTools {
         
         Cli cli = new Cli(args);
         Settings settings = cli.getSettings();
-        VcfProcessor vcfReader = new VcfProcessor(settings);
+        try {
+            VcfProcessor vcfReader = new VcfProcessor(settings);
+        } catch (IOException ex) {
+            Logger.getLogger(VcfTools.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
