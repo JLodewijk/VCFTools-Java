@@ -70,14 +70,11 @@ public class FilterFactory {
         if (!this.settings.getExcludeSnp().isEmpty()) { this.siteFilters.add(new ExcludeSnp()); }
         if (!this.settings.getPositions().isEmpty()) { this.siteFilters.add(new IncludePositions()); }
         if (this.settings.getKeepInfo() != null) { this.siteFilters.add(new KeepInfo()); }
-        if (this.settings.isPhased() != null) { this.siteFilters.add(new RemovePhased()); }
         if (this.settings.isKeepIndels() != null) {
             if (this.settings.isKeepIndels() == true) { this.siteFilters.add(new KeepIndels()); }
             if (this.settings.isKeepIndels() == false) { this.siteFilters.add(new RemoveIndels()); }
         }
-        if (this.settings.isRemoveFilteredAll() != null) {
-            if (this.settings.isRemoveFilteredAll() == true) { this.siteFilters.add(new RemoveFiltered()); }
-        }
+        if ((this.settings.isRemoveFilteredAll() != null) && (this.settings.isRemoveFilteredAll() == true)) { this.siteFilters.add(new RemoveFiltered()); }
         if (!this.settings.getRemoveFiltered().isEmpty()) { this.siteFilters.add(new RemoveSpecificFilter()); }
         if (!this.settings.getKeepFiltered().isEmpty()) { this.siteFilters.add(new KeepSpecificFilter()); }
         if (!this.settings.getRemoveInfo().isEmpty()) { this.siteFilters.add(new RemoveInfo()); }
@@ -94,6 +91,7 @@ public class FilterFactory {
         if ((this.settings.getMinAlleles() != null) && (this.settings.getMaxAlleles() != null)) { this.siteFilters.add(new MinorAlleleCount()); }
         if (this.settings.getThin() != null) { this.siteFilters.add(new Thinning()); }
         if (this.settings.getMaskFile() != null) {this.siteFilters.add(new Mask());}
+        if ((this.settings.isPhased() != null) && (this.settings.isPhased() != true)) { this.siteFilters.add(new RemovePhased()); }
     }
     
     /**
@@ -113,7 +111,7 @@ public class FilterFactory {
     private void createIndividualFilters() {
         this.individualFilters = new ArrayList<>();
         
-        if (this.settings.isPhased() != null) { this.individualFilters.add(new Phased()); }
+        if ((this.settings.isPhased() != null) && (this.settings.isPhased() != true)) { this.individualFilters.add(new Phased()); }
         // insert extra filters HERE on this line and not below maxIndv because thats the final individual filter to be performed
         
         if (this.settings.getMaxIndv() != null) { this.individualFilters.add(new MaxIndividuals()); }
