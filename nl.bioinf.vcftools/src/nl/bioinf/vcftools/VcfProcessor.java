@@ -115,14 +115,9 @@ public class VcfProcessor {
             vcfLine.filterIndividuals(individualFilterResults);
 
             // Perform all the site filters
-            siteFilterResult = filterHandler.performSiteFilters(vcfLine);
-
-            if (siteFilterResult == true) {
-                // Perform all the genotype filters
-                genotypeFilterResult = filterHandler.performGenotypeFilters(vcfLine);
-                
-                // Addapt genotypes
-                vcfLine.filterGenotypes(genotypeFilterResult);
+            if (filterHandler.performSiteFilters(vcfLine) == true) {
+                // Perform all the genotype filters and Addapt genotypes 
+                vcfLine.filterGenotypes(filterHandler.performGenotypeFilters(vcfLine));
 
                 // Write line
                 writer.writeVcfLine(vcfLine);
