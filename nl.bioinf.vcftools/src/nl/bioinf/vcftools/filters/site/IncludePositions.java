@@ -14,11 +14,17 @@ import org.apache.commons.collections4.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 /**
- * 
+ * include positions
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class IncludePositions extends AbstractSiteFilter{
-
+    /**
+     * checks if vcfline needs to be kept on positionn and chromosome.
+     * @param vcfLine
+     * @param settings
+     * @return
+     * @author mhroelfes <marcoroelfes@gmail.com>
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
             return settings.containsPositions(vcfLine.getChr(), vcfLine.getPosition());
