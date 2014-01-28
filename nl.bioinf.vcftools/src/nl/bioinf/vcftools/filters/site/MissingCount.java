@@ -15,7 +15,13 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  * @author mhroelfes <marcoroelfes@gmail.com>
  */
 public class MissingCount extends AbstractSiteFilter{
-
+     /**
+     * check if the missingcount is not too high
+     * @param vcfLine
+     * @param settings
+     * @return
+     * @author mhroelfes <marcoroelfes@gmail.com>
+     */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {
         //if missingcount is not higher than threshold return true, else false
