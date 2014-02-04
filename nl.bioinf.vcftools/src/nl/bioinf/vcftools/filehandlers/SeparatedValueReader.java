@@ -19,15 +19,15 @@ import java.util.logging.Logger;
  */
 public class SeparatedValueReader {
 
-    private String filePath;
+    private String filename;
     private String seperator;
     private String linesOfFile;
 
     /**
      * Constructor inducing file reading.
      */
-    public SeparatedValueReader(String filePath, String seperator) {
-        this.filePath = filePath;
+    public SeparatedValueReader(String filename, String seperator) {
+        this.filename = filename;
         this.seperator = seperator;
         this.readFile();
 
@@ -42,7 +42,7 @@ public class SeparatedValueReader {
         StringBuilder fileLines = new StringBuilder();
         try {
 
-            FileReader fr = new FileReader(this.filePath);
+            FileReader fr = new FileReader(this.filename);
             BufferedReader br = new BufferedReader(fr);
 
             String line = null;
