@@ -1222,7 +1222,11 @@ public class Settings {
      * @param removeIndvFile
      */
     public void loadRemoveIndvFile(String removeIndvFile) {
-        //this.removeIndvFile = removeIndvFile;
+        SeparatedValueReader reader = new SeparatedValueReader(removeIndvFile,System.lineSeparator());
+        List indvs = reader.getList();
+        for (Object indv : indvs) {
+            this.addRemoveIndv((String) indv);
+        }
     }
 
     /**
