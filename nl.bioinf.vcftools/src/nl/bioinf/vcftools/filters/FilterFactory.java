@@ -84,7 +84,7 @@ public class FilterFactory {
         if ((this.settings.getMinMeanDp() != null) && (this.settings.getMaxMeanDp() != null)) { this.siteFilters.add(new MeanDepth()); }
         if ((this.settings.getMaf() != null) && (this.settings.getMaxMaf() != null)) { this.siteFilters.add(new AlleleFrequencies()); }
         if ((this.settings.getNonRefAf() != null) && (this.settings.getMaxNonRefAf() != null)) { this.siteFilters.add(new NonRefAlleleFrequencies()); }
-        if ((this.settings.getMac() != null) && (this.settings.getMaxMac() != null)) {  }
+        if ((this.settings.getMac() != null) && (this.settings.getMaxMac() != null)) { this.siteFilters.add(new MinorAlleleCount());  }
         if ((this.settings.getNonRefAc() != null) && (this.settings.getMaxNonRefAc() != null)) { /* NonRefAlleleCount() */ }
         if (this.settings.getHwe() != null) { /* Hardy() */ }
         if (this.settings.getGeno() != null && this.settings.getGeno() == 1)  { this.siteFilters.add(new Geno()); }
