@@ -34,7 +34,7 @@ public class RemoveIndividuals extends AbstractIndividualFilter {
         //loops to all individuals in header
         for (String indv : vcfHeader.getGenotypeSamples()) {
             //if list of individuals to keep contains the individual in the header.
-            if (settings.getKeepIndv().contains(indv)) {
+            if (settings.getRemoveIndv().contains(indv)) {
                 //remove individual
                 individualsLeft.add(false);
             } else {
