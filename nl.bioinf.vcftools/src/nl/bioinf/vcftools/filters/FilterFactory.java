@@ -67,8 +67,8 @@ public class FilterFactory {
      */
     private void createSiteFilters() {
         this.siteFilters = new ArrayList<>();
-        if ((!this.settings.getChr().isEmpty()) || (!this.settings.getBed().isEmpty())) { this.siteFilters.add(new IncludeChromosome()); }
-        if ((!this.settings.getNotChr().isEmpty()) || (!this.settings.getExludeBed().isEmpty())) { this.siteFilters.add(new ExcludeChromosome()); }
+        if (!this.settings.getChr().isEmpty()) { this.siteFilters.add(new IncludeChromosome()); }
+        if (!this.settings.getNotChr().isEmpty()) { this.siteFilters.add(new ExcludeChromosome()); }
         if (!this.settings.getSnp().isEmpty()) { this.siteFilters.add(new IncludeSnp()); }
         if (!this.settings.getExcludeSnp().isEmpty()) { this.siteFilters.add(new ExcludeSnp()); }
         if (!this.settings.getPositions().isEmpty()) { this.siteFilters.add(new IncludePositions()); }
