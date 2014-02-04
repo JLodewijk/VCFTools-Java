@@ -33,6 +33,7 @@ public class VcfProcessor {
     private Settings settings;
     private FilterDependencies filterDependencies;
     private Boolean performIndividualFilters;
+    private StatisticsGenerator statisticsGenerator;
 
     /**
      * The default constructor always needs the settings.
@@ -113,6 +114,9 @@ public class VcfProcessor {
 
         // Build the FilterHandler
         FilterHandler filterHandler = new FilterHandler(this.settings);
+        
+        // Build the StatisticsGenerator
+        statisticsGenerator = new StatisticsGenerator();
 
         // Perform Individual filters
         if (this.performIndividualFilters == true) { individualFilterResults = filterHandler.performIndividualFilters(header, filterDependencies); }
@@ -129,10 +133,16 @@ public class VcfProcessor {
                 // Perform all the genotype filters and Addapt genotypes 
                 vcfLine.filterGenotypes(filterHandler.performGenotypeFilters(vcfLine));
 
+                // Collect statistics
+                statisticsGenerator.collectStatistics(vcfLine);
+                
                 // Write line
                 writer.writeVcfLine(vcfLine);
             }
         }
+        
+        // Calculate the statistics
+        statisticsGenerator.calculateStatistics();
 
         // close the reader and writer
         reader.close();
