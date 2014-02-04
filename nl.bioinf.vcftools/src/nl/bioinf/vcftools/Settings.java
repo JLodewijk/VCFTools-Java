@@ -625,8 +625,8 @@ public class Settings {
         // Loop trough key and values, and add to chr collection
         for (Object key : bedData.keySet()) {
             for (Object value:(Collection) bedData.get(key)) {
-                List<String> positions = (List) value;
-                this.addChr((String) key, Integer.parseInt(positions.get(0)), Integer.parseInt(positions.get(1)));
+                List<Integer> positions = (List) value;
+                this.addChr((String) key, positions.get(0), positions.get(1));
             }   
         }
     }
@@ -643,8 +643,8 @@ public class Settings {
         // Loop trough key and values, and add to notChr collection
         for (Object key : bedData.keySet()) {
             for (Object value:(Collection) bedData.get(key)) {
-                List<String> positions = (List) value;
-                this.addNotChr((String) key, Integer.parseInt(positions.get(0)), Integer.parseInt(positions.get(1)));
+                List<Integer> positions = (List) value;
+                this.addNotChr((String) key, positions.get(0), positions.get(1));
             }   
         }
     }
