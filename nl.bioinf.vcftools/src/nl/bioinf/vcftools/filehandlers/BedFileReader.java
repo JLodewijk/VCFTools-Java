@@ -59,7 +59,7 @@ public class BedFileReader {
                     continue;
                 } else {
                     String[] splitedLine = line.split("\t");
-                    this.bedMap.put(splitedLine[0].trim(), Arrays.asList(splitedLine[1].trim(), splitedLine[2].trim()));
+                    this.bedMap.put(splitedLine[0].trim(), Arrays.asList(Integer.parseInt(splitedLine[1].trim()), Integer.parseInt(splitedLine[2].trim())));
                 }
             }
         } catch (FileNotFoundException ex) {
