@@ -26,7 +26,7 @@ public class SeparatedValueReader {
     /**
      * Constructor inducing file reading.
      */
-    SeparatedValueReader(String filePath, String seperator) {
+    public SeparatedValueReader(String filePath, String seperator) {
         this.filePath = filePath;
         this.seperator = seperator;
         this.readFile();
