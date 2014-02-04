@@ -536,17 +536,14 @@ public class Settings {
      */
     public void loadPositionsFile(String positionsFile) {
         // adding one by one so this functions allows for multiple files to load
-//        PositionFileReader positionFileReader = new PositionFileReader(positionsFile);
-//        MultiMap positions = positionFileReader.getChrPositionMap();
-//        Iterator keyIterator = positions.mapIterator();
-//        while (keyIterator.hasNext()) {
-//            Object key = keyIterator.next();
-//            for (Object value:(Collection) positions.get(key)) {
-//                System.out.println(value);
-//            }
-//            
-//        }
-        
+        PositionFileReader positionFileReader = new PositionFileReader(positionsFile);
+        MultiMap positions = positionFileReader.getChrPositionMap();
+        // Loop trough key and values, and add to chr collection
+        for (Object key : positions.keySet()) {
+            for (Object value:(Collection) positions.get(key)) {
+                this.addPositions((String) key, Integer.parseInt((String) value));
+            }   
+        }     
     }
 
     /**
@@ -590,7 +587,15 @@ public class Settings {
      * @param excludePositionsFile
      */
     public void loadExcludePositionsFile(String excludePositionsFile) {
-        //this.excludePositionsFile = excludePositionsFile;
+        // adding one by one so this functions allows for multiple files to load
+        PositionFileReader positionFileReader = new PositionFileReader(excludePositionsFile);
+        MultiMap positions = positionFileReader.getChrPositionMap();
+        // Loop trough key and values, and add to chr collection
+        for (Object key : positions.keySet()) {
+            for (Object value:(Collection) positions.get(key)) {
+                this.addExcludePositions((String) key, Integer.parseInt((String) value));
+            }   
+        } 
     }
 
     /**
