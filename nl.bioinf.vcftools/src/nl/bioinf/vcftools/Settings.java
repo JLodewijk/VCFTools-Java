@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import nl.bioinf.vcftools.filehandlers.SeparatedValueReader;
 import org.apache.commons.collections4.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
 import org.apache.commons.configuration.ConfigurationException;
@@ -438,7 +439,11 @@ public class Settings {
      * @param snpFile filename
      */
     public void loadSnpFile(String snpFile) {
-        //this.snpFile = snpFile;
+        SeparatedValueReader reader = new SeparatedValueReader(snpFile,"\n");
+        List snps = reader.getList();
+        for (Object snp : snps) {
+            this.addSnp((String) snp);
+        }
     }
 
     /**
