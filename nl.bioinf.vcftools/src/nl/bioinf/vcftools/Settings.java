@@ -439,7 +439,7 @@ public class Settings {
      * @param snpFile filename
      */
     public void loadSnpFile(String snpFile) {
-        SeparatedValueReader reader = new SeparatedValueReader(snpFile,"\n");
+        SeparatedValueReader reader = new SeparatedValueReader(snpFile,System.lineSeparator());
         List snps = reader.getList();
         for (Object snp : snps) {
             this.addSnp((String) snp);
