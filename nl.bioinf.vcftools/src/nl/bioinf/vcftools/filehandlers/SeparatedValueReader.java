@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,18 +64,17 @@ public class SeparatedValueReader {
     }
 
     /**
-     * returns arrayList with separated file line elements.
+     * returns List with separated file elements.
      *
-     * @return ArrayList<String>
+     * @return List<String>
      */
-    public ArrayList<String> getArrayList() {
+    public List<String> getList() {
         String[] splitedFileLines = this.linesOfFile.split(this.seperator);
         ArrayList<String> arrayListFilePathElements = new ArrayList<String>();
 
         for (String lineElement : splitedFileLines) {
             arrayListFilePathElements.add(lineElement);
         }
-
         return arrayListFilePathElements;
     }
 
