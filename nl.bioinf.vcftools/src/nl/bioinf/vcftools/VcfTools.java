@@ -22,9 +22,14 @@ public class VcfTools {
      * @param args the command line arguments
      * @throws org.apache.commons.cli.ParseException
      */
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
         
-        Cli cli = new Cli(args);
+        Cli cli = null;
+        try {
+            cli = new Cli(args);
+        } catch (Exception ex) {
+            Logger.getLogger(VcfTools.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Settings settings = cli.getSettings();
         try {
             VcfProcessor vcfReader = new VcfProcessor(settings);
