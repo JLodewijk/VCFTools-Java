@@ -53,7 +53,7 @@ public class PositionFileReader {
             while ((line = br.readLine()) != null) {
                 if (!line.startsWith("#")) {
                     String[] chrStartPosStopPos = line.split("\t");
-                    this.chrPositionMap.put(chrStartPosStopPos[0], Arrays.asList(Integer.parseInt(chrStartPosStopPos[1])));
+                    this.chrPositionMap.put(chrStartPosStopPos[0].trim(),Integer.parseInt(chrStartPosStopPos[1].trim()));
                 }
 
             }
