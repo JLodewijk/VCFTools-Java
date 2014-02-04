@@ -144,6 +144,15 @@ public class VcfGenotype {
         return !this.gt.isNonInformative();
     }
     
+    /**
+     * Check if genotype is called
+     * @return true when is called
+     * @author Sergio Bondietti <sergio@bondietti.nl>
+     */
+    public boolean isCalled() {
+        return this.gt.isCalled();
+    }
+    
     
     
 }
