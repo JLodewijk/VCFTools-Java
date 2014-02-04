@@ -615,6 +615,7 @@ public class Settings {
         // adding one by one so this functions allows for multiple files to load
         BedFileReader bedFileReader = new BedFileReader(bedFile);
         MultiMap bedData = bedFileReader.getBedMap();
+        // Loop trough key and values, and add to chr list
         for (Object key : bedData.keySet()) {
             for (Object value:(Collection) bedData.get(key)) {
                 List<String> positions = (List) value;
@@ -629,7 +630,16 @@ public class Settings {
      * @param exludeBedFile
      */
     public void loadExludeBedFile(String exludeBedFile) {
-        //this.exludeBedFile = exludeBedFile;
+        // adding one by one so this functions allows for multiple files to load
+        BedFileReader bedFileReader = new BedFileReader(exludeBedFile);
+        MultiMap bedData = bedFileReader.getBedMap();
+        // Loop trough key and values, and add to notChr list
+        for (Object key : bedData.keySet()) {
+            for (Object value:(Collection) bedData.get(key)) {
+                List<String> positions = (List) value;
+                this.addNotChr((String) key, Integer.parseInt(positions.get(0)), Integer.parseInt(positions.get(1)));
+            }   
+        }
     }
 
     /**
