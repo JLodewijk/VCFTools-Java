@@ -541,7 +541,7 @@ public class Settings {
         // Loop trough key and values, and add to chr collection
         for (Object key : positions.keySet()) {
             for (Object value:(Collection) positions.get(key)) {
-                this.addPositions((String) key, Integer.parseInt((String) value));
+                this.addPositions((String) key, (Integer) value);
             }   
         }     
     }
@@ -593,7 +593,7 @@ public class Settings {
         // Loop trough key and values, and add to chr collection
         for (Object key : positions.keySet()) {
             for (Object value:(Collection) positions.get(key)) {
-                this.addExcludePositions((String) key, Integer.parseInt((String) value));
+                this.addExcludePositions((String) key, (Integer) value);
             }   
         } 
     }
