@@ -278,16 +278,7 @@ public class Settings {
     /* Getters and setters for the VCFTools settings */
 
     /**
-     *
-     * @return
-     */
-    
-    public String getConfigFile() {
-        return configFile;
-    }
-
-    /**
-     *
+     * Pre set the configuration file to use with a load()
      * @param configFile
      */
     public void setConfigFile(String configFile) {
@@ -295,116 +286,116 @@ public class Settings {
     }
 
     /**
-     *
-     * @return
+     * Get the input VCF file
+     * @return filename
      */
     public String getInputFile() {
         return inputFile;
     }
 
     /**
-     *
-     * @param inputFile
+     * Set the input VCF file
+     * @param inputFile filename
      */
     public void setInputFile(String inputFile) {
         this.inputFile = inputFile;
     }
 
     /**
-     *
-     * @return
+     * Get the output VCF file
+     * @return filename
      */
     public String getOutputFile() {
         return outputFile;
     }
 
     /**
-     *
-     * @param outputFile
+     * Set the output VCF file
+     * @param outputFile filename
      */
     public void setOutputFile(String outputFile) {
         this.outputFile = outputFile;
     }
 
     /**
-     *
-     * @return
+     * Is the input VCF file gzipped
+     * @return true when it is false when not
      */
     public Boolean isGzipped() {
         return gzipped;
     }
 
     /**
-     *
-     * @param gzipped
+     * Set if the input VCF file gzipped
+     * @param gzipped true when it is false when not
      */
     public void setGzipped(Boolean gzipped) {
         this.gzipped = gzipped;
     }
 
     /**
-     *
-     * @return
+     * Get the collection of chromosomes to include
+     * @return MultiMap of chromosomes
      */
     public MultiMap getChr() {
         return chr;
     }
 
     /**
-     *
-     * @param chr
+     * Set the collection of chromosomes to include
+     * @param chr MultiMap of chromosomes
      */
     public void setChr(MultiMap chr) {
         this.chr = chr;
     }
 
     /**
-     *
-     * @param chr
+     * Add a chromosome to include
+     * @param chr Chromosome
      */
     public void addChr(String chr) {
         this.chr.put(chr, null);
     }    
 
     /**
-     *
-     * @param chr
-     * @param fromBp
-     * @param toBp
+     * Add a chromosome to include
+     * @param chr Chromosome
+     * @param fromBp From base pair
+     * @param toBp To base pair
      */
     public void addChr(String chr, int fromBp, int toBp) {
         this.chr.put(chr, Arrays.asList(fromBp, toBp));
     }
 
     /**
-     *
-     * @return
+     * Get the collection of chromosomes to exclude
+     * @return MultiMap of chromosomes
      */
     public MultiMap getNotChr() {
         return notChr;
     }
 
     /**
-     *
-     * @param notChr
+     * Set the collection of chromosomes to exclude
+     * @param notChr MultiMap of chromosomes
      */
     public void setNotChr(MultiMap notChr) {
         this.notChr = notChr;
     }
 
     /**
-     *
-     * @param chr
+     * Add a chromosome to exclude
+     * @param chr Chromosome
      */
     public void addNotChr(String chr) {
         this.notChr.put(chr, null);
     }    
 
     /**
-     *
-     * @param chr
-     * @param fromBp
-     * @param toBp
+     * Add a chromosome to exclude
+     * @param chr Chromosome
+     * @param fromBp From base pair
+     * @param toBp To base pair
      */
     public void addNotChr(String chr, int fromBp, int toBp) {
         this.notChr.put(chr, Arrays.asList(fromBp, toBp));
@@ -491,15 +482,15 @@ public class Settings {
     }
 
     /**
-     *
-     * @return
+     * Get the collection of positions to include
+     * @return MultiMap of chromosome and position combinations
      */
     public MultiMap getPositions() {
         return positions;
     }
 
     /**
-     *
+     * Set a collection of positions to include
      * @param positions
      */
     public void setPositions(MultiMap positions) {
@@ -507,19 +498,19 @@ public class Settings {
     }
 
     /**
-     *
-     * @param key
-     * @param value
+     * Add a position to include
+     * @param chr Chromosome
+     * @param position Position
      */
-    public void addPositions(String key, Integer value) {
-        this.positions.put(key, value);
+    public void addPositions(String chr, Integer position) {
+        this.positions.put(chr, position);
     }
     
     /**
-     * Returns if chromosome contains position
+     * Returns if chromosome contains position to include
      * @param chr
      * @param position
-     * @return 
+     * @return True when it contains the request
      */
     public boolean containsPositions(String chr, int position) {
         List chrPos = (List) this.positions.get(chr);
@@ -527,23 +518,23 @@ public class Settings {
     }    
 
     /**
-     *
-     * @param positionsFile
+     * Load a positions file to include
+     * @param positionsFile filename
      */
     public void loadPositionsFile(String positionsFile) {
         //this.positionsFile = positionsFile;
     }
 
     /**
-     *
-     * @return
+     * Get the collection of positions to exclude
+     * @return MultiMap of chromosome and position combinations
      */
     public MultiMap getExcludePositions() {
         return excludePositions;
     }
 
     /**
-     *
+     * Set a collection of positions to exclude
      * @param excludePositions
      */
     public void setExcludePositions(MultiMap excludePositions) {
@@ -551,19 +542,19 @@ public class Settings {
     }
 
     /**
-     *
-     * @param key
-     * @param value
+     * Add a position to exclude
+     * @param chr
+     * @param position
      */
-    public void addExcludePositions(String key, Integer value) {
-        this.excludePositions.put(key, value);
+    public void addExcludePositions(String chr, Integer position) {
+        this.excludePositions.put(chr, position);
     }    
 
     /**
-     * Returns if chromosome contains position
+     * Returns if chromosome contains position to exclude
      * @param chr
      * @param position
-     * @return 
+     * @return True when it contains the request
      */
     public boolean containsExcludePositions(String chr, int position) {
         List chrPos = (List) this.excludePositions.get(chr);
@@ -571,7 +562,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Load a positions file to exclude
      * @param excludePositionsFile
      */
     public void loadExcludePositionsFile(String excludePositionsFile) {
@@ -579,16 +570,16 @@ public class Settings {
     }
 
     /**
-     *
-     * @return
+     *  Do we want to keep indels
+     * @return True when we want to keep indels
      */
     public Boolean isKeepIndels() {
         return keepIndels;
     }
 
     /**
-     *
-     * @param keepIndels
+     * Set if we want to keep indels
+     * @param keepIndels Set True when we want to keep indels
      */
     public void setKeepIndels(Boolean keepIndels) {
         this.keepIndels = keepIndels;

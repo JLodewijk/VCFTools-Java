@@ -39,6 +39,7 @@ public class VcfProcessor {
      *
      * @param settings
      * @author Sergio Bondietti <sergio@bondietti.nl>
+     * @throws java.io.IOException
      */
     public VcfProcessor(Settings settings) throws IOException {
         this.settings = settings;
