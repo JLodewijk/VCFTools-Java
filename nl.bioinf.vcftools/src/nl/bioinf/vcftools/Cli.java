@@ -444,10 +444,21 @@ public class Cli {
                     System.exit(1);
                 }
             } catch (NumberFormatException e) {
-                System.err.println("The values op the options -minDp and -maxDp have to be numerical");
+                System.err.println("The values oof the options -minDp and -maxDp have to be numerical");
                 System.exit(1);
             }
         }
+        
+        if (this.cmd.hasOption("minQ")){
+        try{
+        Double minQ = Double.parseDouble(this.cmd.getOptionValue("minQ"));
+        } catch (NumberFormatException e) {
+                System.err.println("The value of the option -minQ has to be numerical");
+                System.exit(1);
+            }
+        }
+        
+        
         if (cmd.hasOption("vcf")) {
             File file = new File(cmd.getOptionValue("vcf"));
             if (!(file.exists())) {
