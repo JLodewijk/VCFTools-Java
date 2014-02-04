@@ -22,19 +22,18 @@ import nl.bioinf.vcftools.filters.AbstractSiteFilter;
 public class Mask extends AbstractSiteFilter {
 
         public boolean filter(VcfLine vcfLine, Settings settings) {
-        /* call MaskFilereader to get maskMap(multiMap), False = -inverMask, True = inverted*/
-        MaskFileReader mf = new MaskFileReader(settings.getMaskFile(),false);  
+
         
         ArrayList<Integer> digitList = new ArrayList<Integer>(); 
         Boolean test =true;
-        /* check if  chromsome specified in mask file is also contained in the VCF file*/
-        if(mf.getMaskMap().containsKey(vcfLine.getChr())){
+        //check if  chromsome specified in mask file is also contained in the VCF file
+        if(settings.getMask().containsKey(vcfLine.getChr())){
           
-          /*add all digits of the sequence to a ArrayList so value of each site can be determed easily*/
-          for(Object digit:(Collection) mf.getMaskMap().get(vcfLine.getChr())){
+          //add all digits of the sequence to a ArrayList so value of each site can be determed easily
+          for(Object digit:(Collection) settings.getMask().get(vcfLine.getChr())){
              digitList.add(Integer.parseInt(String.valueOf(digit)));
           }
-          /*if value of chromosome is higher than -min mask, VCF line is removed*/
+          //if value of chromosome is higher than -min mask, VCF line is removed
           if(digitList.get(vcfLine.getPosition()-1) >= settings.getMaskMin()+1){
               test = false;}
 
