@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import nl.bioinf.vcftools.filehandlers.SeparatedValueReader;
 import org.apache.commons.collections4.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
 import org.apache.commons.configuration.ConfigurationException;
@@ -31,22 +32,16 @@ public class Settings {
     private String inputFile;
     private String outputFile;
     private Boolean gzipped;
-
+    
     /* Site Filters */
     private MultiMap chr;
     private MultiMap notChr;
 
     private List<String> snp;
-    private String snpFile;
     private List<String> excludeSnp;
-    private String excludeSnpFile;
     private MultiMap positions;
-    private String positionsFile;
     private MultiMap excludePositions;
-    private String excludePositionsFile;
     private Boolean keepIndels;
-    private String bedFile;
-    private String exludeBedFile;
     private MultiMap bed;
     private MultiMap exludeBed;
     private Boolean removeFilteredAll;
@@ -71,17 +66,13 @@ public class Settings {
     private Integer minAlleles;
     private Integer maxAlleles;
     private Integer thin;
-    private String maskFile;
     private MultiMap mask;
-    private String invertMaskFile;
     private MultiMap invertMask;
     private Integer maskMin;
 
     /* Individual filters */
     private List<String> keepIndv;
-    private String keepIndvFile;
     private List<String> removeIndv;
-    private String removeIndvFile;
     private Double minIndvMeanDp;
     private Double maxIndvMeanDp;
     private Double mind;
@@ -288,16 +279,7 @@ public class Settings {
     /* Getters and setters for the VCFTools settings */
 
     /**
-     *
-     * @return
-     */
-    
-    public String getConfigFile() {
-        return configFile;
-    }
-
-    /**
-     *
+     * Pre set the configuration file to use with a load()
      * @param configFile
      */
     public void setConfigFile(String configFile) {
@@ -305,227 +287,215 @@ public class Settings {
     }
 
     /**
-     *
-     * @return
+     * Get the input VCF file
+     * @return filename
      */
     public String getInputFile() {
         return inputFile;
     }
 
     /**
-     *
-     * @param inputFile
+     * Set the input VCF file
+     * @param inputFile filename
      */
     public void setInputFile(String inputFile) {
         this.inputFile = inputFile;
     }
 
     /**
-     *
-     * @return
+     * Get the output VCF file
+     * @return filename
      */
     public String getOutputFile() {
         return outputFile;
     }
 
     /**
-     *
-     * @param outputFile
+     * Set the output VCF file
+     * @param outputFile filename
      */
     public void setOutputFile(String outputFile) {
         this.outputFile = outputFile;
     }
 
     /**
-     *
-     * @return
+     * Is the input VCF file gzipped
+     * @return true when it is false when not
      */
     public Boolean isGzipped() {
         return gzipped;
     }
 
     /**
-     *
-     * @param gzipped
+     * Set if the input VCF file gzipped
+     * @param gzipped true when it is false when not
      */
     public void setGzipped(Boolean gzipped) {
         this.gzipped = gzipped;
     }
 
     /**
-     *
-     * @return
+     * Get the collection of chromosomes to include
+     * @return MultiMap of chromosomes
      */
     public MultiMap getChr() {
         return chr;
     }
 
     /**
-     *
-     * @param chr
+     * Set the collection of chromosomes to include
+     * @param chr MultiMap of chromosomes
      */
     public void setChr(MultiMap chr) {
         this.chr = chr;
     }
 
     /**
-     *
-     * @param chr
+     * Add a chromosome to include
+     * @param chr Chromosome
      */
     public void addChr(String chr) {
         this.chr.put(chr, null);
     }    
 
     /**
-     *
-     * @param chr
-     * @param fromBp
-     * @param toBp
+     * Add a chromosome to include
+     * @param chr Chromosome
+     * @param fromBp From base pair
+     * @param toBp To base pair
      */
     public void addChr(String chr, int fromBp, int toBp) {
         this.chr.put(chr, Arrays.asList(fromBp, toBp));
     }
 
     /**
-     *
-     * @return
+     * Get the collection of chromosomes to exclude
+     * @return MultiMap of chromosomes
      */
     public MultiMap getNotChr() {
         return notChr;
     }
 
     /**
-     *
-     * @param notChr
+     * Set the collection of chromosomes to exclude
+     * @param notChr MultiMap of chromosomes
      */
     public void setNotChr(MultiMap notChr) {
         this.notChr = notChr;
     }
 
     /**
-     *
-     * @param chr
+     * Add a chromosome to exclude
+     * @param chr Chromosome
      */
     public void addNotChr(String chr) {
         this.notChr.put(chr, null);
     }    
 
     /**
-     *
-     * @param chr
-     * @param fromBp
-     * @param toBp
+     * Add a chromosome to exclude
+     * @param chr Chromosome
+     * @param fromBp From base pair
+     * @param toBp To base pair
      */
     public void addNotChr(String chr, int fromBp, int toBp) {
         this.notChr.put(chr, Arrays.asList(fromBp, toBp));
     } 
 
     /**
-     *
-     * @return
+     * Get the list of snp's to include
+     * @return list of snp's
      */
     public List<String> getSnp() {
         return snp;
     }
 
     /**
-     *
-     * @param snp
+     * Set the list of snp's to include
+     * @param snp list of snp's
      */
     public void setSnp(List<String> snp) {
         this.snp = snp;
     }
 
     /**
-     *
-     * @param snp
+     * Add a list of snp's to include
+     * @param snp list of snp's
      */
     public void addSnp(List<String> snp) {
         this.snp.addAll(snp);
     }
 
     /**
-     *
-     * @param snp
+     * Add a snp to include
+     * @param snp snp
      */
     public void addSnp(String snp) {
         this.snp.add(snp);
     }
 
     /**
-     *
-     * @return
+     *  Load snp file data
+     * @param snpFile filename
      */
-    public String getSnpFile() {
-        return snpFile;
+    public void loadSnpFile(String snpFile) {
+        SeparatedValueReader reader = new SeparatedValueReader(snpFile,System.lineSeparator());
+        List snps = reader.getList();
+        for (Object snp : snps) {
+            this.addSnp((String) snp);
+        }
     }
 
     /**
-     *
-     * @param snpFile
-     */
-    public void setSnpFile(String snpFile) {
-        this.snpFile = snpFile;
-    }
-
-    /**
-     *
-     * @return
+     * Get the list of snp's to exclude
+     * @return list of snp's
      */
     public List<String> getExcludeSnp() {
         return excludeSnp;
     }
 
     /**
-     *
-     * @param excludeSnp
+     * Set the list of snp's to exclude
+     * @param excludeSnp list of snp's
      */
     public void setExcludeSnp(List<String> excludeSnp) {
         this.excludeSnp = excludeSnp;
     }
 
     /**
-     *
-     * @param excludeSnp
+     * Add a list of snp's to exclude
+     * @param excludeSnp list of snp's
      */
     public void addExcludeSnp(List<String> excludeSnp) {
         this.excludeSnp.addAll(excludeSnp);
     }
 
     /**
-     *
-     * @param excludeSnp
+     * Add a snp to exclude
+     * @param excludeSnp snp
      */
     public void addExcludeSnp(String excludeSnp) {
         this.excludeSnp.add(excludeSnp);
     }
 
     /**
-     *
-     * @return
+     * Load exclude snp file data
+     * @param excludeSnpFile filename
      */
-    public String getExcludeSnpFile() {
-        return excludeSnpFile;
+    public void loadExcludeSnpFile(String excludeSnpFile) {
+        //this.excludeSnpFile = excludeSnpFile;
     }
 
     /**
-     *
-     * @param excludeSnpFile
-     */
-    public void setExcludeSnpFile(String excludeSnpFile) {
-        this.excludeSnpFile = excludeSnpFile;
-    }
-
-    /**
-     *
-     * @return
+     * Get the collection of positions to include
+     * @return MultiMap of chromosome and position combinations
      */
     public MultiMap getPositions() {
         return positions;
     }
 
     /**
-     *
+     * Set a collection of positions to include
      * @param positions
      */
     public void setPositions(MultiMap positions) {
@@ -533,51 +503,43 @@ public class Settings {
     }
 
     /**
-     *
-     * @param key
-     * @param value
+     * Add a position to include
+     * @param chr Chromosome
+     * @param position Position
      */
-    public void addPositions(String key, Integer value) {
-        this.positions.put(key, value);
+    public void addPositions(String chr, Integer position) {
+        this.positions.put(chr, position);
     }
     
     /**
-     * Returns if chromosome contains position
+     * Returns if chromosome contains position to include
      * @param chr
      * @param position
-     * @return 
+     * @return True when it contains the request
      */
     public boolean containsPositions(String chr, int position) {
         List chrPos = (List) this.positions.get(chr);
         return chrPos.contains(position);
-    }
-    
+    }    
+
     /**
-     *
-     * @return
+     * Load a positions file to include
+     * @param positionsFile filename
      */
-    public String getPositionsFile() {
-        return positionsFile;
+    public void loadPositionsFile(String positionsFile) {
+        //this.positionsFile = positionsFile;
     }
 
     /**
-     *
-     * @param positionsFile
-     */
-    public void setPositionsFile(String positionsFile) {
-        this.positionsFile = positionsFile;
-    }
-
-    /**
-     *
-     * @return
+     * Get the collection of positions to exclude
+     * @return MultiMap of chromosome and position combinations
      */
     public MultiMap getExcludePositions() {
         return excludePositions;
     }
 
     /**
-     *
+     * Set a collection of positions to exclude
      * @param excludePositions
      */
     public void setExcludePositions(MultiMap excludePositions) {
@@ -585,19 +547,19 @@ public class Settings {
     }
 
     /**
-     *
-     * @param key
-     * @param value
+     * Add a position to exclude
+     * @param chr
+     * @param position
      */
-    public void addExcludePositions(String key, Integer value) {
-        this.excludePositions.put(key, value);
+    public void addExcludePositions(String chr, Integer position) {
+        this.excludePositions.put(chr, position);
     }    
 
     /**
-     * Returns if chromosome contains position
+     * Returns if chromosome contains position to exclude
      * @param chr
      * @param position
-     * @return 
+     * @return True when it contains the request
      */
     public boolean containsExcludePositions(String chr, int position) {
         List chrPos = (List) this.excludePositions.get(chr);
@@ -605,32 +567,24 @@ public class Settings {
     }
 
     /**
-     *
-     * @return
-     */
-    public String getExcludePositionsFile() {
-        return excludePositionsFile;
-    }
-
-    /**
-     *
+     * Load a positions file to exclude
      * @param excludePositionsFile
      */
-    public void setExcludePositionsFile(String excludePositionsFile) {
-        this.excludePositionsFile = excludePositionsFile;
+    public void loadExcludePositionsFile(String excludePositionsFile) {
+        //this.excludePositionsFile = excludePositionsFile;
     }
 
     /**
-     *
-     * @return
+     *  Do we want to keep indels
+     * @return True when we want to keep indels
      */
     public Boolean isKeepIndels() {
         return keepIndels;
     }
 
     /**
-     *
-     * @param keepIndels
+     * Set if we want to keep indels
+     * @param keepIndels Set True when we want to keep indels
      */
     public void setKeepIndels(Boolean keepIndels) {
         this.keepIndels = keepIndels;
@@ -666,40 +620,23 @@ public class Settings {
      */
     public void setExludeBed(MultiMap exludeBed) {
         this.exludeBed = exludeBed;
-    }
-    
-    
-    
-    /**
-     *
-     * @return
-     */
-    public String getBedFile() {
-        return bedFile;
-    }
+    }   
 
     /**
      *
      * @param bedFile
      */
-    public void setBedFile(String bedFile) {
-        this.bedFile = bedFile;
+    public void loadBedFile(String bedFile) {
+        //this.bedFile = bedFile;
     }
 
-    /**
-     *
-     * @return
-     */
-    public String getExludeBedFile() {
-        return exludeBedFile;
-    }
 
     /**
      *
      * @param exludeBedFile
      */
-    public void setExludeBedFile(String exludeBedFile) {
-        this.exludeBedFile = exludeBedFile;
+    public void loadExludeBedFile(String exludeBedFile) {
+        //this.exludeBedFile = exludeBedFile;
     }
 
     /**
@@ -1120,18 +1057,10 @@ public class Settings {
 
     /**
      *
-     * @return
-     */
-    public String getMaskFile() {
-        return maskFile;
-    }
-
-    /**
-     *
      * @param maskFile
      */
-    public void setMaskFile(String maskFile) {
-        this.maskFile = maskFile;
+    public void loadMaskFile(String maskFile) {
+        //this.maskFile = maskFile;
     }
 
     /**
@@ -1161,18 +1090,10 @@ public class Settings {
 
     /**
      *
-     * @return
-     */
-    public String getInvertMaskFile() {
-        return invertMaskFile;
-    }
-
-    /**
-     *
      * @param invertMaskFile
      */
-    public void setInvertMaskFile(String invertMaskFile) {
-        this.invertMaskFile = invertMaskFile;
+    public void loadInvertMaskFile(String invertMaskFile) {
+        //this.invertMaskFile = invertMaskFile;
     }
 
     /**
@@ -1250,18 +1171,10 @@ public class Settings {
 
     /**
      *
-     * @return
-     */
-    public String getKeepIndvFile() {
-        return keepIndvFile;
-    }
-
-    /**
-     *
      * @param keepIndvFile
      */
-    public void setKeepIndvFile(String keepIndvFile) {
-        this.keepIndvFile = keepIndvFile;
+    public void loadKeepIndvFile(String keepIndvFile) {
+        //this.keepIndvFile = keepIndvFile;
     }
 
     /**
@@ -1298,18 +1211,10 @@ public class Settings {
 
     /**
      *
-     * @return
-     */
-    public String getRemoveIndvFile() {
-        return removeIndvFile;
-    }
-
-    /**
-     *
      * @param removeIndvFile
      */
-    public void setRemoveIndvFile(String removeIndvFile) {
-        this.removeIndvFile = removeIndvFile;
+    public void loadRemoveIndvFile(String removeIndvFile) {
+        //this.removeIndvFile = removeIndvFile;
     }
 
     /**

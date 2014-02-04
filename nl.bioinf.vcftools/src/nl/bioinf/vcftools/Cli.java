@@ -12,7 +12,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.ParseException;
-import nl.bioinf.vcftools.Settings;
+//import nl.bioinf.vcftools.Settings;
 import org.apache.commons.cli.HelpFormatter;
 
 /**
@@ -20,7 +20,7 @@ import org.apache.commons.cli.HelpFormatter;
  * @author aponnudurai <as.ponnudurai@st.hanze.nl>
  */
 public class Cli {
-
+    
     private Settings settings;
     private HelpFormatter helpFormatter;
     private Options option;
@@ -32,13 +32,13 @@ public class Cli {
      *
      * @param args arguments given on the commandline
      */
-    Cli(String[] args) throws ParseException {
-
+    Cli(String[] args) throws ParseException, Exception {
+        
         this.args = args;
         this.option = defineOptions();
         this.helpFormatter = new HelpFormatter();
         this.settings = new Settings();
-
+        
         try {
             CommandLineParser parser = new BasicParser();
             this.cmd = parser.parse(this.option, args);
@@ -47,10 +47,12 @@ public class Cli {
             System.exit(1);
         }
 
+        // checking if options are valid
         checkOptions();
 
+        // setting al the options 
         procesOptions();
-
+        
     }
 
     /**
@@ -133,19 +135,23 @@ public class Cli {
         opt.addOption("count", false, "this option results a file with a raw count of allele per site of a given VCF file with the suffix .frq.count");
         opt.addOption("freq", false, "outputs the allel frequency in a file with the suffix .frq");
         opt.addOption("depth", false, "generates a file containing the mean depth per individual. This file has the suffix .idepth");
-
+        
         return opt;
     }
 
     /**
      * Function to check if valid options are given
      */
-    private void checkOptions() {
-
+    private void checkOptions() throws Exception {
+        
+        if (this.cmd.hasOption("h")) {
+            usage();
+        }
+        
         if (this.args.length < 1) {
             usage();
         }
-
+        
         if (!this.cmd.hasOption("vcf")) {
             System.err.println("To run this program a VCF file is required");
             System.exit(1);
@@ -167,21 +173,21 @@ public class Cli {
         if ((this.args[0].equals("-fromBp")) || (this.args[0].equals("-toBp")) || (this.args[1].equals("-fromBp")) || (this.args[1].equals("-toBp"))) {
             System.err.println("ERROR 1");
         }
-
+        
         for (int i = 2; i < this.args.length; i++) {
             if (this.args[i].equals("-fromBp")) {
-
+                
                 if (((!this.args[i - 2].equals("-chr")) && (!this.args[i - 2].equals("-notChr"))) && (!this.args[i - 2].equals("-toBp"))) {
                     System.err.println("ERROR 2a");
                 }
             }
-
+            
             if (this.args[i].equals("-toBp")) {
                 if (((!this.args[i - 2].equals("-chr")) && (!this.args[i - 2].equals("-notChr"))) && (!this.args[i - 2].equals("-fromBp"))) {
                     System.err.println("ERROR 2b");
                 }
             }
-
+            
         }
 
 //                System.out.println(this.args[i]);
@@ -275,87 +281,100 @@ public class Cli {
         if (cmd.hasOption("keepFiltered") && cmd.hasOption("removeFiltered")) {
             System.out.println("If the options -keepFiltered and -removeFiltered are given the -keepFiltered option will be executed first");
         }
-
+        
         if (cmd.hasOption("minMeanDp") && !(cmd.hasOption("maxMeanDp")) || cmd.hasOption("maxMeanDp") && !(cmd.hasOption("minMeanDp"))) {
             System.err.println("It is required to use the options -minMeanDp and -maxMeanDp together");
             System.exit(1);
         }
-
+        
         if (cmd.hasOption("minMeanDp") && cmd.hasOption("maxMeanDp")) {
+            try{
             int minMeanDp = Integer.parseInt(this.cmd.getOptionValue("minMeanDp"));
             int maxMeanDp = Integer.parseInt(this.cmd.getOptionValue("maxMeanDp"));
+            
             if (minMeanDp > maxMeanDp) {
                 System.err.println("The value of the option -minMeanDp can not be higher than the value of the option -MaxMeanDp");
                 System.exit(1);
             }
-        }
-
+            } catch(NumberFormatException e){System.err.println("The values of -minMeanDp and -maxMeanDp have to be numerical"); System.exit(1);}
+        }        
+        
         if (cmd.hasOption("maf") && !(cmd.hasOption("maxMaf")) || cmd.hasOption("maxMaf") && !(cmd.hasOption("maf"))) {
             System.err.println("It is required to use the options -maf and -maxMaf together");
             System.exit(1);
         }
         if (cmd.hasOption("maf") && cmd.hasOption("maxMaf")) {
+            try{
             int maf = Integer.parseInt(this.cmd.getOptionValue("maf"));
             int maxMaf = Integer.parseInt(this.cmd.getOptionValue("maxMaf"));
             if (maf > maxMaf) {
                 System.err.println("The value of the option -maf can not be higher than the value of the option -maxMaf");
                 System.exit(1);
             }
+            } catch(NumberFormatException e){System.err.println("The value of the options -maf and -maxMaf have to be numerical"); System.exit(1);}
         }
-
+        
         if (cmd.hasOption("nonRefAf") && !(cmd.hasOption("maxNonRefAf")) || cmd.hasOption("maxNonRefAf") && !(cmd.hasOption("nonRefAf"))) {
             System.err.println("It is required to use the options -nonRefAf and -maxNonRefAf together");
             System.exit(1);
         }
-
+        
         if (cmd.hasOption("nonRefAf") && cmd.hasOption("maxNonRefAf")) {
+            try{
             int nonRefAf = Integer.parseInt(this.cmd.getOptionValue("nonRefAf"));
             int maxNonRefAf = Integer.parseInt(this.cmd.getOptionValue("maxNonRefAf"));
             if (nonRefAf > maxNonRefAf) {
                 System.err.println("The value of the option -nonRefAf can not be higher than the value of the option -maxNonRefAf");
                 System.exit(1);
             }
+            } catch(NumberFormatException e){System.err.println("The values of the options -nonRefAf and -maxNonRefAf have to be numerical"); System.exit(1);}
         }
-
+        
         if (cmd.hasOption("mac") && !(cmd.hasOption("maxMac")) || cmd.hasOption("maxMac") && !(cmd.hasOption("mac"))) {
             System.err.println("It is required to use the options -mac and -maxMac together");
             System.exit(1);
         }
         if (cmd.hasOption("mac") && cmd.hasOption("maxMac")) {
+           try{
             int mac = Integer.parseInt(this.cmd.getOptionValue("mac"));
             int maxMac = Integer.parseInt(this.cmd.getOptionValue("maxMac"));
             if (mac > maxMac) {
                 System.err.println("The value of the option -mac can not be higher than the value of the option -maxMac");
                 System.exit(1);
             }
+        } catch(NumberFormatException e){System.err.println("The value of the options -mac and -maxMac have to be numerical"); System.exit(1);}
         }
         if (cmd.hasOption("nonRefAc") && !(cmd.hasOption("maxNonRefAc")) || cmd.hasOption("maxNonRefAc") && !(cmd.hasOption("nonRefAc"))) {
             System.err.println("It is required to use the options -nonRefAc and -maxNonRefAc together");
             System.exit(1);
         }
         if (cmd.hasOption("nonRefAc") && cmd.hasOption("maxNonRefAc")) {
+            try{
             int nonRefAc = Integer.parseInt(this.cmd.getOptionValue("nonRefAc"));
             int maxNonRefAc = Integer.parseInt(this.cmd.getOptionValue("maxNonRefAc"));
             if (nonRefAc > maxNonRefAc) {
                 System.err.println("The value of the option -nonRefAc can not be higher than the value of the option -maxNonRefAc");
                 System.exit(1);
             }
+            } catch(NumberFormatException e){System.err.println("The value of the options -nonRefAc and -maxNonRefAc have to be numerical"); System.exit(1);} 
         }
-
+        
         if (cmd.hasOption("geno")) {
             String geno = cmd.getOptionValue("geno");
-            if (!(geno.equals("1"))&& !(geno.equals("0"))) {
+            
+            
+            if (!(geno.equals("1")) && !(geno.equals("0"))) {
                 
                 System.err.println("The option -geno only allows 1 or 0. Where 1 indicates no missing data allowed");
                 System.exit(1);
-            
+                
             }
         }
         if (cmd.hasOption("minAlleles") && !(cmd.hasOption("maxAlleles")) || cmd.hasOption("maxAlleles") && !(cmd.hasOption("minAlleles"))) {
             System.err.println("It is required to use the options -minAlleles and -maxAlleles together");
             System.exit(1);
         }
-
+        
         if (cmd.hasOption("minAlleles") && cmd.hasOption("maxAlleles")) {
             int minAlleles = Integer.parseInt(this.cmd.getOptionValue("minAlleles"));
             int maxAlleles = Integer.parseInt(this.cmd.getOptionValue("maxAlleles"));
@@ -364,35 +383,39 @@ public class Cli {
                 System.exit(1);
             }
         }
-
+        
         if (this.cmd.hasOption("minIndvMeanDp") && !(this.cmd.hasOption("maxIndvMeanDp")) || this.cmd.hasOption("maxIndvMeanDp") && !(this.cmd.hasOption("minIndvMeanDp"))) {
             System.err.println("It is required to use the options -minIndvMeanDp and -maxIndvMeanDp together");
             System.exit(1);
         }
-
-        if (cmd.hasOption("minIndvMeanDp") && cmd.hasOption("maxIndvMeanDp")) {
-            int minIndvMeanDp = Integer.parseInt(this.cmd.getOptionValue("minIndvMeanDp"));
-            int maxIndvMeanDp = Integer.parseInt(this.cmd.getOptionValue("maxIndvMeanDp"));
-            if (minIndvMeanDp > maxIndvMeanDp) {
-                System.err.println("The value of the option -minIndvMeanDp can not be higher than the value of the option -maxIndvMeanDp");
+        
+        if (cmd.hasOption("minIndvMeanDp") && cmd.hasOption("minIndvMeanDp")) {
+            try {
+                Double minIndvMeanDp = Double.parseDouble(this.cmd.getOptionValue("minIndvMeanDp"));
+                Double maxIndvMeanDp = Double.parseDouble(this.cmd.getOptionValue("maxIndvMeanDp"));
+                if (minIndvMeanDp > maxIndvMeanDp) {
+                    System.err.println("The value of the option -minIndvMeanDp can not be higher than the value of the option -maxIndvMeanDp");
+                    System.exit(1);
+                }
+            } catch (NumberFormatException e) {
+                System.err.println("The value of the minIndvMeanDp and maxIndvMeanDp have to be numerical");
                 System.exit(1);
             }
         }
-
         if (this.cmd.hasOption("thin")) {
             int thinValue = Integer.parseInt(this.cmd.getOptionValue("thin"));
             if (thinValue < 1) {
                 System.err.println("The value for the option -thin can not be less than 1");
                 System.exit(1);
             }
-
+            
         }
-
+        
         if (this.cmd.hasOption("minDp") && !(this.cmd.hasOption("maxDp")) || this.cmd.hasOption("maxDp") && !(this.cmd.hasOption("minDp"))) {
             System.err.println("It is required to use the options -minDp and -maxDp together");
             System.exit(1);
         }
-
+        
         if (cmd.hasOption("minDp") && cmd.hasOption("maxDp")) {
             int minDp = Integer.parseInt(this.cmd.getOptionValue("minDp"));
             int maxDp = Integer.parseInt(this.cmd.getOptionValue("maxDp"));
@@ -404,13 +427,45 @@ public class Cli {
         if (cmd.hasOption("vcf")) {
             File file = new File(cmd.getOptionValue("vcf"));
             if (!(file.exists())) {
+                System.err.println("This path does not exist = " + cmd.getOptionValue("vcf"));
+                System.exit(1);
+            }
+            if ((file.isDirectory())) {
+                System.err.println("Given is a directory not a file = " + cmd.getOptionValue("vcf"));
+                System.exit(0);
+            }
+            if (!(file.isFile())) {
                 System.err.println("file " + cmd.getOptionValue("vcf") + " can not be opened");
                 System.exit(1);
             }
         }
+        if (cmd.hasOption("snpFile")) {
+            File file = new File(cmd.getOptionValue("snpFile"));
+            if (!(file.exists())) {
+                System.err.println("This path does not exist = " + cmd.getOptionValue("snpFile"));
+                System.exit(1);
+            }
+            if ((file.isDirectory())) {
+                System.err.println("Given is a directory not a file = " + cmd.getOptionValue("snpFile"));
+                System.exit(0);
+            }
+            if (!(file.isFile())) {
+                System.err.println("file " + cmd.getOptionValue("snpFile") + " can not be opened");
+                System.exit(1);
+            }
+        }
+        
         if (cmd.hasOption("excludeSnpFile")) {
             File file = new File(cmd.getOptionValue("excludeSnpFile"));
             if (!(file.exists())) {
+                System.err.println("This path does not exist = " + cmd.getOptionValue("excludeSnpFile"));
+                System.exit(1);
+            }
+            if ((file.isDirectory())) {
+                System.err.println("Given is a directory not a file = " + cmd.getOptionValue("excludeSnpFile"));
+                System.exit(0);
+            }
+            if (!(file.isFile())) {
                 System.err.println("file " + cmd.getOptionValue("excludeSnpFile") + " can not be opened");
                 System.exit(1);
             }
@@ -418,39 +473,80 @@ public class Cli {
         if (cmd.hasOption("positionsFile")) {
             File file = new File(cmd.getOptionValue("positionsFile"));
             if (!(file.exists())) {
-                System.err.println("file " + cmd.getOptionValue("positionsFile") + " can not be opend");
+                System.err.println("This path does not exist = " + cmd.getOptionValue("positionsFile"));
+                System.exit(1);
+            }
+            if ((file.isDirectory())) {
+                System.err.println("Given is a directory not a file = " + cmd.getOptionValue("positionsFile"));
+                System.exit(0);
+            }
+            if (!(file.isFile())) {
+                System.err.println("file " + cmd.getOptionValue("positionsFile") + " can not be opened");
                 System.exit(1);
             }
         }
         if (cmd.hasOption("excludePositionsFile")) {
             File file = new File(cmd.getOptionValue("excludePositionsFile"));
             if (!(file.exists())) {
-                System.err.println("file " + cmd.getOptionValue("excludePositionsFile") + " can not be opend");
+                System.err.println("This path does not exist = " + cmd.getOptionValue("excludePositionsFile"));
                 System.exit(1);
             }
+            if ((file.isDirectory())) {
+                System.err.println("Given is a directory not a file = " + cmd.getOptionValue("excludePositionsFile"));
+                System.exit(0);
+            }
+            if (!(file.isFile())) {
+                System.err.println("file " + cmd.getOptionValue("excludePositionsFile") + " can not be opened");
+                System.exit(1);
+            }
+            
         }
         if (cmd.hasOption("mask")) {
             File file = new File(cmd.getOptionValue("mask"));
             if (!(file.exists())) {
-                System.err.println("file " + cmd.getOptionValue("mask") + " can not be opend");
+                System.err.println("This path does not exist = " + cmd.getOptionValue("mask"));
+                System.exit(1);
+            }
+            if ((file.isDirectory())) {
+                System.err.println("Given is a directory not a file = " + cmd.getOptionValue("mask"));
+                System.exit(0);
+            }
+            if (!(file.isFile())) {
+                System.err.println("file " + cmd.getOptionValue("mask") + " can not be opened");
                 System.exit(1);
             }
         }
         if (cmd.hasOption("keepIndvFile")) {
             File file = new File(cmd.getOptionValue("keepIndvFile"));
             if (!(file.exists())) {
-                System.err.println("file " + cmd.getOptionValue("keepIndvFile") + " can not be opend");
+                System.err.println("This path does not exist = " + cmd.getOptionValue("keepIndvFile"));
+                System.exit(1);
+            }
+            if ((file.isDirectory())) {
+                System.err.println("Given is a directory not a file = " + cmd.getOptionValue("keepIndvFile"));
+                System.exit(0);
+            }
+            if (!(file.isFile())) {
+                System.err.println("file " + cmd.getOptionValue("keepIndvFile") + " can not be opened");
                 System.exit(1);
             }
         }
         if (cmd.hasOption("removeIndvFile")) {
             File file = new File(cmd.getOptionValue("removeIndvFile"));
             if (!(file.exists())) {
+                System.err.println("This path does not exist = " + cmd.getOptionValue("removeIndvFile"));
+                System.exit(1);
+            }
+            if ((file.isDirectory())) {
+                System.err.println("Given is a directory not a file = " + cmd.getOptionValue("removeIndvFile"));
+                System.exit(0);
+            }
+            if (!(file.isFile())) {
                 System.err.println("file " + cmd.getOptionValue("removeIndvFile") + " can not be opened");
                 System.exit(1);
             }
         }
-
+        
     }
 
     /**
@@ -476,28 +572,29 @@ public class Cli {
      *
      */
     public void usage() {
-        helpFormatter.printHelp("For analysing the VCF file several options can be used."
-                + "This tool supports version higher than 4.0 . This tool is also"
-                + "compatible for snp analysis in poliploid cells", this.option);
-        System.exit(1);
+        helpFormatter.printHelp("For optimal analysing of VCF files the folowing options can be used."
+                + " This tool supports VCF files with higher version than 4.0. This tool is also"
+                + " compatible for snp analysis in poliploid cells", this.option);
+        
+        System.exit(0);
+        
     }
 
     /**
      * Function to set the Settings
      */
     private void procesOptions() {
-
-//         Settings settings = new Settings();
+        
         if (this.cmd.hasOption("h")) {
 //        this.usages();
         }
         if (this.cmd.hasOption("vcf")) {
-
+            
             settings.setInputFile(this.cmd.getOptionValue("vcf"));
         }
-
+        
         settings.setInputFile(this.cmd.getOptionValue("vcf"));
-
+        
         if (this.cmd.hasOption("gvcf")) {
             settings.setGzipped(true);
         }
@@ -505,12 +602,12 @@ public class Cli {
 //            settings.setOutputFile(cmd.getOptionValue("out"));
         }
         if (this.cmd.hasOption("chr")) {
-
+            
             for (int pointer = 0; pointer < this.args.length; pointer++) {
 //                System.out.println(this.args[pointer+1] +" "+pointer + " length args = " + this.args.length);
                 
                 if (this.args[pointer].equals("-chr")) {
-
+                    
                     int fromValuePointer = 0;
                     int toValueFactor = 0;
                     if (pointer + 2 == this.args.length) {
@@ -521,40 +618,39 @@ public class Cli {
                         break;
                     }
                     
-                    
                     if (!this.args[pointer + 2].equals("-fromBp")
                             || !this.args[pointer + 2].equals("-chr")
                             || !this.args[pointer + 2].equals("-toBp")) {
                     } else {
                         settings.addChr(this.args[pointer + 1]);
                     }
-
+                    
                     if (args[pointer + 2].equals("-fromBp")) {
                         fromValuePointer = pointer + 2;
                     } else if (args[pointer + 4].equals("-fromBp")) {
                         fromValuePointer = pointer + 4;
                     }
-
+                    
                     if (args[pointer + 2].equals("-toBp")) {
                         toValueFactor = pointer + 2;
                     } else if (args[pointer + 4].equals("-toBp")) {
                         toValueFactor = pointer + 4;
                     }
-
+                    
                     if (this.args[fromValuePointer].equals("-fromBp") && this.args[toValueFactor].equals("-toBp")) {
                         int fromBp = Integer.parseInt(this.args[fromValuePointer + 1]);
                         int toBp = Integer.parseInt(this.args[toValueFactor + 1]);
                         settings.addChr(this.args[pointer + 1], fromBp, toBp);
-
+                        
                     } else {
-
+                        
                         settings.addChr(this.args[pointer + 1]);
-
+                        
                     }
-
+                    
                 }
             }
-
+            
         }
         if (this.cmd.hasOption("notChr")) {
             for (int pointer = 0; pointer < this.args.length; pointer++) {
@@ -589,45 +685,45 @@ public class Cli {
                         int fromBp = Integer.parseInt(this.args[fromValuePointer + 1]);
                         int toBp = Integer.parseInt(this.args[toValueFactor + 1]);
                         settings.addNotChr(this.args[pointer + 1], fromBp, toBp);
-
+                        
                     } else {
-
+                        
                         settings.addNotChr(this.args[pointer + 1]);
                     }
                 }
             }
         }
-
+        
         if (this.cmd.hasOption("snp")) {
             String snpIdentifiers = this.cmd.getOptionValue("snp");
-
+            
             String[] splitedSnpIdentifiers = snpIdentifiers.split(",");
             for (String identifier : splitedSnpIdentifiers) {
                 settings.addSnp(identifier);
-
+                
             }
         }
         if (this.cmd.hasOption("snpFile")) {
-            settings.setSnpFile(this.cmd.getOptionValue("snpFile"));
+            settings.loadSnpFile(this.cmd.getOptionValue("snpFile"));
         }
         if (this.cmd.hasOption("excludeSnp")) {
             String excludeSnpIdentifiers = this.cmd.getOptionValue("excludeSnp");
-
+            
             String[] splitedExcludedIdentifiers = excludeSnpIdentifiers.split(",");
             for (String identifiers : splitedExcludedIdentifiers) {
                 settings.addExcludeSnp(identifiers);
             }
         }
         if (this.cmd.hasOption("excludeSnpFile")) {
-            settings.setExcludeSnpFile(this.cmd.getOptionValue("excludeSnpFile"));
+            settings.loadExcludeSnpFile(this.cmd.getOptionValue("excludeSnpFile"));
         }
-
+        
         if (this.cmd.hasOption("positionsFile")) {
-            settings.setPositionsFile(this.cmd.getOptionValue("positionsFile"));
+            settings.loadPositionsFile(this.cmd.getOptionValue("positionsFile"));
         }
-
+        
         if (this.cmd.hasOption("excludePositionsFile")) {
-            settings.setExcludePositionsFile(this.cmd.getOptionValue("excludePositionsFile"));
+            settings.loadExcludePositionsFile(this.cmd.getOptionValue("excludePositionsFile"));
         }
         if (this.cmd.hasOption("keepOnlyIndels")) {
             settings.setKeepIndels(true);
@@ -636,12 +732,10 @@ public class Cli {
             settings.setKeepIndels(false);
         }
         if (this.cmd.hasOption("bed")) {
-//      Bed bed = new Bed();
-            settings.setBedFile(this.cmd.getOptionValue("bed"));
+            settings.loadBedFile(this.cmd.getOptionValue("bed"));
         }
         if (this.cmd.hasOption("exludeBed")) {
-//      Bed bed = new Bed();
-//        settings.setExludeBed(this.cmd.getOptionValue("exludeBed"));
+            settings.loadExludeBedFile(this.cmd.getOptionValue("exludeBed"));
         }
         if (this.cmd.hasOption("removeFilteredAll")) {
             settings.setRemoveFilteredAll(true);
@@ -649,7 +743,7 @@ public class Cli {
         if (this.cmd.hasOption("removeFiltered")) {
             String removedFiltered = this.cmd.getOptionValue("removeFiltered");
             String[] splitedRemovedFiltered = removedFiltered.split(",");
-
+            
             for (String removedItem : splitedRemovedFiltered) {
                 settings.addRemoveFiltered(removedItem);
             }
@@ -658,7 +752,7 @@ public class Cli {
         if (this.cmd.hasOption("keepFiltered")) {
             String keepFiltered = this.cmd.getOptionValue("keepFiltered");
             String[] splitedKeepFiltered = keepFiltered.split(",");
-
+            
             for (String keepFilteredItem : splitedKeepFiltered) {
                 settings.addKeepFiltered(keepFilteredItem);
             }
@@ -667,7 +761,7 @@ public class Cli {
         if (this.cmd.hasOption("removeInfo")) {
             String removeInfo = this.cmd.getOptionValue("removeInfo");
             String[] splitedRemovedInfo = removeInfo.split(",");
-
+            
             for (String removedInfoItem : splitedRemovedInfo) {
                 settings.addRemoveInfo(removedInfoItem);
             }
@@ -675,10 +769,10 @@ public class Cli {
         if (this.cmd.hasOption("keepInfo")) {
             String keepInfo = this.cmd.getOptionValue("keepInfo");
             String[] splitedKeptInfo = keepInfo.split(",");
-
+            
             for (String keptInfoItem : splitedKeptInfo) {
                 settings.addKeepInfo(keepInfo);
-
+                
             }
             settings.setKeepInfo(settings.getKeepInfo());
         }
@@ -686,7 +780,7 @@ public class Cli {
             Double minQValue = Double.parseDouble(this.cmd.getOptionValue("minQ"));
             settings.setMinQ(minQValue);
         }
-
+        
         if (this.cmd.hasOption("minMeanDp")) {
             Double minMeanDp = Double.parseDouble(this.cmd.getOptionValue("minMeanDp"));
             settings.setMinMeanDp(minMeanDp);
@@ -694,7 +788,7 @@ public class Cli {
         if (this.cmd.hasOption("maxMeanDp")) {
             Double maxMeanDp = Double.parseDouble(this.cmd.getOptionValue("maxMeanDp"));
             settings.setMaxMeanDp(maxMeanDp);
-
+            
         }
         if (this.cmd.hasOption("maf")) {
             Double maf = Double.parseDouble(this.cmd.getOptionValue("maf"));
@@ -753,10 +847,10 @@ public class Cli {
             settings.setThin(thin);
         }
         if (this.cmd.hasOption("mask")) {
-            settings.setMaskFile(this.cmd.getOptionValue("mask"));
+            settings.loadMaskFile(this.cmd.getOptionValue("mask"));
         }
         if (this.cmd.hasOption("invertMask")) {
-            settings.setInvertMaskFile(this.cmd.getOptionValue("invertMask"));
+            settings.loadInvertMaskFile(this.cmd.getOptionValue("invertMask"));
         }
         if (this.cmd.hasOption("maskMin")) {
             int maskMin = Integer.parseInt(this.cmd.getOptionValue("maskMin"));
@@ -765,26 +859,26 @@ public class Cli {
         if (this.cmd.hasOption("keepIndv")) {
             String keepIndv = this.cmd.getOptionValue("keepIndv");
             String[] splitedKeptIndv = keepIndv.split(",");
-
+            
             for (String keepIndvItem : splitedKeptIndv) {
                 settings.addKeepIndv(keepIndvItem);
-
+                
             }
-
+            
         }
         if (this.cmd.hasOption("keepIndvFile")) {
-            settings.setKeepIndvFile(this.cmd.getOptionValue("keepIndvFile"));
+            settings.loadKeepIndvFile(this.cmd.getOptionValue("keepIndvFile"));
         }
         if (this.cmd.hasOption("removeIndv")) {
             String removeIndv = this.cmd.getOptionValue("removeIndv");
             String[] splitedRemovedIndv = removeIndv.split(",");
-
+            
             for (String removedIndvItem : splitedRemovedIndv) {
                 settings.addRemoveIndv(removedIndvItem);
             }
         }
         if (this.cmd.hasOption("removeIndvFile")) {
-            settings.setRemoveIndvFile(this.cmd.getOptionValue("removeIndvFile"));
+            settings.loadRemoveIndvFile(this.cmd.getOptionValue("removeIndvFile"));
         }
         if (this.cmd.hasOption("minIndvMeanDp")) {
             Double minIndvMeanDp = Double.parseDouble(this.cmd.getOptionValue("minIndvMeanDp"));
@@ -805,15 +899,15 @@ public class Cli {
             int maxIndv = Integer.parseInt(this.cmd.getOptionValue("maxIndv"));
             settings.setMaxIndv(maxIndv);
         }
-
+        
         if (this.cmd.hasOption("removeFilteredGenoAll")) {
             settings.setRemoveFilteredGenoAll(Boolean.TRUE);
         }
-
+        
         if (this.cmd.hasOption("removeFilteredGeno")) {
             String removeFilteredGeno = this.cmd.getOptionValue("removeFilteredGeno");
             String[] splitedRemoveFilteredGeno = removeFilteredGeno.split(",");
-
+            
             for (String removedFilterFlag : splitedRemoveFilteredGeno) {
                 settings.addRemoveFilteredGeno(removedFilterFlag);
             }
@@ -826,12 +920,12 @@ public class Cli {
             Double minDp = Double.parseDouble(this.cmd.getOptionValue("minDp"));
             settings.setMinDp(minDp);
         }
-
+        
         if (this.cmd.hasOption("maxDp")) {
             Double maxDp = Double.parseDouble(this.cmd.getOptionValue("maxDp"));
             settings.setMaxDp(maxDp);
         }
-
+        
         if (this.cmd.hasOption("count")) {
             settings.setCount(true);
         }
@@ -841,7 +935,7 @@ public class Cli {
         if (this.cmd.hasOption("depth")) {
             settings.setDepth(true);
         }
-
+        
     }
-
+    
 }

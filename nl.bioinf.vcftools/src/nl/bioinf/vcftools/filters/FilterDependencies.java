@@ -21,6 +21,8 @@ public class FilterDependencies {
     private List<Double> meanDp;
     private List<Boolean> phased;
     private List<Boolean> individualsLeft;
+    private List<Integer> calledTotal;
+    private List<Double> calledRatio;
     private int siteCount;
     
     
@@ -32,6 +34,8 @@ public class FilterDependencies {
         this.meanDp = new ArrayList<>();
         this.phased = new ArrayList<>();
         this.individualsLeft = new ArrayList<>();
+        this.calledTotal = new ArrayList<>();
+        this.calledRatio = new ArrayList<>();
         this.siteCount = 0;
     }
              
@@ -46,12 +50,15 @@ public class FilterDependencies {
             // If first collection of data then prefil datasets
             if (this.siteCount == 0) {
                 this.totalDp.add(0);
+                this.calledTotal.add(0);
                 this.phased.add(false);
             }        
             // Store depths total
             this.totalDp.set(i, (this.totalDp.get(i) + genotype.getDp()));
             // When we find a phased the whole individual is not totally unphased and can be kept
-            if (genotype.isPhased() == true) { this.phased.set(i, true); }    
+            if (genotype.isPhased() == true) { this.phased.set(i, true); }  
+            // When genotype is called add to the total
+            if (genotype.isCalled() == true) {  this.calledTotal.set(i, this.calledTotal.get(i) + 1); }     
         }
         // The original vcftools also calculates size when genotype is empty so one combined total counter will be okay
         this.siteCount++;
@@ -61,8 +68,11 @@ public class FilterDependencies {
      * Calculate dependencies after all collecting is finished
      */
     public void calculateDependencies() {
-        for (Integer i : this.totalDp) {
-            this.meanDp.add((double)i / (double)this.siteCount);
+        for (Integer dp : this.totalDp) {
+            this.meanDp.add((double)dp / (double)this.siteCount);  
+        }
+        for (Integer callCount : this.calledTotal) {
+            this.calledRatio.add((double)callCount / (double)this.siteCount);
         }
     }
 
@@ -81,6 +91,14 @@ public class FilterDependencies {
     public List<Boolean> getPhased() {
         return phased;
     } 
+
+    /**
+     * Get the list of call ratios for individuals
+     * @return 
+     */
+    public List<Double> getCalledRatio() {
+        return calledRatio;
+    }  
     
     /**
      * Get the list of individuals left after previous filter steps

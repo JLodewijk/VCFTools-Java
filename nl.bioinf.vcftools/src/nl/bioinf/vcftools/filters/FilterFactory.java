@@ -91,7 +91,7 @@ public class FilterFactory {
         if (this.settings.getMaxMissingCount() != null) { this.siteFilters.add(new MissingCount()); }
         if ((this.settings.getMinAlleles() != null) && (this.settings.getMaxAlleles() != null)) { this.siteFilters.add(new MinorAlleleCount()); }
         if (this.settings.getThin() != null) { this.siteFilters.add(new Thinning()); }
-        if (this.settings.getMaskFile() != null) {this.siteFilters.add(new Mask());}
+        if (!this.settings.getMask().isEmpty()) {this.siteFilters.add(new Mask());}
         if ((this.settings.isPhased() != null) && (this.settings.isPhased() == true)) { this.siteFilters.add(new RemoveUnphased()); }
     }
     
