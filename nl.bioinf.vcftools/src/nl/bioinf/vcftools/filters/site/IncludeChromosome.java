@@ -32,16 +32,6 @@ public class IncludeChromosome extends AbstractSiteFilter{
                 if((vcfLine.getPosition() >= (Integer) il.get(0)) && (vcfLine.getPosition() <= (Integer) il.get(1))) { return true; }          
             }
         }
-        // bed implementation 
-        if (settings.getBed().containsKey(vcfLine.getChr())) {
-            // loop trough list of positions in chromosome
-            for (Object i:(Collection) settings.getBed().get(vcfLine.getChr())) {
-                // change positions collection item to list
-                List<Integer> il = (List) i;
-                // look for specific positions that are passed on
-                if((vcfLine.getPosition() >= (Integer) il.get(0)) && (vcfLine.getPosition() <= (Integer) il.get(1))) { return true; }          
-            }
-        }
         return false;
     }
 }

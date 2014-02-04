@@ -8,9 +8,13 @@ package nl.bioinf.vcftools;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import nl.bioinf.vcftools.filehandlers.BedFileReader;
+import nl.bioinf.vcftools.filehandlers.PositionFileReader;
 import nl.bioinf.vcftools.filehandlers.SeparatedValueReader;
 import org.apache.commons.collections4.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
@@ -42,8 +46,6 @@ public class Settings {
     private MultiMap positions;
     private MultiMap excludePositions;
     private Boolean keepIndels;
-    private MultiMap bed;
-    private MultiMap exludeBed;
     private Boolean removeFilteredAll;
     private List<String> removeFiltered;
     private List<String> keepFiltered;
@@ -104,8 +106,6 @@ public class Settings {
         this.excludeSnp = new ArrayList<>();
         this.positions = new MultiValueMap();
         this.excludePositions = new MultiValueMap();
-        this.bed = new MultiValueMap();
-        this.exludeBed = new MultiValueMap();
         this.removeFiltered = new ArrayList<>();
         this.keepFiltered = new ArrayList<>();
         this.removeInfo = new ArrayList<>();
@@ -439,8 +439,10 @@ public class Settings {
      * @param snpFile filename
      */
     public void loadSnpFile(String snpFile) {
+        // adding one by one so this functions allows for multiple files to load
         SeparatedValueReader reader = new SeparatedValueReader(snpFile,System.lineSeparator());
         List snps = reader.getList();
+        // loop trough items and add to snp list
         for (Object snp : snps) {
             this.addSnp((String) snp);
         }
@@ -483,8 +485,10 @@ public class Settings {
      * @param excludeSnpFile filename
      */
     public void loadExcludeSnpFile(String excludeSnpFile) {
+        // adding one by one so this functions allows for multiple files to load
         SeparatedValueReader reader = new SeparatedValueReader(excludeSnpFile,System.lineSeparator());
         List snps = reader.getList();
+        // loop trough items and add to excluseSnp list
         for (Object snp : snps) {
             this.addExcludeSnp((String) snp);
         }
@@ -531,7 +535,18 @@ public class Settings {
      * @param positionsFile filename
      */
     public void loadPositionsFile(String positionsFile) {
-        //this.positionsFile = positionsFile;
+        // adding one by one so this functions allows for multiple files to load
+//        PositionFileReader positionFileReader = new PositionFileReader(positionsFile);
+//        MultiMap positions = positionFileReader.getChrPositionMap();
+//        Iterator keyIterator = positions.mapIterator();
+//        while (keyIterator.hasNext()) {
+//            Object key = keyIterator.next();
+//            for (Object value:(Collection) positions.get(key)) {
+//                System.out.println(value);
+//            }
+//            
+//        }
+        
     }
 
     /**
@@ -592,46 +607,23 @@ public class Settings {
      */
     public void setKeepIndels(Boolean keepIndels) {
         this.keepIndels = keepIndels;
-    }
-
-    /**
-     * Get the bed data as multimap
-     * @return 
-     */
-    public MultiMap getBed() {
-        return bed;
-    }
-
-    /**
-     * Set the bed data as multimap
-     * @param bed 
-     */
-    public void setBed(MultiMap bed) {
-        this.bed = bed;
-    }  
-    
-    /**
-     * Get the exclude bed data as multimap
-     * @return 
-     */
-    public MultiMap getExludeBed() {
-        return exludeBed;
-    }
-    
-    /**
-     * Set the exclude bed data as multimap
-     * @param exludeBed 
-     */
-    public void setExludeBed(MultiMap exludeBed) {
-        this.exludeBed = exludeBed;
-    }   
+    } 
 
     /**
      *
      * @param bedFile
      */
     public void loadBedFile(String bedFile) {
-        //this.bedFile = bedFile;
+        // adding one by one so this functions allows for multiple files to load
+        BedFileReader bedFileReader = new BedFileReader(bedFile);
+        MultiMap bedData = bedFileReader.getBedMap();
+        // Loop trough key and values, and add to chr collection
+        for (Object key : bedData.keySet()) {
+            for (Object value:(Collection) bedData.get(key)) {
+                List<String> positions = (List) value;
+                this.addChr((String) key, Integer.parseInt(positions.get(0)), Integer.parseInt(positions.get(1)));
+            }   
+        }
     }
 
 
@@ -640,7 +632,16 @@ public class Settings {
      * @param exludeBedFile
      */
     public void loadExludeBedFile(String exludeBedFile) {
-        //this.exludeBedFile = exludeBedFile;
+        // adding one by one so this functions allows for multiple files to load
+        BedFileReader bedFileReader = new BedFileReader(exludeBedFile);
+        MultiMap bedData = bedFileReader.getBedMap();
+        // Loop trough key and values, and add to notChr collection
+        for (Object key : bedData.keySet()) {
+            for (Object value:(Collection) bedData.get(key)) {
+                List<String> positions = (List) value;
+                this.addNotChr((String) key, Integer.parseInt(positions.get(0)), Integer.parseInt(positions.get(1)));
+            }   
+        }
     }
 
     /**
@@ -1178,8 +1179,10 @@ public class Settings {
      * @param keepIndvFile
      */
     public void loadKeepIndvFile(String keepIndvFile) {
+        // adding one by one so this functions allows for multiple files to load
         SeparatedValueReader reader = new SeparatedValueReader(keepIndvFile,System.lineSeparator());
         List indvs = reader.getList();
+        // loop trough items and add to keepIndv list
         for (Object indv : indvs) {
             this.addKeepIndv((String) indv);
         }
@@ -1222,6 +1225,7 @@ public class Settings {
      * @param removeIndvFile
      */
     public void loadRemoveIndvFile(String removeIndvFile) {
+        // adding one by one so this functions allows for multiple files to load
         SeparatedValueReader reader = new SeparatedValueReader(removeIndvFile,System.lineSeparator());
         List indvs = reader.getList();
         for (Object indv : indvs) {
