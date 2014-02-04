@@ -29,9 +29,11 @@ import java.util.List;
 import nl.bioinf.vcftools.Settings;
 import nl.bioinf.vcftools.filters.genotype.Depth;
 import nl.bioinf.vcftools.filters.genotype.Quality;
+import nl.bioinf.vcftools.filters.individual.IncludeIndividuals;
 import nl.bioinf.vcftools.filters.individual.MaxIndividuals;
 import nl.bioinf.vcftools.filters.individual.MeanIndvDp;
 import nl.bioinf.vcftools.filters.individual.Phased;
+import nl.bioinf.vcftools.filters.individual.RemoveIndividuals;
 import nl.bioinf.vcftools.filters.site.ExcludeSnp;
 import nl.bioinf.vcftools.filters.site.Geno;
 import nl.bioinf.vcftools.filters.site.Mask;
@@ -112,8 +114,12 @@ public class FilterFactory {
     private void createIndividualFilters() {
         this.individualFilters = new ArrayList<>();
         
+        if (!this.settings.getKeepIndv().isEmpty()) { this.individualFilters.add(new IncludeIndividuals()); }
+        if (!this.settings.getRemoveIndv().isEmpty()) { this.individualFilters.add(new RemoveIndividuals()); }
         if ((this.settings.isPhased() != null) && (this.settings.isPhased() == true)) { this.individualFilters.add(new Phased()); }
         if ((this.settings.getMinIndvMeanDp() != null) && (this.settings.getMaxIndvMeanDp() != null)) {this.individualFilters.add(new MeanIndvDp());}
+        
+        
         // insert extra filters HERE on this line and not below maxIndv because thats the final individual filter to be performed
         
         if (this.settings.getMaxIndv() != null) { this.individualFilters.add(new MaxIndividuals()); }

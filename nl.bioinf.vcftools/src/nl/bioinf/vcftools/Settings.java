@@ -483,7 +483,11 @@ public class Settings {
      * @param excludeSnpFile filename
      */
     public void loadExcludeSnpFile(String excludeSnpFile) {
-        //this.excludeSnpFile = excludeSnpFile;
+        SeparatedValueReader reader = new SeparatedValueReader(excludeSnpFile,System.lineSeparator());
+        List snps = reader.getList();
+        for (Object snp : snps) {
+            this.addExcludeSnp((String) snp);
+        }
     }
 
     /**
@@ -1174,7 +1178,11 @@ public class Settings {
      * @param keepIndvFile
      */
     public void loadKeepIndvFile(String keepIndvFile) {
-        //this.keepIndvFile = keepIndvFile;
+        SeparatedValueReader reader = new SeparatedValueReader(keepIndvFile,System.lineSeparator());
+        List indvs = reader.getList();
+        for (Object indv : indvs) {
+            this.addKeepIndv((String) indv);
+        }
     }
 
     /**
@@ -1214,7 +1222,11 @@ public class Settings {
      * @param removeIndvFile
      */
     public void loadRemoveIndvFile(String removeIndvFile) {
-        //this.removeIndvFile = removeIndvFile;
+        SeparatedValueReader reader = new SeparatedValueReader(removeIndvFile,System.lineSeparator());
+        List indvs = reader.getList();
+        for (Object indv : indvs) {
+            this.addRemoveIndv((String) indv);
+        }
     }
 
     /**
