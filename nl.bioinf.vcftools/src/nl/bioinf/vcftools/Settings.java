@@ -483,7 +483,11 @@ public class Settings {
      * @param excludeSnpFile filename
      */
     public void loadExcludeSnpFile(String excludeSnpFile) {
-        //this.excludeSnpFile = excludeSnpFile;
+        SeparatedValueReader reader = new SeparatedValueReader(excludeSnpFile,System.lineSeparator());
+        List snps = reader.getList();
+        for (Object snp : snps) {
+            this.addExcludeSnp((String) snp);
+        }
     }
 
     /**
