@@ -24,7 +24,9 @@ public class SeparatedValueReader {
     private String linesOfFile;
 
     /**
-     * Constructor inducing file reading.
+     * Default constructor
+     * @param filename
+     * @param seperator 
      */
     public SeparatedValueReader(String filename, String seperator) {
         this.filename = filename;
@@ -34,11 +36,11 @@ public class SeparatedValueReader {
     }
 
     /**
-     * Reads file
+     * Read the file
      * @author ashvin ponnudurai
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
-    public void readFile() {
+    private void readFile() {
         StringBuilder fileLines = new StringBuilder();
         try {
 
