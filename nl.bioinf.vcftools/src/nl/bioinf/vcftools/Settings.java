@@ -31,22 +31,16 @@ public class Settings {
     private String inputFile;
     private String outputFile;
     private Boolean gzipped;
-
+    
     /* Site Filters */
     private MultiMap chr;
     private MultiMap notChr;
 
     private List<String> snp;
-    private String snpFile;
     private List<String> excludeSnp;
-    private String excludeSnpFile;
     private MultiMap positions;
-    private String positionsFile;
     private MultiMap excludePositions;
-    private String excludePositionsFile;
     private Boolean keepIndels;
-    private String bedFile;
-    private String exludeBedFile;
     private MultiMap bed;
     private MultiMap exludeBed;
     private Boolean removeFilteredAll;
@@ -71,17 +65,13 @@ public class Settings {
     private Integer minAlleles;
     private Integer maxAlleles;
     private Integer thin;
-    private String maskFile;
     private MultiMap mask;
-    private String invertMaskFile;
     private MultiMap invertMask;
     private Integer maskMin;
 
     /* Individual filters */
     private List<String> keepIndv;
-    private String keepIndvFile;
     private List<String> removeIndv;
-    private String removeIndvFile;
     private Double minIndvMeanDp;
     private Double maxIndvMeanDp;
     private Double mind;
@@ -421,99 +411,83 @@ public class Settings {
     } 
 
     /**
-     *
-     * @return
+     * Get the list of snp's to include
+     * @return list of snp's
      */
     public List<String> getSnp() {
         return snp;
     }
 
     /**
-     *
-     * @param snp
+     * Set the list of snp's to include
+     * @param snp list of snp's
      */
     public void setSnp(List<String> snp) {
         this.snp = snp;
     }
 
     /**
-     *
-     * @param snp
+     * Add a list of snp's to include
+     * @param snp list of snp's
      */
     public void addSnp(List<String> snp) {
         this.snp.addAll(snp);
     }
 
     /**
-     *
-     * @param snp
+     * Add a snp to include
+     * @param snp snp
      */
     public void addSnp(String snp) {
         this.snp.add(snp);
     }
 
     /**
-     *
-     * @return
+     *  Load snp file data
+     * @param snpFile filename
      */
-    public String getSnpFile() {
-        return snpFile;
+    public void loadSnpFile(String snpFile) {
+        //this.snpFile = snpFile;
     }
 
     /**
-     *
-     * @param snpFile
-     */
-    public void setSnpFile(String snpFile) {
-        this.snpFile = snpFile;
-    }
-
-    /**
-     *
-     * @return
+     * Get the list of snp's to exclude
+     * @return list of snp's
      */
     public List<String> getExcludeSnp() {
         return excludeSnp;
     }
 
     /**
-     *
-     * @param excludeSnp
+     * Set the list of snp's to exclude
+     * @param excludeSnp list of snp's
      */
     public void setExcludeSnp(List<String> excludeSnp) {
         this.excludeSnp = excludeSnp;
     }
 
     /**
-     *
-     * @param excludeSnp
+     * Add a list of snp's to exclude
+     * @param excludeSnp list of snp's
      */
     public void addExcludeSnp(List<String> excludeSnp) {
         this.excludeSnp.addAll(excludeSnp);
     }
 
     /**
-     *
-     * @param excludeSnp
+     * Add a snp to exclude
+     * @param excludeSnp snp
      */
     public void addExcludeSnp(String excludeSnp) {
         this.excludeSnp.add(excludeSnp);
     }
 
     /**
-     *
-     * @return
+     * Load exclude snp file data
+     * @param excludeSnpFile filename
      */
-    public String getExcludeSnpFile() {
-        return excludeSnpFile;
-    }
-
-    /**
-     *
-     * @param excludeSnpFile
-     */
-    public void setExcludeSnpFile(String excludeSnpFile) {
-        this.excludeSnpFile = excludeSnpFile;
+    public void loadExcludeSnpFile(String excludeSnpFile) {
+        //this.excludeSnpFile = excludeSnpFile;
     }
 
     /**
@@ -550,22 +524,14 @@ public class Settings {
     public boolean containsPositions(String chr, int position) {
         List chrPos = (List) this.positions.get(chr);
         return chrPos.contains(position);
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public String getPositionsFile() {
-        return positionsFile;
-    }
+    }    
 
     /**
      *
      * @param positionsFile
      */
-    public void setPositionsFile(String positionsFile) {
-        this.positionsFile = positionsFile;
+    public void loadPositionsFile(String positionsFile) {
+        //this.positionsFile = positionsFile;
     }
 
     /**
@@ -606,18 +572,10 @@ public class Settings {
 
     /**
      *
-     * @return
-     */
-    public String getExcludePositionsFile() {
-        return excludePositionsFile;
-    }
-
-    /**
-     *
      * @param excludePositionsFile
      */
-    public void setExcludePositionsFile(String excludePositionsFile) {
-        this.excludePositionsFile = excludePositionsFile;
+    public void loadExcludePositionsFile(String excludePositionsFile) {
+        //this.excludePositionsFile = excludePositionsFile;
     }
 
     /**
@@ -666,40 +624,23 @@ public class Settings {
      */
     public void setExludeBed(MultiMap exludeBed) {
         this.exludeBed = exludeBed;
-    }
-    
-    
-    
-    /**
-     *
-     * @return
-     */
-    public String getBedFile() {
-        return bedFile;
-    }
+    }   
 
     /**
      *
      * @param bedFile
      */
-    public void setBedFile(String bedFile) {
-        this.bedFile = bedFile;
+    public void loadBedFile(String bedFile) {
+        //this.bedFile = bedFile;
     }
 
-    /**
-     *
-     * @return
-     */
-    public String getExludeBedFile() {
-        return exludeBedFile;
-    }
 
     /**
      *
      * @param exludeBedFile
      */
-    public void setExludeBedFile(String exludeBedFile) {
-        this.exludeBedFile = exludeBedFile;
+    public void loadExludeBedFile(String exludeBedFile) {
+        //this.exludeBedFile = exludeBedFile;
     }
 
     /**
@@ -1120,18 +1061,10 @@ public class Settings {
 
     /**
      *
-     * @return
-     */
-    public String getMaskFile() {
-        return maskFile;
-    }
-
-    /**
-     *
      * @param maskFile
      */
-    public void setMaskFile(String maskFile) {
-        this.maskFile = maskFile;
+    public void loadMaskFile(String maskFile) {
+        //this.maskFile = maskFile;
     }
 
     /**
@@ -1161,18 +1094,10 @@ public class Settings {
 
     /**
      *
-     * @return
-     */
-    public String getInvertMaskFile() {
-        return invertMaskFile;
-    }
-
-    /**
-     *
      * @param invertMaskFile
      */
-    public void setInvertMaskFile(String invertMaskFile) {
-        this.invertMaskFile = invertMaskFile;
+    public void loadInvertMaskFile(String invertMaskFile) {
+        //this.invertMaskFile = invertMaskFile;
     }
 
     /**
@@ -1250,18 +1175,10 @@ public class Settings {
 
     /**
      *
-     * @return
-     */
-    public String getKeepIndvFile() {
-        return keepIndvFile;
-    }
-
-    /**
-     *
      * @param keepIndvFile
      */
-    public void setKeepIndvFile(String keepIndvFile) {
-        this.keepIndvFile = keepIndvFile;
+    public void loadKeepIndvFile(String keepIndvFile) {
+        //this.keepIndvFile = keepIndvFile;
     }
 
     /**
@@ -1298,18 +1215,10 @@ public class Settings {
 
     /**
      *
-     * @return
-     */
-    public String getRemoveIndvFile() {
-        return removeIndvFile;
-    }
-
-    /**
-     *
      * @param removeIndvFile
      */
-    public void setRemoveIndvFile(String removeIndvFile) {
-        this.removeIndvFile = removeIndvFile;
+    public void loadRemoveIndvFile(String removeIndvFile) {
+        //this.removeIndvFile = removeIndvFile;
     }
 
     /**
