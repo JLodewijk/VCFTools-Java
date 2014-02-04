@@ -50,17 +50,16 @@ public class SeparatedValueReader {
 
             String line = null;
             while((line = br.readLine()) != null){
-                if (!(line.startsWith("#"))) { fileLines.append(line).append("\\n"); }
-                line = br.readLine();
+                // add each line to the StringBuilder
+                if (!(line.startsWith("#"))) { fileLines.append(line).append(this.seperator);}
             }
         } catch (FileNotFoundException ex) {
             System.err.println("FileNotFoundException: " + ex.getMessage());
         } catch (IOException ex) {
             Logger.getLogger(SeparatedValueReader.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        // this.linesOfFile is one string, which contains all the lines of the file
         this.linesOfFile = fileLines.toString();
-
     }
 
     /**
@@ -71,10 +70,7 @@ public class SeparatedValueReader {
     public List<String> getList() {
         String[] splitedFileLines = this.linesOfFile.split(this.seperator);
         ArrayList<String> arrayListFilePathElements = new ArrayList<String>();
-
-        for (String lineElement : splitedFileLines) {
-            arrayListFilePathElements.add(lineElement);
-        }
+        for (String lineElement : splitedFileLines) {arrayListFilePathElements.add(lineElement);}
         return arrayListFilePathElements;
     }
 
