@@ -442,6 +442,7 @@ public class Settings {
         // adding one by one so this functions allows for multiple files to load
         SeparatedValueReader reader = new SeparatedValueReader(snpFile,System.lineSeparator());
         List snps = reader.getList();
+        // loop trough items and add to snp list
         for (Object snp : snps) {
             this.addSnp((String) snp);
         }
@@ -487,6 +488,7 @@ public class Settings {
         // adding one by one so this functions allows for multiple files to load
         SeparatedValueReader reader = new SeparatedValueReader(excludeSnpFile,System.lineSeparator());
         List snps = reader.getList();
+        // loop trough items and add to excluseSnp list
         for (Object snp : snps) {
             this.addExcludeSnp((String) snp);
         }
@@ -615,7 +617,7 @@ public class Settings {
         // adding one by one so this functions allows for multiple files to load
         BedFileReader bedFileReader = new BedFileReader(bedFile);
         MultiMap bedData = bedFileReader.getBedMap();
-        // Loop trough key and values, and add to chr list
+        // Loop trough key and values, and add to chr collection
         for (Object key : bedData.keySet()) {
             for (Object value:(Collection) bedData.get(key)) {
                 List<String> positions = (List) value;
@@ -633,7 +635,7 @@ public class Settings {
         // adding one by one so this functions allows for multiple files to load
         BedFileReader bedFileReader = new BedFileReader(exludeBedFile);
         MultiMap bedData = bedFileReader.getBedMap();
-        // Loop trough key and values, and add to notChr list
+        // Loop trough key and values, and add to notChr collection
         for (Object key : bedData.keySet()) {
             for (Object value:(Collection) bedData.get(key)) {
                 List<String> positions = (List) value;
@@ -1180,6 +1182,7 @@ public class Settings {
         // adding one by one so this functions allows for multiple files to load
         SeparatedValueReader reader = new SeparatedValueReader(keepIndvFile,System.lineSeparator());
         List indvs = reader.getList();
+        // loop trough items and add to keepIndv list
         for (Object indv : indvs) {
             this.addKeepIndv((String) indv);
         }
