@@ -70,7 +70,7 @@ public class SeparatedValueReader {
     public List<String> getList() {
         String[] splitedFileLines = this.linesOfFile.split(this.seperator);
         ArrayList<String> arrayListFilePathElements = new ArrayList<String>();
-        for (String lineElement : splitedFileLines) {arrayListFilePathElements.add(lineElement);}
+        for (String lineElement : splitedFileLines) {arrayListFilePathElements.add(lineElement.trim());}
         return arrayListFilePathElements;
     }
 
