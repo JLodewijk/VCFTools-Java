@@ -14,25 +14,19 @@ import nl.bioinf.vcftools.filters.AbstractIndividualFilter;
 import nl.bioinf.vcftools.filters.FilterDependencies;
 
 /**
- * Include Individuals
- * @author Marco Roelfes
+ *
+ * @author Marco
  */
-public class IncludeIndividuals extends AbstractIndividualFilter{
-    /**
-     * Includes an individual if given by the user, else remove individual
-     * @param settings
-     * @param vcfHeader
-     * @param filterDependencies
-     * @return 
-     * @author Marco Roelfes
-     */
+public class IncludeIndividualsFile extends AbstractIndividualFilter{
+
     @Override
-    public List<Boolean> filter(Settings settings, VcfHeader vcfHeader, FilterDependencies filterDependencies) {       
+    public List<Boolean> filter(Settings settings, VcfHeader vcfHeader, FilterDependencies filterDependencies) {
+        settings.getKeepIndvFile();
         List<Boolean> individualsLeft = new ArrayList<>();
         //loops to all individuals in header
         for(String indv: vcfHeader.getGenotypeSamples()){
             //if list of individuals to keep contains the individual in the header.
-            if(settings.getKeepIndv().contains(indv)){
+            if(settings.getKeepIndvFile().contains(indv)){
                 //keep individual
                 individualsLeft.add(true);
             } else{
@@ -42,5 +36,6 @@ public class IncludeIndividuals extends AbstractIndividualFilter{
         }
         return individualsLeft;
     }
+           
     
 }

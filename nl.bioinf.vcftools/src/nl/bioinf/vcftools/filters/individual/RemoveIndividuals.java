@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.bioinf.vcftools.filters.individual;
 
 import java.util.ArrayList;
@@ -14,33 +13,35 @@ import nl.bioinf.vcftools.filters.AbstractIndividualFilter;
 import nl.bioinf.vcftools.filters.FilterDependencies;
 
 /**
- * Include Individuals
- * @author Marco Roelfes
+ * Removes an individual if given by the user, else include an individual
+ *
+ * @author Marco
  */
-public class IncludeIndividuals extends AbstractIndividualFilter{
+public class RemoveIndividuals extends AbstractIndividualFilter {
+
     /**
-     * Includes an individual if given by the user, else remove individual
+     * Removes an individual if given by the user, else include an individual
+     *
      * @param settings
      * @param vcfHeader
      * @param filterDependencies
-     * @return 
+     * @return
      * @author Marco Roelfes
      */
     @Override
-    public List<Boolean> filter(Settings settings, VcfHeader vcfHeader, FilterDependencies filterDependencies) {       
+    public List<Boolean> filter(Settings settings, VcfHeader vcfHeader, FilterDependencies filterDependencies) {
         List<Boolean> individualsLeft = new ArrayList<>();
         //loops to all individuals in header
-        for(String indv: vcfHeader.getGenotypeSamples()){
+        for (String indv : vcfHeader.getGenotypeSamples()) {
             //if list of individuals to keep contains the individual in the header.
-            if(settings.getKeepIndv().contains(indv)){
-                //keep individual
-                individualsLeft.add(true);
-            } else{
+            if (settings.getKeepIndv().contains(indv)) {
                 //remove individual
                 individualsLeft.add(false);
+            } else {
+                //include individual
+                individualsLeft.add(true);
             }
         }
         return individualsLeft;
     }
-    
 }

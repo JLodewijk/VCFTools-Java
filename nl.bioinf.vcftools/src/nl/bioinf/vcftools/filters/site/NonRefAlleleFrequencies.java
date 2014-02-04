@@ -29,7 +29,7 @@ public class NonRefAlleleFrequencies extends AbstractSiteFilter {
         Object valObj = vcfLine.getAttributeAsDouble("MLEAF");
         boolean reject = false;
         //If MLEAF contains only one value then perform this segment. 
-        if (valObj instanceof String) {
+        if (valObj instanceof Double) {
             //Handles a single val
             Double val = Double.valueOf((String) valObj);
             //if val is between threshold (minRefAlleleFreq and maxRefAlleleFreq) approve line, else reject line.
