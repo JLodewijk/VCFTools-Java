@@ -1178,7 +1178,11 @@ public class Settings {
      * @param keepIndvFile
      */
     public void loadKeepIndvFile(String keepIndvFile) {
-        //this.keepIndvFile = keepIndvFile;
+        SeparatedValueReader reader = new SeparatedValueReader(keepIndvFile,System.lineSeparator());
+        List indvs = reader.getList();
+        for (Object indv : indvs) {
+            this.addKeepIndv((String) indv);
+        }
     }
 
     /**
