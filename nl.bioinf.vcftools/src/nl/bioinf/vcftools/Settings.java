@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.bioinf.vcftools.filehandlers.BedFileReader;
+import nl.bioinf.vcftools.filehandlers.MaskFileReader;
 import nl.bioinf.vcftools.filehandlers.PositionFileReader;
 import nl.bioinf.vcftools.filehandlers.SeparatedValueReader;
 import org.apache.commons.collections4.MultiMap;
@@ -1070,7 +1071,15 @@ public class Settings {
      * @param maskFile
      */
     public void loadMaskFile(String maskFile) {
-        //this.maskFile = maskFile;
+        // adding one by one so this functions allows for multiple files to load
+        MaskFileReader maskFileReader = new MaskFileReader(maskFile, false);
+        MultiMap mask = maskFileReader.getMaskMap();
+        // Loop trough key and values, and add to chr collection
+        for (Object key : mask.keySet()) {
+            for (Object value:(Collection) mask.get(key)) {
+                this.addMask((String) key, (Integer) value);
+            }   
+        }
     }
 
     /**
@@ -1103,7 +1112,15 @@ public class Settings {
      * @param invertMaskFile
      */
     public void loadInvertMaskFile(String invertMaskFile) {
-        //this.invertMaskFile = invertMaskFile;
+        // adding one by one so this functions allows for multiple files to load
+        MaskFileReader maskFileReader = new MaskFileReader(invertMaskFile, true);
+        MultiMap mask = maskFileReader.getMaskMap();
+        // Loop trough key and values, and add to chr collection
+        for (Object key : mask.keySet()) {
+            for (Object value:(Collection) mask.get(key)) {
+                this.addInvertMask((String) key, (Integer) value);
+            }   
+        }
     }
 
     /**
