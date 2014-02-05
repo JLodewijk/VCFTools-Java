@@ -12,7 +12,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.ParseException;
-//import nl.bioinf.vcftools.Settings;
+import nl.bioinf.vcftools.Settings;
 import org.apache.commons.cli.HelpFormatter;
 
 /**
@@ -37,7 +37,7 @@ public class Cli {
         this.args = args;
         this.option = defineOptions();
         this.helpFormatter = new HelpFormatter();
-        this.settings = new Settings();
+        this.settings = Settings.getInstance();
 
         try {
             CommandLineParser parser = new BasicParser();
@@ -86,7 +86,7 @@ public class Cli {
         opt.addOption("keepOnlyIndels", true, "include sites that contain an indel");
         opt.addOption("removeIndels", true, "Exclude sites that contain an indel");
         opt.addOption("bed", true, "Include a set of sites on the basis of a BED file");
-        opt.addOption("exludeBed", true, "Exclude a set of sites on the basis of a BED files");
+        opt.addOption("excludeBed", true, "Exclude a set of sites on the basis of a BED files");
         opt.addOption("removeFilteredAll", false, "This option removes all sites with a FILTER flag");
         opt.addOption("removeFiltered", true, "Exclude sites with a specific filter flag");
         opt.addOption("keepFiltered", true, "This option can be used to select sites on the basis of specific filter flags"); //check required if arg = FLAG and no INFO field value
@@ -633,6 +633,7 @@ public class Cli {
             settings.setGzipped(true);
         }
         if (this.cmd.hasOption("out")) {
+            settings.setOutputFile(this.cmd.getOptionValue("out"));
 //            settings.setOutputFile(cmd.getOptionValue("out"));
         }
         if (this.cmd.hasOption("chr")) {
@@ -768,8 +769,8 @@ public class Cli {
         if (this.cmd.hasOption("bed")) {
             settings.loadBedFile(this.cmd.getOptionValue("bed"));
         }
-        if (this.cmd.hasOption("exludeBed")) {
-            settings.loadExludeBedFile(this.cmd.getOptionValue("exludeBed"));
+        if (this.cmd.hasOption("excludeBed   ")) {
+            settings.loadExludeBedFile(this.cmd.getOptionValue("excludeBed   "));
         }
         if (this.cmd.hasOption("removeFilteredAll")) {
             settings.setRemoveFilteredAll(true);

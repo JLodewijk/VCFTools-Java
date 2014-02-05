@@ -28,15 +28,14 @@ public class Mask extends AbstractSiteFilter {
         Boolean test =true;
         //check if  chromsome specified in mask file is also contained in the VCF file
         if(settings.getMask().containsKey(vcfLine.getChr())){
-          
+
           //add all digits of the sequence to a ArrayList so value of each site can be determed easily
-          for(Object digit:(Collection) settings.getMask().get(vcfLine.getChr())){
+            for(Object digit:(Collection) settings.getMask().get(vcfLine.getChr())){
              digitList.add(Integer.parseInt(String.valueOf(digit)));
           }
           //if value of chromosome is higher than -min mask, VCF line is removed
-          if(digitList.get(vcfLine.getPosition()-1) >= settings.getMaskMin()+1){
+          if(digitList.get(vcfLine.getPosition()-1) > settings.getMaskMin()){
               test = false;}
-
         }
         return test;
         
