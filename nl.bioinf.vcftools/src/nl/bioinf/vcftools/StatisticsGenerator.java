@@ -17,6 +17,9 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class StatisticsGenerator {
+    // settings
+    private Settings settings;
+    
     // individual based data
     private List<Integer> totalDp;
     private List<Double> meanDp;
@@ -33,7 +36,8 @@ public class StatisticsGenerator {
     /**
      * Default constructor
      */
-    public StatisticsGenerator() {
+    public StatisticsGenerator(Settings settings) {
+        this.settings = settings;
         this.totalDp = new ArrayList<>();
         this.meanDp = new ArrayList<>();
         this.calledTotal = new ArrayList<>();

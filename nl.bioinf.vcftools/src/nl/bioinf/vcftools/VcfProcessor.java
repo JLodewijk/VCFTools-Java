@@ -6,11 +6,7 @@
 package nl.bioinf.vcftools;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import nl.bioinf.vcftools.filehandlers.VcfGenotype;
 import nl.bioinf.vcftools.filehandlers.VcfHeader;
 import nl.bioinf.vcftools.filters.FilterDependencies;
 import nl.bioinf.vcftools.filters.FilterHandler;
@@ -33,6 +29,7 @@ public class VcfProcessor {
     private Settings settings;
     private FilterDependencies filterDependencies;
     private Boolean performIndividualFilters;
+    private Boolean performStatistics;
     private StatisticsGenerator statisticsGenerator;
 
     /**
@@ -43,16 +40,10 @@ public class VcfProcessor {
      * @throws java.io.IOException
      */
     public VcfProcessor(Settings settings) throws IOException {
-        this.settings = settings;
-        this.performIndividualFilters = false;
-        
-        // check once if individual filters have to be performed
-        if ((this.settings.isPhased() != null) && (this.settings.isPhased() == true)) { this.performIndividualFilters = true; }
-        else if ((this.settings.getMinIndvMeanDp() != null) && (this.settings.getMaxIndvMeanDp() != null)) { this.performIndividualFilters = true; }
-        else if (!this.settings.getKeepIndv().isEmpty()) { this.performIndividualFilters = true; }
-        else if (!this.settings.getRemoveIndv().isEmpty()) { this.performIndividualFilters = true; }
-        else if (this.settings.getMind() != null) { this.performIndividualFilters = true; }
-        else if (this.settings.getMaxIndv() != null) { this.performIndividualFilters = true;  }           
+        // Fill the needed variables
+        this.settings = settings;     
+        this.setPerformIndividualFilters();     
+        this.setPerformStatistics();
         
         // Perform all the filters and precalculations
         if (this.performIndividualFilters == true) { performDependencyCalculations(); }
@@ -65,7 +56,7 @@ public class VcfProcessor {
      * @author Sergio Bondietti <sergio@bondietti.nl>
      * @throws java.io.IOException
      */
-    public void performDependencyCalculations() throws IOException {
+    public final void performDependencyCalculations() throws IOException {
         /*
          For now we are performing these dependency checks on the complete
          individual. In future versions this could be limited all the sites
@@ -98,11 +89,18 @@ public class VcfProcessor {
      * @throws IOException
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
-    public void performFilters() throws IOException {
+    public final void performFilters() throws IOException {
         // build reader and writer
         VcfReader reader = new VcfReader(settings.getInputFile());
-        VcfWriter writer = new VcfWriter();
         VcfHeader header = reader.getHeader();
+        VcfWriter writer = null;
+        // When output file is set create file writer, else use System.output
+        if (this.settings.getOutputFile() != null) {
+            writer = new VcfWriter(this.settings.getOutputFile());
+        } else {   
+            writer = new VcfWriter();
+        }      
+        
         // Prebuild recurring variable addresses
         boolean siteFilterResult;
         VcfLine vcfLine;
@@ -112,11 +110,11 @@ public class VcfProcessor {
         // Write header to output
         writer.writeHeader(header);
 
+        // Build the StatisticsGenerator
+        if (this.performStatistics == true) { statisticsGenerator = new StatisticsGenerator(this.settings); }
+        
         // Build the FilterHandler
         FilterHandler filterHandler = new FilterHandler(this.settings);
-        
-        // Build the StatisticsGenerator
-        statisticsGenerator = new StatisticsGenerator();
 
         // Perform Individual filters
         if (this.performIndividualFilters == true) { individualFilterResults = filterHandler.performIndividualFilters(header, filterDependencies); }
@@ -134,7 +132,7 @@ public class VcfProcessor {
                 vcfLine.filterGenotypes(filterHandler.performGenotypeFilters(vcfLine));
 
                 // Collect statistics
-                statisticsGenerator.collectStatistics(vcfLine);
+                if (this.performStatistics == true) { statisticsGenerator.collectStatistics(vcfLine); }
                 
                 // Write line
                 writer.writeVcfLine(vcfLine);
@@ -142,10 +140,32 @@ public class VcfProcessor {
         }
         
         // Calculate the statistics
-        statisticsGenerator.calculateStatistics();
+        if (this.performStatistics == true) { statisticsGenerator.calculateStatistics(); }
 
         // close the reader and writer
         reader.close();
         writer.close();
+    }
+    
+    /**
+     * Set if individual filters have to be performed
+     */
+    private void setPerformIndividualFilters() {
+        this.performIndividualFilters = false;
+        
+        // check once if individual filters have to be performed
+        if ((this.settings.isPhased() != null) && (this.settings.isPhased() == true)) { this.performIndividualFilters = true; }
+        else if ((this.settings.getMinIndvMeanDp() != null) && (this.settings.getMaxIndvMeanDp() != null)) { this.performIndividualFilters = true; }
+        else if (!this.settings.getKeepIndv().isEmpty()) { this.performIndividualFilters = true; }
+        else if (!this.settings.getRemoveIndv().isEmpty()) { this.performIndividualFilters = true; }
+        else if (this.settings.getMind() != null) { this.performIndividualFilters = true; }
+        else if (this.settings.getMaxIndv() != null) { this.performIndividualFilters = true;  }    
+    } 
+     /**
+      * Set if statistics calculations have to be performed
+      */
+    private void setPerformStatistics() {
+        // todo (check parameters of statistics to calculate)
+        this.performStatistics = true;       
     }
 }
