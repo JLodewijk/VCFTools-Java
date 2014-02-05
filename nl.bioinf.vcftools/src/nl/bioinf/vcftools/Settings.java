@@ -27,7 +27,9 @@ import org.apache.commons.configuration.XMLConfiguration;
  * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class Settings {
-
+    private static final Settings instance = new Settings();
+    
+    
     /* Variables for basic functioning of the Settings class */
     /* XML input file */
     private String configFile;
@@ -94,10 +96,15 @@ public class Settings {
     private Boolean freq;
     private Boolean depth;
 
+    
+    public static Settings getInstance() {
+        return instance;
+    }
+    
     /**
      * This constructor will set defaultConfig.xml as configuration file and load it.
      */
-    public Settings() {
+    private Settings() {
         this.configFile = "defaultConfig.xml";
         
         // Build empty datasets for variables that assume an instance in their add functions
