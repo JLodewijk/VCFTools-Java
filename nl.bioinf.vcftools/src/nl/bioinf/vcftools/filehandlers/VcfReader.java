@@ -21,7 +21,6 @@ import org.broadinstitute.variant.vcf.VCFHeader;
 public class VcfReader {
     
     private VCFCodec vcfCodec = new VCFCodec();
-    private boolean requireIndex = false;
     private FeatureReader<VariantContext> reader;
     private Iterator<VariantContext> iter;
     private VcfHeader header;
@@ -32,7 +31,7 @@ public class VcfReader {
      * @throws IOException
      */
     public VcfReader(String file) throws IOException {
-        this.reader = AbstractFeatureReader.getFeatureReader(file, vcfCodec, requireIndex);
+        this.reader = AbstractFeatureReader.getFeatureReader(file, vcfCodec, false);
         this.header = new VcfHeader((VCFHeader) this.reader.getHeader());
         this.iter = this.reader.iterator();
     }

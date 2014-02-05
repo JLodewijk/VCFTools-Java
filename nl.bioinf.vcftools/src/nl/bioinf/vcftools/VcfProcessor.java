@@ -99,13 +99,7 @@ public class VcfProcessor {
             writer = new VcfWriter(this.settings.getOutputFile());
         } else {   
             writer = new VcfWriter();
-        }      
-        
-        // Prebuild recurring variable addresses
-        boolean siteFilterResult;
-        VcfLine vcfLine;
-        List<Boolean> genotypeFilterResult;
-        List<Boolean> individualFilterResults = null;
+        }             
         
         // Write header to output
         writer.writeHeader(header);
@@ -117,19 +111,21 @@ public class VcfProcessor {
         FilterHandler filterHandler = new FilterHandler(this.settings);
 
         // Perform Individual filters
+        List<Boolean> individualFilterResults = null;
         if (this.performIndividualFilters == true) { individualFilterResults = filterHandler.performIndividualFilters(header, filterDependencies); }
         
         // While reader file has next vcfLine get next vcfLine
         while (reader.hasNextIter()) {
-            vcfLine = reader.getNextIter();
+            VcfLine vcfLine = reader.getNextIter();
             
             // Filter away individuals that are not needed anymore
-            if (this.performIndividualFilters == true) { vcfLine.filterIndividuals(individualFilterResults); }
+            if ((this.performIndividualFilters == true) && (individualFilterResults.contains(false) == true)) { vcfLine.filterIndividuals(individualFilterResults); }
 
             // Perform all the site filters
             if (filterHandler.performSiteFilters(vcfLine) == true) {
-                // Perform all the genotype filters and Addapt genotypes 
-                vcfLine.filterGenotypes(filterHandler.performGenotypeFilters(vcfLine));
+                // Perform all the genotype filters and Addapt genotypes
+                List<Boolean> genotypeFilterResults = filterHandler.performGenotypeFilters(vcfLine);
+                if (genotypeFilterResults.contains(false) == true) { vcfLine.filterGenotypes(genotypeFilterResults); }
 
                 // Collect statistics
                 if (this.performStatistics == true) { statisticsGenerator.collectStatistics(vcfLine); }
