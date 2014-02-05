@@ -143,6 +143,11 @@ public class Cli {
      * Function to check if valid options are given
      */
     private void checkOptions() throws Exception {
+
+        if (this.cmd.hasOption("h")) {
+            usage();
+        }
+
         if (this.args.length < 1) {
             usage();
         }
@@ -448,17 +453,16 @@ public class Cli {
                 System.exit(1);
             }
         }
-        
-        if (this.cmd.hasOption("minQ")){
-        try{
-        Double minQ = Double.parseDouble(this.cmd.getOptionValue("minQ"));
-        } catch (NumberFormatException e) {
+
+        if (this.cmd.hasOption("minQ")) {
+            try {
+                Double minQ = Double.parseDouble(this.cmd.getOptionValue("minQ"));
+            } catch (NumberFormatException e) {
                 System.err.println("The value of the option -minQ has to be numerical");
                 System.exit(1);
             }
         }
-        
-        
+
         if (cmd.hasOption("vcf")) {
             File file = new File(cmd.getOptionValue("vcf"));
             if (!(file.exists())) {
@@ -606,10 +610,8 @@ public class Cli {
      *
      */
     public void usage() {
-        helpFormatter.printHelp("For optimal analysing of VCF files the folowing options can be used."
-                + " This tool supports VCF files with higher version than 4.0. This tool is also"
-                + " compatible for snp analysis in poliploid cells", this.option);
-
+        helpFormatter.printHelp("For the analysis of VCF files the folowing options can be used."
+                + " This tool has support for VCF version 4.0 and higher.", this.option);
         System.exit(0);
 
     }
