@@ -289,15 +289,15 @@ public class Cli {
 
         if (cmd.hasOption("minMeanDp") && cmd.hasOption("maxMeanDp")) {
             try {
-                int minMeanDp = Integer.parseInt(this.cmd.getOptionValue("minMeanDp"));
-                int maxMeanDp = Integer.parseInt(this.cmd.getOptionValue("maxMeanDp"));
+                double minMeanDp = Double.parseDouble(this.cmd.getOptionValue("minMeanDp"));
+                double maxMeanDp = Double.parseDouble(this.cmd.getOptionValue("maxMeanDp"));
 
-                if (minMeanDp > maxMeanDp) {
-                    System.err.println("The value of the option -minMeanDp can not be higher than the value of the option -MaxMeanDp");
-                    System.exit(1);
-                }
             } catch (NumberFormatException e) {
                 System.err.println("The values of -minMeanDp and -maxMeanDp have to be numerical");
+                System.exit(1);
+            }
+            if (Double.parseDouble(this.cmd.getOptionValue("minMeanDp")) > Double.parseDouble(this.cmd.getOptionValue("maxMeanDp"))) {
+                System.err.println("The value of the option -minMeanDp can not be higher than the value of the option -MaxMeanDp");
                 System.exit(1);
             }
         }
