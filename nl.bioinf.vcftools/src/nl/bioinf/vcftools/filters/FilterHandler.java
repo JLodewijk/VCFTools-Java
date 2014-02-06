@@ -22,6 +22,9 @@ public class FilterHandler {
     private List<AbstractSiteFilter> siteFilters;
     private List<AbstractGenotypeFilter> genotypeFilters;
     private List<AbstractIndividualFilter> individualFilters;
+    private Boolean hasSiteFilters;
+    private Boolean hasGenotypeFilters;
+    private Boolean hasIndividualFilters;
 
     /**
      * Default constructor. Pre loads all the filters.
@@ -35,6 +38,9 @@ public class FilterHandler {
         this.siteFilters = filterFactory.getSiteFilters();
         this.genotypeFilters = filterFactory.getGenotypeFilters();
         this.individualFilters = filterFactory.getIndividualFilters();
+        this.hasSiteFilters = filterFactory.isHasSiteFilters();
+        this.hasGenotypeFilters = filterFactory.isHasGenotypeFilters();
+        this.hasIndividualFilters = filterFactory.isHasIndividualFilters();
     }
 
     /**
@@ -120,4 +126,30 @@ public class FilterHandler {
         }
         return result;
     }
+    
+    
+        /**
+     * Are there site filters set
+     * @return 
+     */
+    public Boolean isHasSiteFilters() {
+        return hasSiteFilters;
+    }
+
+     /**
+     * Are there genotype filters set
+     * @return 
+     */
+    public Boolean isHasGenotypeFilters() {
+        return hasGenotypeFilters;
+    }
+
+     /**
+     * Are there individual filters set
+     * @return 
+     */
+    public Boolean isHasIndividualFilters() {
+        return hasIndividualFilters;
+    }
+    
 }

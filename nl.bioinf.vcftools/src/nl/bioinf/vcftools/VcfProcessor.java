@@ -28,9 +28,10 @@ public class VcfProcessor {
      */
     private Settings settings;
     private FilterDependencies filterDependencies;
-    private Boolean performIndividualFilters;
     private Boolean performStatistics;
     private StatisticsGenerator statisticsGenerator;
+    private FilterHandler filterHandler;
+    
 
     /**
      * The default constructor always needs the settings.
@@ -41,12 +42,14 @@ public class VcfProcessor {
      */
     public VcfProcessor(Settings settings) throws IOException {
         // Fill the needed variables
-        this.settings = settings;     
-        this.setPerformIndividualFilters();     
+        this.settings = settings;         
         this.setPerformStatistics();
         
+        // Build the FilterHandler
+        this.filterHandler = new FilterHandler(this.settings);
+        
         // Perform all the filters and precalculations
-        if (this.performIndividualFilters == true) { performDependencyCalculations(); }
+        if (this.filterHandler.isHasIndividualFilters() == true) { performDependencyCalculations(); }
         performFilters();
     }
 
@@ -107,28 +110,28 @@ public class VcfProcessor {
         // Build the StatisticsGenerator
         if (this.performStatistics == true) { statisticsGenerator = new StatisticsGenerator(this.settings); }
         
-        // Build the FilterHandler
-        FilterHandler filterHandler = new FilterHandler(this.settings);
 
         // Perform Individual filters
         List<Boolean> individualFilterResults = null;
-        if (this.performIndividualFilters == true) { individualFilterResults = filterHandler.performIndividualFilters(header, filterDependencies); }
+        if (this.filterHandler.isHasIndividualFilters() == true) { individualFilterResults = this.filterHandler.performIndividualFilters(header, filterDependencies); }
         
         // While reader file has next vcfLine get next vcfLine
         while (reader.hasNextIter()) {
             VcfLine vcfLine = reader.getNextIter();
             
             // Filter away individuals that are not needed anymore
-            if ((this.performIndividualFilters == true) && (individualFilterResults.contains(false) == true)) { vcfLine.filterIndividuals(individualFilterResults); }
+            if ((this.filterHandler.isHasIndividualFilters() == true) && (individualFilterResults.contains(false) == true)) { vcfLine.filterIndividuals(individualFilterResults); }
 
             // Perform all the site filters
-            if (filterHandler.performSiteFilters(vcfLine) == true) {
-                // Perform all the genotype filters and Addapt genotypes
-                List<Boolean> genotypeFilterResults = filterHandler.performGenotypeFilters(vcfLine);
-                if (genotypeFilterResults.contains(false) == true) { vcfLine.filterGenotypes(genotypeFilterResults); }
-
+            if (this.filterHandler.performSiteFilters(vcfLine) == true) {
+             
+                if (this.filterHandler.isHasGenotypeFilters() == true) {
+                    // Perform all the genotype filters and Addapt genotypes
+                    List<Boolean> genotypeFilterResults = this.filterHandler.performGenotypeFilters(vcfLine);
+                    if (genotypeFilterResults.contains(false) == true) { vcfLine.filterGenotypes(genotypeFilterResults); }
+                }
                 // Collect statistics
-                if (this.performStatistics == true) { statisticsGenerator.collectStatistics(vcfLine); }
+                //if (this.performStatistics == true) { statisticsGenerator.collectStatistics(vcfLine); }
                 
                 // Write line
                 writer.writeVcfLine(vcfLine);
@@ -142,22 +145,9 @@ public class VcfProcessor {
         reader.close();
         writer.close();
     }
+     
     
     /**
-     * Set if individual filters have to be performed
-     */
-    private void setPerformIndividualFilters() {
-        this.performIndividualFilters = false;
-        
-        // check once if individual filters have to be performed
-        if ((this.settings.isPhased() != null) && (this.settings.isPhased() == true)) { this.performIndividualFilters = true; }
-        else if ((this.settings.getMinIndvMeanDp() != null) && (this.settings.getMaxIndvMeanDp() != null)) { this.performIndividualFilters = true; }
-        else if (!this.settings.getKeepIndv().isEmpty()) { this.performIndividualFilters = true; }
-        else if (!this.settings.getRemoveIndv().isEmpty()) { this.performIndividualFilters = true; }
-        else if (this.settings.getMind() != null) { this.performIndividualFilters = true; }
-        else if (this.settings.getMaxIndv() != null) { this.performIndividualFilters = true;  }    
-    } 
-     /**
       * Set if statistics calculations have to be performed
       */
     private void setPerformStatistics() {

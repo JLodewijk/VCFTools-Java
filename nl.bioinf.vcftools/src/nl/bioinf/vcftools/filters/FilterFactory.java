@@ -48,6 +48,9 @@ public class FilterFactory {
     private List<AbstractSiteFilter> siteFilters;
     private List<AbstractGenotypeFilter> genotypeFilters;
     private List<AbstractIndividualFilter> individualFilters;
+    private Boolean hasSiteFilters;
+    private Boolean hasGenotypeFilters;
+    private Boolean hasIndividualFilters;
     
     /**
      * Default constructor
@@ -95,6 +98,9 @@ public class FilterFactory {
         if (this.settings.getThin() != null) { this.siteFilters.add(new Thinning()); }
         if (!this.settings.getMask().isEmpty()) {this.siteFilters.add(new Mask());}
         if ((this.settings.isPhased() != null) && (this.settings.isPhased() == true)) { this.siteFilters.add(new RemoveUnphased()); }
+        
+        // set if has filters
+        this.hasSiteFilters = !this.siteFilters.isEmpty();
     }
     
     /**
@@ -105,6 +111,9 @@ public class FilterFactory {
         this.genotypeFilters = new ArrayList<>();
         if ((this.settings.getMinDp() != null) && (this.settings.getMaxDp() != null)) { this.genotypeFilters.add(new Depth()); }
         if (this.settings.getMinGq() != null) { this.genotypeFilters.add(new Quality()); }
+        
+        // set if has filters
+        this.hasGenotypeFilters = !this.genotypeFilters.isEmpty();
     }
     
     /**
@@ -123,6 +132,9 @@ public class FilterFactory {
         // insert extra filters HERE on this line and not below maxIndv because thats the final individual filter to be performed
         
         if (this.settings.getMaxIndv() != null) { this.individualFilters.add(new MaxIndividuals()); }
+        
+        // set if has filters
+        this.hasIndividualFilters = !this.individualFilters.isEmpty();
     }
 
     
@@ -149,9 +161,30 @@ public class FilterFactory {
     public List<AbstractIndividualFilter> getIndividualFilters() {
         return individualFilters;
     }
-    
-    
-    
-    
+
+    /**
+     * Are there site filters set
+     * @return 
+     */
+    public Boolean isHasSiteFilters() {
+        return hasSiteFilters;
+    }
+
+     /**
+     * Are there genotype filters set
+     * @return 
+     */
+    public Boolean isHasGenotypeFilters() {
+        return hasGenotypeFilters;
+    }
+
+     /**
+     * Are there individual filters set
+     * @return 
+     */
+    public Boolean isHasIndividualFilters() {
+        return hasIndividualFilters;
+    }
+     
     
 }
