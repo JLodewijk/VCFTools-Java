@@ -6,6 +6,7 @@
 package nl.bioinf.vcftools;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import nl.bioinf.vcftools.filehandlers.VcfHeader;
 import nl.bioinf.vcftools.filters.FilterDependencies;
@@ -31,26 +32,60 @@ public class VcfProcessor {
     private Boolean performStatistics;
     private StatisticsGenerator statisticsGenerator;
     private FilterHandler filterHandler;
+    private VcfWriter writer;
     
 
     /**
-     * The default constructor always needs the settings.
+     * The default constructor (used for CLI program)
      *
      * @param settings
      * @author Sergio Bondietti <sergio@bondietti.nl>
      * @throws java.io.IOException
      */
     public VcfProcessor(Settings settings) throws IOException {
-        // Fill the needed variables
-        this.settings = settings;         
+        // initialize variables
+        this.settings = settings;
+        this.initVars();
+        
+        // When output file is set create file writer, else use System.output
+        if (this.settings.getOutputFile() != null) {
+            this.writer = new VcfWriter(this.settings.getOutputFile());
+        } else {   
+            this.writer = new VcfWriter();
+        } 
+        
+        // perform filters
+        this.runAllFilters();
+    }
+    
+    public VcfProcessor(Settings settings, OutputStream stream) throws IOException {
+        // initialize variables
+        this.settings = settings;
+        this.initVars();
+        
+        // create writer with define output stream
+        this.writer = new VcfWriter(this.settings.getOutputFile());
+     
+        // perform filters
+        this.runAllFilters();
+    }
+    
+    
+    /**
+     * initializer for constructor
+     */
+    private void initVars() {
+        // Fill the needed variables         
         this.setPerformStatistics();
         
         // Build the FilterHandler
         this.filterHandler = new FilterHandler(this.settings);
-        
+    }
+    
+    private void runAllFilters() throws IOException {
         // Perform all the filters and precalculations
         if (this.filterHandler.isHasIndividualFilters() == true) { performDependencyCalculations(); }
-        performFilters();
+        this.performFilters();
     }
 
     /**
@@ -95,17 +130,10 @@ public class VcfProcessor {
     public final void performFilters() throws IOException {
         // build reader and writer
         VcfReader reader = new VcfReader(settings.getInputFile());
-        VcfHeader header = reader.getHeader();
-        VcfWriter writer = null;
-        // When output file is set create file writer, else use System.output
-        if (this.settings.getOutputFile() != null) {
-            writer = new VcfWriter(this.settings.getOutputFile());
-        } else {   
-            writer = new VcfWriter();
-        }             
+        VcfHeader header = reader.getHeader();            
         
         // Write header to output
-        writer.writeHeader(header);
+        this.writer.writeHeader(header);
 
         // Build the StatisticsGenerator
         if (this.performStatistics == true) { statisticsGenerator = new StatisticsGenerator(this.settings); }
@@ -134,7 +162,7 @@ public class VcfProcessor {
                 //if (this.performStatistics == true) { statisticsGenerator.collectStatistics(vcfLine); }
                 
                 // Write line
-                writer.writeVcfLine(vcfLine);
+                this.writer.writeVcfLine(vcfLine);
             }
         }
         
@@ -143,7 +171,7 @@ public class VcfProcessor {
 
         // close the reader and writer
         reader.close();
-        writer.close();
+        this.writer.close();
     }
      
     

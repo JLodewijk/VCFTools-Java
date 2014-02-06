@@ -8,6 +8,7 @@ package nl.bioinf.vcftools.filehandlers;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.EnumSet;
 import net.sf.samtools.SAMSequenceDictionary;
 import org.broadinstitute.variant.variantcontext.writer.Options;
@@ -31,7 +32,6 @@ public class VcfWriter {
         
         // Create a writer using System.out as output
         this.writer = VariantContextWriterFactory.create(System.out, dict, EnumSet.of(Options.ALLOW_MISSING_FIELDS_IN_HEADER) );
-
     }
     
     /**
@@ -47,6 +47,18 @@ public class VcfWriter {
         this.file = new File(file);
         this.file.createNewFile();
         this.writer = VariantContextWriterFactory.create(this.file, dict);     
+    }
+    
+    /**
+     * Use defined output stream
+     * @param stream OutputStream object
+     */
+    public VcfWriter(OutputStream stream) {
+        // Use empty dictionary (we do not have the corespondending fasta file)
+        SAMSequenceDictionary dict=new SAMSequenceDictionary();
+        
+        // Create a writer using System.out as output
+        this.writer = VariantContextWriterFactory.create(stream, dict, EnumSet.of(Options.ALLOW_MISSING_FIELDS_IN_HEADER) );
     }
     
     /**
