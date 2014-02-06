@@ -164,31 +164,32 @@ public class Cli {
         /*Check if fromBp is used with toBp and vice-verca and if fromBp and
          toBp is used with chr or notChr
          Only last missing fromBp or toBp gives ArrayOutOfBounceError   */
-//        if (this.cmd.hasOption("fromBp") || this.cmd.hasOption("toBp")) {
-//            if (this.cmd.getOptionValues("fromBp").length != this.cmd.getOptionValues("toBp").length) {
-//                System.err.println("It is required to use the option -fromBp and -toBp together");
-//                System.exit(1);
-//            }
+        if (this.cmd.hasOption("fromBp") || this.cmd.hasOption("toBp")) {
+            if (this.cmd.getOptionValues("fromBp").length != this.cmd.getOptionValues("toBp").length) {
+                System.err.println("It is required to use the option -fromBp and -toBp together");
+                System.exit(1);
+            }
+        }
+//        if ((this.args[0].equals("-fromBp")) || (this.args[0].equals("-toBp")) || (this.args[1].equals("-fromBp")) || (this.args[1].equals("-toBp"))) {
+//            System.err.println("ERROR 1");
 //        }
-        if ((this.args[0].equals("-fromBp")) || (this.args[0].equals("-toBp")) || (this.args[1].equals("-fromBp")) || (this.args[1].equals("-toBp"))) {
-            System.err.println("ERROR 1");
-        }
-
-        for (int i = 2; i < this.args.length; i++) {
-            if (this.args[i].equals("-fromBp")) {
-
-                if (((!this.args[i - 2].equals("-chr")) && (!this.args[i - 2].equals("-notChr"))) && (!this.args[i - 2].equals("-toBp"))) {
-                    System.err.println("ERROR 2a");
-                }
-            }
-
-            if (this.args[i].equals("-toBp")) {
-                if (((!this.args[i - 2].equals("-chr")) && (!this.args[i - 2].equals("-notChr"))) && (!this.args[i - 2].equals("-fromBp"))) {
-                    System.err.println("ERROR 2b");
-                }
-            }
-
-        }
+//
+//        for (int i = 2; i < this.args.length; i++) {
+//            if (this.args[i].equals("-fromBp")) {
+//
+//                if (((!this.args[i - 2].equals("-chr")) && (!this.args[i - 2].equals("-notChr"))) && (!this.args[i - 2].equals("-toBp"))) {
+//                    System.err.println("ERROR 2a");
+//                }
+//            }
+        
+//
+//            if (this.args[i].equals("-toBp")) {
+//                if (((!this.args[i - 2].equals("-chr")) && (!this.args[i - 2].equals("-notChr"))) && (!this.args[i - 2].equals("-fromBp"))) {
+//                    System.err.println("ERROR 2b");
+//                }
+//            }
+//
+//        }
 
 //                System.out.println(this.args[i]);
 //                    if(this.args[i].equals("-fromBp")){
@@ -289,15 +290,12 @@ public class Cli {
 
         if (cmd.hasOption("minMeanDp") && cmd.hasOption("maxMeanDp")) {
             try {
-                double minMeanDp = Double.parseDouble(this.cmd.getOptionValue("minMeanDp"));
-                double maxMeanDp = Double.parseDouble(this.cmd.getOptionValue("maxMeanDp"));
-
+                if (Double.parseDouble(this.cmd.getOptionValue("minMeanDp")) > Double.parseDouble(this.cmd.getOptionValue("maxMeanDp"))) {
+                    System.err.println("The value of the option -minMeanDp can not be higher than the value of the option -MaxMeanDp");
+                    System.exit(1);
+                }
             } catch (NumberFormatException e) {
                 System.err.println("The values of -minMeanDp and -maxMeanDp have to be numerical");
-                System.exit(1);
-            }
-            if (Double.parseDouble(this.cmd.getOptionValue("minMeanDp")) > Double.parseDouble(this.cmd.getOptionValue("maxMeanDp"))) {
-                System.err.println("The value of the option -minMeanDp can not be higher than the value of the option -MaxMeanDp");
                 System.exit(1);
             }
         }
@@ -308,9 +306,7 @@ public class Cli {
         }
         if (cmd.hasOption("maf") && cmd.hasOption("maxMaf")) {
             try {
-                int maf = Integer.parseInt(this.cmd.getOptionValue("maf"));
-                int maxMaf = Integer.parseInt(this.cmd.getOptionValue("maxMaf"));
-                if (maf > maxMaf) {
+                if (Double.parseDouble(this.cmd.getOptionValue("maf")) > Double.parseDouble(this.cmd.getOptionValue("maxMaf"))) {
                     System.err.println("The value of the option -maf can not be higher than the value of the option -maxMaf");
                     System.exit(1);
                 }
@@ -327,9 +323,7 @@ public class Cli {
 
         if (cmd.hasOption("nonRefAf") && cmd.hasOption("maxNonRefAf")) {
             try {
-                int nonRefAf = Integer.parseInt(this.cmd.getOptionValue("nonRefAf"));
-                int maxNonRefAf = Integer.parseInt(this.cmd.getOptionValue("maxNonRefAf"));
-                if (nonRefAf > maxNonRefAf) {
+                if (Double.parseDouble(this.cmd.getOptionValue("nonRefAf")) > Double.parseDouble(this.cmd.getOptionValue("maxNonRefAf"))) {
                     System.err.println("The value of the option -nonRefAf can not be higher than the value of the option -maxNonRefAf");
                     System.exit(1);
                 }
@@ -345,9 +339,7 @@ public class Cli {
         }
         if (cmd.hasOption("mac") && cmd.hasOption("maxMac")) {
             try {
-                int mac = Integer.parseInt(this.cmd.getOptionValue("mac"));
-                int maxMac = Integer.parseInt(this.cmd.getOptionValue("maxMac"));
-                if (mac > maxMac) {
+                if (Integer.parseInt(this.cmd.getOptionValue("mac")) > Integer.parseInt(this.cmd.getOptionValue("maxMac"))) {
                     System.err.println("The value of the option -mac can not be higher than the value of the option -maxMac");
                     System.exit(1);
                 }
@@ -362,9 +354,7 @@ public class Cli {
         }
         if (cmd.hasOption("nonRefAc") && cmd.hasOption("maxNonRefAc")) {
             try {
-                int nonRefAc = Integer.parseInt(this.cmd.getOptionValue("nonRefAc"));
-                int maxNonRefAc = Integer.parseInt(this.cmd.getOptionValue("maxNonRefAc"));
-                if (nonRefAc > maxNonRefAc) {
+                if (Double.parseDouble(this.cmd.getOptionValue("nonRefAc")) > Double.parseDouble(this.cmd.getOptionValue("maxNonRefAc"))) {
                     System.err.println("The value of the option -nonRefAc can not be higher than the value of the option -maxNonRefAc");
                     System.exit(1);
                 }
@@ -373,15 +363,11 @@ public class Cli {
                 System.exit(1);
             }
         }
-
         if (cmd.hasOption("geno")) {
             String geno = cmd.getOptionValue("geno");
-
             if (!(geno.equals("1")) && !(geno.equals("0"))) {
-
                 System.err.println("The option -geno only allows 1 or 0. Where 1 indicates no missing data allowed");
                 System.exit(1);
-
             }
         }
         if (cmd.hasOption("minAlleles") && !(cmd.hasOption("maxAlleles")) || cmd.hasOption("maxAlleles") && !(cmd.hasOption("minAlleles"))) {
@@ -391,9 +377,7 @@ public class Cli {
 
         if (cmd.hasOption("minAlleles") && cmd.hasOption("maxAlleles")) {
             try {
-                int minAlleles = Integer.parseInt(this.cmd.getOptionValue("minAlleles"));
-                int maxAlleles = Integer.parseInt(this.cmd.getOptionValue("maxAlleles"));
-                if (minAlleles > maxAlleles) {
+                if (Integer.parseInt(this.cmd.getOptionValue("minAlleles")) > Integer.parseInt(this.cmd.getOptionValue("maxAlleles"))) {
                     System.err.println("The value of the option -minAlleles can not be higher than the value of the option -maxAlleles");
                     System.exit(1);
                 }
@@ -408,11 +392,9 @@ public class Cli {
             System.exit(1);
         }
 
-        if (cmd.hasOption("minIndvMeanDp") && cmd.hasOption("minIndvMeanDp")) {
+        if (cmd.hasOption("minIndvMeanDp") && cmd.hasOption("maxIndvMeanDp")) {
             try {
-                Double minIndvMeanDp = Double.parseDouble(this.cmd.getOptionValue("minIndvMeanDp"));
-                Double maxIndvMeanDp = Double.parseDouble(this.cmd.getOptionValue("maxIndvMeanDp"));
-                if (minIndvMeanDp > maxIndvMeanDp) {
+                if (Double.parseDouble(this.cmd.getOptionValue("minIndvMeanDp")) > Double.parseDouble(this.cmd.getOptionValue("maxIndvMeanDp"))) {
                     System.err.println("The value of the option -minIndvMeanDp can not be higher than the value of the option -maxIndvMeanDp");
                     System.exit(1);
                 }
@@ -423,8 +405,7 @@ public class Cli {
         }
         if (this.cmd.hasOption("thin")) {
             try {
-                int thinValue = Integer.parseInt(this.cmd.getOptionValue("thin"));
-                if (thinValue < 1) {
+                if (Integer.parseInt(this.cmd.getOptionValue("thin")) < 1) {
                     System.err.println("The value for the option -thin can not be less than 1");
                     System.exit(1);
                 }
@@ -442,9 +423,7 @@ public class Cli {
 
         if (cmd.hasOption("minDp") && cmd.hasOption("maxDp")) {
             try {
-                int minDp = Integer.parseInt(this.cmd.getOptionValue("minDp"));
-                int maxDp = Integer.parseInt(this.cmd.getOptionValue("maxDp"));
-                if (minDp > maxDp) {
+                if (Double.parseDouble(this.cmd.getOptionValue("minDp")) > Double.parseDouble(this.cmd.getOptionValue("maxDp"))) {
                     System.err.println("the value of the option -minDp can not be higher than the value of the option -maxDp");
                     System.exit(1);
                 }
@@ -460,6 +439,50 @@ public class Cli {
             } catch (NumberFormatException e) {
                 System.err.println("The value of the option -minQ has to be numerical");
                 System.exit(1);
+            }
+        }
+        if (this.cmd.hasOption("maxMissingCount")) {
+            try {
+                int maxMissingCount = Integer.parseInt(this.cmd.getOptionValue("maxMissingCount"));
+            } catch (NumberFormatException e) {
+                System.err.println("The value of the option -maxMissingCount has to be numerical");
+                System.exit(1);
+            }
+        }
+        if (this.cmd.hasOption("maskMin")) {
+            try {
+                int maskMin = Integer.parseInt(this.cmd.getOptionValue("maskMin"));
+            } catch (NumberFormatException e) {
+                System.err.println("The value of the option -maskMin has to be numerical");
+                System.exit(1);
+            }
+        }
+
+        if (this.cmd.hasOption("mind")) {
+            try {
+                Double mind = Double.parseDouble(this.cmd.getOptionValue("mind"));
+            } catch (NumberFormatException e) {
+                System.err.println("The value of the option -mind has to be numerical");
+                System.exit(1);
+            }
+
+        }
+
+        if (this.cmd.hasOption("maxIndv")) {
+            try {
+                int maxIndv = Integer.parseInt(this.cmd.getOptionValue("maxIndv"));
+            } catch (NumberFormatException e) {
+                System.err.println("The value of the option -maxIndv has to be numerical");
+                System.exit(1);
+            }
+        }
+        if (this.cmd.hasOption("minGq")) {
+            try {
+                Double minGq = Double.parseDouble(this.cmd.getOptionValue("minGq"));
+            } catch (NumberFormatException e) {
+                System.err.println("The value of the option -minGq has to be numerical");
+                System.exit(1);
+
             }
         }
 
@@ -972,7 +995,5 @@ public class Cli {
         if (this.cmd.hasOption("depth")) {
             settings.setDepth(true);
         }
-
     }
-
 }
