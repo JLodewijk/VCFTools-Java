@@ -75,13 +75,13 @@ public class Cli {
         opt.addOption("notChr", true, "Chromosome identifiers can be used more than once to exlude multiple chromosomes. Separate the identifiers with ',' if multiple identifiers are given");
         opt.addOption("fromBp", true, "This option defines the physical start position of the site which will be processed. A integer is expected. This option must be used in right after -chr");
         opt.addOption("toBp", true, "This option defines the physical stop position of the site which will be processed. A integer is expected. This option must be used in right after -fromBp");
-        opt.addOption("snp", true, "This option defines a snp which will be processed");
+        opt.addOption("snp", true, "Include SNPs with matching ID");
         opt.addOption("snpFile", true, "Include a list of SNPs given in a file, with one ID per line");
         opt.addOption("excludeSnp", true, "Exclude SNPs which are given by the user. Separate the snps with a ',' if mulitple snp are given");
         opt.addOption("excludeSnpFile", true, "Exclude a list of SNPs given in a file. The file should contain a list of SNP IDs, with one ID per line");
-        opt.addOption("positions", true, "Include a set of sites. Separate with ',' if multiple sites are wanted to be given");
+        opt.addOption("positions", true, "Include a set of sites. Separate with ',' if multiple sites are given");
         opt.addOption("positionsFile", true, "Include a set of sites on the basis of a list of positions in a file");
-        opt.addOption("excludePositions", true, "Exclude a set of sites. Separate with ',' if multiple sites are wanted to be given");
+        opt.addOption("excludePositions", true, "Exclude a set of sites. Separate with ',' if multiple sites are given");
         opt.addOption("excludePositionsFile", true, "Exclude a set of sites on the basis of a list of positions in a file");
         opt.addOption("keepOnlyIndels", true, "include sites that contain an indel");
         opt.addOption("removeIndels", true, "Exclude sites that contain an indel");
@@ -108,7 +108,7 @@ public class Cli {
         opt.addOption("maxMissingCount", true, "Exclude sites which has more than the given value for the number of missing chromosomes. An doubleouble is expected");
         opt.addOption("minAlleles", true, "Include only sites with a number of alleles which is higher than the given value. For example, to include only biallelic sites, one could use --minAlleles 2. A doubleouble is expected");
         opt.addOption("maxAlleles", true, "Include only sites with a number of alleles which is lower than the given value. For example, to include only biallelic sites, one could use --minAlleles 2. A doubleouble is expected");
-        opt.addOption("thin", true, "Thin sites so that no two sites are within the specified distance. A double is expected");
+        opt.addOption("thin", true, "Thin sites so that no two sites are within the specified distance. An integer is expected");
         opt.addOption("mask", true, "Include sites on the basis of a MASK file");
         opt.addOption("invertMask", true, "This option can be used to specify a mask file that will be inverted before being applied");
         opt.addOption("maskMin", true, "Set the threshold value which determines if sites are filtered or not. A double is expected");
