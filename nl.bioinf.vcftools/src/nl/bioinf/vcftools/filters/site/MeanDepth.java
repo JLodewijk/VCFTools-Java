@@ -20,7 +20,7 @@ public class MeanDepth extends AbstractSiteFilter {
      * Check if meandepth is between threshold given by the user
      * @param vcfLine
      * @param settings
-     * @return
+     * @return filter result
      * @author mhroelfes <marcoroelfes@gmail.com>
      */
     @Override

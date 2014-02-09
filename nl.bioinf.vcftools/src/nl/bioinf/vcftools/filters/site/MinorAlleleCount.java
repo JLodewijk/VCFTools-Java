@@ -21,7 +21,7 @@ public class MinorAlleleCount extends AbstractSiteFilter {
      * filters a vcf line on allele count, returns true if line has to be kept, returns false if line is rejected
      * @param vcfLine
      * @param settings
-     * @return
+     * @return filter result
      * @author mhroelfes <marcoroelfes@gmail.com>
      */
     @Override

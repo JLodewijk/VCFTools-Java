@@ -23,7 +23,7 @@ public class IncludeIndividuals extends AbstractIndividualFilter{
      * @param settings
      * @param vcfHeader
      * @param filterDependencies
-     * @return 
+     * @return filter result
      * @author Marco Roelfes
      */
     @Override

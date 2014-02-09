@@ -16,7 +16,6 @@ import nl.bioinf.vcftools.filehandlers.SeparatedValueReader;
 import org.apache.commons.collections4.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
 
-
 /**
  * Settings class
  * @author Sergio Bondietti <sergio@bondietti.nl>

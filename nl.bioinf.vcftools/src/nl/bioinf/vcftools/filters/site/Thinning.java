@@ -20,7 +20,7 @@ public class Thinning extends AbstractSiteFilter {
      * filters a vcf line based on position of the SNP, if a SNP is too close to another it returns false and the line is rejected.
      * @param vcfLine
      * @param settings
-     * @return
+     * @return filter result
      * @author mhroelfes <marcoroelfes@gmail.com>
      */
     @Override

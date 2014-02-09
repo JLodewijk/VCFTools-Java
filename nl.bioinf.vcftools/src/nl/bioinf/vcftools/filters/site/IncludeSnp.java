@@ -19,7 +19,7 @@ public class IncludeSnp extends AbstractSiteFilter{
      * include a specific snp on their ID, returns false if line has to be removed.
      * @param vcfLine
      * @param settings
-     * @return
+     * @return filter result
      * @author mhroelfes <marcoroelfes@gmail.com>
      */
     @Override

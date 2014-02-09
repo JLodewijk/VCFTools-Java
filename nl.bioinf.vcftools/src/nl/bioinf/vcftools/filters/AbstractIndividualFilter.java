@@ -22,7 +22,7 @@ public abstract class AbstractIndividualFilter {
      * @param settings
      * @param vcfHeader
      * @param filterDependencies
-     * @return
+     * @return filter result
      */
     public abstract List<Boolean> filter(Settings settings, VcfHeader vcfHeader, FilterDependencies filterDependencies);
 }

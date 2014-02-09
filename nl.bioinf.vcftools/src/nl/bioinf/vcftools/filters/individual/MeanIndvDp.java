@@ -26,7 +26,7 @@ public class MeanIndvDp extends AbstractIndividualFilter {
      * @param settings
      * @param vcfHeader
      * @param filterDependencies
-     * @return
+     * @return filter result
      * @author Ashvin Ponnudurai <as.ponnudurai@st.hanze.nl>
      */
     @Override

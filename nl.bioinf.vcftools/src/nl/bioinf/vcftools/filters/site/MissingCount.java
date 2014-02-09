@@ -19,7 +19,7 @@ public class MissingCount extends AbstractSiteFilter{
      * check if the missingcount is not too high
      * @param vcfLine
      * @param settings
-     * @return
+     * @return filter result
      * @author mhroelfes <marcoroelfes@gmail.com>
      */
     @Override

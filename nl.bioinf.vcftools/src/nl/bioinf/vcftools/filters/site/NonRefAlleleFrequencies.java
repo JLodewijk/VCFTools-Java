@@ -20,7 +20,7 @@ public class NonRefAlleleFrequencies extends AbstractSiteFilter {
      * check if the NonRefAlleleFrequencies is between given range
      * @param vcfLine
      * @param settings
-     * @return
+     * @return filter result
      * @author mhroelfes <marcoroelfes@gmail.com>
      */
     @Override

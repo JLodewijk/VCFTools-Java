@@ -18,7 +18,7 @@ public class RemoveInfo extends AbstractSiteFilter {
      * check if keep info exists
      * @param vcfLine
      * @param settings
-     * @return
+     * @return filter result
      * @author mhroelfes <marcoroelfes@gmail.com>
      */
     @Override

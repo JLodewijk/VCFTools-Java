@@ -22,7 +22,7 @@ public class IncludePositions extends AbstractSiteFilter{
      * checks if vcfline needs to be kept on positionn and chromosome.
      * @param vcfLine
      * @param settings
-     * @return
+     * @return filter result
      * @author mhroelfes <marcoroelfes@gmail.com>
      */
     @Override

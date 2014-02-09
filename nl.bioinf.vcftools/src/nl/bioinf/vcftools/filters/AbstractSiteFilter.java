@@ -21,7 +21,7 @@ public abstract class AbstractSiteFilter {
      * Abstract class for site filters
      * @param vcfLine
      * @param settings
-     * @return
+     * @return filter result
      */
     public abstract boolean filter(VcfLine vcfLine, Settings settings);
     

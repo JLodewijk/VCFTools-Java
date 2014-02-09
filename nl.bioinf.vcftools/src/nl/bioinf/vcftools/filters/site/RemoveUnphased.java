@@ -22,7 +22,7 @@ public class RemoveUnphased extends AbstractSiteFilter {
      *
      * @param vcfLine
      * @param settings
-     * @return
+     * @return filter result
      */
     @Override
     public boolean filter(VcfLine vcfLine, Settings settings) {

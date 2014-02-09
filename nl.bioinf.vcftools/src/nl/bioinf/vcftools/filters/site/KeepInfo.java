@@ -18,7 +18,7 @@ public class KeepInfo extends AbstractSiteFilter {
      * Check if info exists in vcfLine and rejects if not
      * @param vcfLine
      * @param settings
-     * @return
+     * @return filter result
      * @author mhroelfes <marcoroelfes@gmail.com>
      */
     @Override

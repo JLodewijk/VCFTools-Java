@@ -24,7 +24,7 @@ public class Phased extends AbstractIndividualFilter {
      * @param settings
      * @param vcfHeader
      * @param filterDependencies
-     * @return
+     * @return filter result
      */
     @Override
     public List<Boolean> filter(Settings settings, VcfHeader vcfHeader, FilterDependencies filterDependencies) {

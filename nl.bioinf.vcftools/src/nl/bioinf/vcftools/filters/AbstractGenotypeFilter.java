@@ -20,7 +20,7 @@ public abstract class AbstractGenotypeFilter {
      * Abstract class for genotype filters
      * @param vcfLine
      * @param settings
-     * @return 
+     * @return filter result
      */
     public abstract List<Boolean> filter(VcfLine vcfLine, Settings settings);
     
