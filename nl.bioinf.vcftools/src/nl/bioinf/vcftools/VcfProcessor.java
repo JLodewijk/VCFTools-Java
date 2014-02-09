@@ -99,7 +99,7 @@ public class VcfProcessor {
      * @author Sergio Bondietti <sergio@bondietti.nl>
      * @throws java.io.IOException
      */
-    public final void performDependencyCalculations() throws IOException {
+    private void performDependencyCalculations() throws IOException {
         /*
          For now we are performing these dependency checks on the complete
          individual. In future versions this could be limited all the sites
@@ -132,7 +132,7 @@ public class VcfProcessor {
      * @throws IOException
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
-    public final void performFilters() throws IOException {
+    private void performFilters() throws IOException {
         // build reader and writer
         VcfReader reader = new VcfReader(settings.getInputFile());
         VcfHeader header = reader.getHeader();            
