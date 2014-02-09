@@ -32,6 +32,10 @@ public class VcfLine {
         this.vc = vc;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "VcfLine{" + "vc=" + vc + '}';
