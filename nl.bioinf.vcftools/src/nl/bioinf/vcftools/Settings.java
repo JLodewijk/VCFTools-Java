@@ -5,22 +5,17 @@
  */
 package nl.bioinf.vcftools;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import nl.bioinf.vcftools.filehandlers.BedFileReader;
 import nl.bioinf.vcftools.filehandlers.MaskFileReader;
 import nl.bioinf.vcftools.filehandlers.PositionFileReader;
 import nl.bioinf.vcftools.filehandlers.SeparatedValueReader;
 import org.apache.commons.collections4.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.XMLConfiguration;
+
 
 /**
  * Settings class
@@ -95,7 +90,6 @@ public class Settings {
     private Boolean count;
     private Boolean freq;
     private Boolean depth;
-
     
     public static Settings getInstance() {
         return instance;
@@ -124,166 +118,7 @@ public class Settings {
         this.removeIndv = new ArrayList<>();
         this.removeFilteredGeno = new ArrayList<>();
     }
-
-    /**
-     * Load in constructor defined settings file into memory.
-     */
-    public void load() {
-        this.load(this.configFile);
-    }
-
-    /**
-     * Load given settings file into memory.
-     *
-     * @author Sergio Bondietti <sergio@bondietti.nl>
-     * @param filename settings XML filename.
-     */
-    public void load(String filename) {
-        try {
-            // open config object
-            XMLConfiguration configRead = new XMLConfiguration(filename);   
-            
-            /* Site Filters */
-//            this.chr = Misc.objListToStrArrayList(configRead.getList("siteFilters.chr"));
-//            this.notChr = Misc.objListToStrArrayList(configRead.getList("siteFilters.notChr"));
-            this.snp = Misc.objListToStrArrayList(configRead.getList("siteFilters.snp"));
-            this.excludeSnp = Misc.objListToStrArrayList(configRead.getList("siteFilters.excludeSnp"));
-            // this.positions = Misc.objListToIntegerArrayList(configRead.getList("siteFilters.positions")); // fix for multimap needed
-            // this.excludePositions = Misc.objListToIntegerArrayList(configRead.getList("siteFilters.excludePositions"));  // multimap fix
-//            this.keepOnlyIndels = configRead.getBoolean("siteFilters.keepOnlyIndels");
-//            this.removeIndels = configRead.getBoolean("siteFilters.removeIndels");
-            // todo: load bed data
-            this.removeFilteredAll = configRead.getBoolean("siteFilters.removeFilteredAll");
-            this.removeFiltered = Misc.objListToStrArrayList(configRead.getList("siteFilters.removeFiltered"));
-            this.keepFiltered = Misc.objListToStrArrayList(configRead.getList("siteFilters.keepFiltered"));
-            this.removeInfo = Misc.objListToStrArrayList(configRead.getList("siteFilters.removeInfo"));
-            this.keepInfo = Misc.objListToStrArrayList(configRead.getList("siteFilters.keepInfo"));
-            this.minQ = configRead.getDouble("siteFilters.minQ");
-            this.minMeanDp = configRead.getDouble("siteFilters.minMeanDp");
-            this.maxMeanDp = configRead.getDouble("siteFilters.maxMeanDp");
-            this.maf = configRead.getDouble("siteFilters.maf");
-            this.maxMaf = configRead.getDouble("siteFilters.maxMaf");
-            this.nonRefAf = configRead.getDouble("siteFilters.nonRefAf");
-            this.maxNonRefAf = configRead.getDouble("siteFilters.maxNonRefAf");
-            this.mac = configRead.getInt("siteFilters.mac");
-            this.maxMac = configRead.getInt("siteFilters.maxMac");
-            this.nonRefAf = configRead.getDouble("siteFilters.nonRefAf");
-            this.maxNonRefAc = configRead.getDouble("siteFilters.maxNonRefAc");
-            this.hwe = configRead.getDouble("siteFilters.hwe");
-            this.geno = configRead.getDouble("siteFilters.geno");
-            this.maxMissingCount = configRead.getInt("siteFilters.maxMissingCount");
-            this.minAlleles = configRead.getInt("siteFilters.minAlleles");
-            this.maxAlleles = configRead.getInt("siteFilters.maxAlleles");
-            this.thin = configRead.getInt("siteFilters.thin");
-//            this.mask = configRead.getString("siteFilters.mask");
-//            this.invertMask = configRead.getString("siteFilters.invertMask");
-            this.maskMin = configRead.getInt("siteFilters.maskMin");
     
-            /* Individual filters */       
-            this.keepIndv = Misc.objListToStrArrayList(configRead.getList("individualFilters.keepIndv"));
-            this.removeIndv = Misc.objListToStrArrayList(configRead.getList("individualFilters.removeIndv"));
-            this.minIndvMeanDp = configRead.getDouble("individualFilters.minIndvMeanDp");
-            this.maxIndvMeanDp = configRead.getDouble("individualFilters.maxIndvMeanDp");
-            this.mind = configRead.getDouble("individualFilters.mind");
-            this.phased = configRead.getBoolean("individualFilters.phased");
-            this.maxIndv = configRead.getInt("individualFilters.maxIndv");
-       
-            /* Statistics */
-            this.count = configRead.getBoolean("statistics.count");
-            this.freq = configRead.getBoolean("statistics.freq");
-            this.depth = configRead.getBoolean("statistics.depth");            
-            
-        } catch (ConfigurationException ex) {
-            Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        
-
-    }
-
-    /**
-     * Save settings from memory to file.
-     * 
-     * @author Sergio Bondietti <sergio@bondietti.nl>
-     * @param filename Filename to save to.
-     * @throws IOException
-     */
-    public void save(String filename) throws IOException {
-        try {
-            /*
-           
-            TODO: only store values to xml, not the external files itself.
-            
-            */
-            
-            
-            // open config object
-            XMLConfiguration configCreate = new XMLConfiguration();
- 
-            // set filename and autoSave (we want to write all at once)
-            configCreate.setFileName(filename);
-            configCreate.setAutoSave(false);
-            
-            /* Site Filters */
-//            configCreate.addProperty("siteFilters.chr", this.chr);
-//            configCreate.addProperty("siteFilters.notChr", this.notChr);
-//            configCreate.addProperty("siteFilters.fromBp", this.fromBp);
-//            configCreate.addProperty("siteFilters.toBp", this.toBp);
-            configCreate.addProperty("siteFilters.snp", this.snp);
-            configCreate.addProperty("siteFilters.excludeSnp", this.excludeSnp);
-            configCreate.addProperty("siteFilters.positions", this.positions);
-            configCreate.addProperty("siteFilters.excludePositions", this.excludePositions);
-//            configCreate.addProperty("siteFilters.keepOnlyIndels", this.keepOnlyIndels);
-//            configCreate.addProperty("siteFilters.removeIndels", this.removeIndels);
-            // todo: store bed data
-            configCreate.addProperty("siteFilters.removeFilteredAll", this.removeFilteredAll);
-            configCreate.addProperty("siteFilters.removeFiltered", this.removeFiltered);
-            configCreate.addProperty("siteFilters.keepFiltered", this.keepFiltered);
-            configCreate.addProperty("siteFilters.removeInfo", this.removeInfo);
-            configCreate.addProperty("siteFilters.keepInfo", this.keepInfo);
-            configCreate.addProperty("siteFilters.minQ", this.minQ);
-            configCreate.addProperty("siteFilters.minMeanDp", this.minMeanDp);
-            configCreate.addProperty("siteFilters.maxMeanDp", this.maxMeanDp);
-            configCreate.addProperty("siteFilters.maf", this.maf);
-            configCreate.addProperty("siteFilters.maxMaf", this.maf);
-            configCreate.addProperty("siteFilters.nonRefAf", this.nonRefAf);
-            configCreate.addProperty("siteFilters.maxNonRefAf", this.maxNonRefAf);
-            configCreate.addProperty("siteFilters.mac", this.mac);
-            configCreate.addProperty("siteFilters.maxMac", this.maxMac);
-            configCreate.addProperty("siteFilters.maxNonRefAc", this.maxNonRefAc);
-            configCreate.addProperty("siteFilters.hwe", this.hwe);
-            configCreate.addProperty("siteFilters.geno", this.geno);
-            configCreate.addProperty("siteFilters.maxMissingCount", this.maxMissingCount);
-            configCreate.addProperty("siteFilters.minAlleles", this.minAlleles);
-            configCreate.addProperty("siteFilters.maxAlleles", this.maxAlleles);
-            configCreate.addProperty("siteFilters.thin", this.thin);
-            configCreate.addProperty("siteFilters.mask", this.mask);
-            configCreate.addProperty("siteFilters.invertMask", this.invertMask);
-            configCreate.addProperty("siteFilters.maskMin", this.invertMask);
-            
-            /* Individual filters */
-            configCreate.addProperty("individualFilters.keepIndv", this.keepIndv);
-            configCreate.addProperty("individualFilters.removeIndv", this.removeIndv);
-            configCreate.addProperty("individualFilters.minIndvMeanDp", this.minIndvMeanDp);
-            configCreate.addProperty("individualFilters.maxIndvMeanDp", this.maxIndvMeanDp);
-            configCreate.addProperty("individualFilters.mind", this.mind);
-            configCreate.addProperty("individualFilters.phased", this.phased);
-            configCreate.addProperty("individualFilters.maxIndv", this.maxIndv);
-            
-            /* Statistics */
-            configCreate.addProperty("statistics.count", this.count);
-            configCreate.addProperty("statistics.freq", this.freq);
-            configCreate.addProperty("statistics.depth", this.depth);      
-            
-            // save config
-            configCreate.save();
-            
-        } catch (ConfigurationException ex) {
-            Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     /* Getters and setters for the VCFTools settings */
 
     /**
@@ -623,7 +458,7 @@ public class Settings {
     } 
 
     /**
-     *
+     * Load a bed file
      * @param bedFile
      */
     public void loadBedFile(String bedFile) {
@@ -641,7 +476,7 @@ public class Settings {
 
 
     /**
-     *
+     * Load a bed file to exclude
      * @param exludeBedFile
      */
     public void loadExludeBedFile(String exludeBedFile) {
@@ -658,7 +493,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Is remove all filtered sites enabled
      * @return
      */
     public Boolean isRemoveFilteredAll() {
@@ -666,7 +501,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set to remove all filtered sites
      * @param removeFilteredAll
      */
     public void setRemoveFilteredAll(Boolean removeFilteredAll) {
@@ -674,7 +509,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get list with specific filters to remove sites with
      * @return
      */
     public List<String> getRemoveFiltered() {
@@ -682,7 +517,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set list with specific filters to remove sites with
      * @param removeFiltered
      */
     public void setRemoveFiltered(List<String> removeFiltered) {
@@ -690,7 +525,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Add list with specific filters to remove sites with
      * @param removeFiltered
      */
     public void addRemoveFiltered(List<String> removeFiltered) {
@@ -698,7 +533,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Add specific filter to remove sites with
      * @param removeFiltered
      */
     public void addRemoveFiltered(String removeFiltered) {
@@ -706,7 +541,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get list with specific filters to keep sites with
      * @return
      */
     public List<String> getKeepFiltered() {
@@ -714,7 +549,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set list with specific filters to keep sites with
      * @param keepFiltered
      */
     public void setKeepFiltered(List<String> keepFiltered) {
@@ -722,7 +557,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Add list with specific filters to keep sites with
      * @param keepFiltered
      */
     public void addKeepFiltered(List<String> keepFiltered) {
@@ -730,7 +565,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Add specific filter to keep sites with
      * @param keepFiltered
      */
     public void addKeepFiltered(String keepFiltered) {
@@ -738,7 +573,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get list with specific info to remove sites with
      * @return
      */
     public List<String> getRemoveInfo() {
@@ -746,7 +581,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set list with specific info to remove sites with
      * @param removeInfo
      */
     public void setRemoveInfo(List<String> removeInfo) {
@@ -754,7 +589,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Add list with specific info to remove sites with
      * @param removeInfo
      */
     public void addRemoveInfo(List<String> removeInfo) {
@@ -762,7 +597,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Add specific info to remove sites with
      * @param removeInfo
      */
     public void addRemoveInfo(String removeInfo) {
@@ -770,7 +605,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get list with specific info to keep sites with
      * @return
      */
     public List<String> getKeepInfo() {
@@ -778,7 +613,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set list with specific info to keep sites with
      * @param keepInfo
      */
     public void setKeepInfo(List<String> keepInfo) {
@@ -786,7 +621,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Add list with specific info to keep sites with
      * @param keepInfo
      */
     public void addKeepInfo(List<String> keepInfo) {
@@ -794,7 +629,7 @@ public class Settings {
     }
     
     /**
-     *
+     * Add specific info to keep sites with
      * @param keepInfo
      */
     public void addKeepInfo(String keepInfo) {
@@ -802,7 +637,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum quality
      * @return
      */
     public Double getMinQ() {
@@ -810,7 +645,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set minimum quality
      * @param minQ
      */
     public void setMinQ(Double minQ) {
@@ -818,7 +653,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum mean depth
      * @return
      */
     public Double getMinMeanDp() {
@@ -826,7 +661,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set minimum mean depth
      * @param minMeanDp
      */
     public void setMinMeanDp(Double minMeanDp) {
@@ -834,7 +669,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get maximum mean depth
      * @return
      */
     public Double getMaxMeanDp() {
@@ -842,7 +677,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set maximum mean depth
      * @param maxMeanDp
      */
     public void setMaxMeanDp(Double maxMeanDp) {
@@ -850,7 +685,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum Minor Allele Frequency
      * @return
      */
     public Double getMaf() {
@@ -858,7 +693,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum Minor Allele Frequency
      * @param maf
      */
     public void setMaf(Double maf) {
@@ -866,7 +701,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get maximum Minor Allele Frequency
      * @return
      */
     public Double getMaxMaf() {
@@ -874,7 +709,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set maximum Minor Allele Frequency
      * @param maxMaf
      */
     public void setMaxMaf(Double maxMaf) {
@@ -882,7 +717,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum Non-Reference Allele Frequencies
      * @return
      */
     public Double getNonRefAf() {
@@ -890,7 +725,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set minimum Non-Reference Allele Frequencies
      * @param nonRefAf
      */
     public void setNonRefAf(Double nonRefAf) {
@@ -898,7 +733,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get maximum Non-Reference Allele Frequencies
      * @return
      */
     public Double getMaxNonRefAf() {
@@ -906,7 +741,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set maximum Non-Reference Allele Frequencies
      * @param maxNonRefAf
      */
     public void setMaxNonRefAf(Double maxNonRefAf) {
@@ -914,7 +749,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum Minor Allele Count
      * @return
      */
     public Integer getMac() {
@@ -922,7 +757,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set minimum Minor Allele Count
      * @param mac
      */
     public void setMac(Integer mac) {
@@ -930,7 +765,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get maximum Minor Allele Count
      * @return
      */
     public Integer getMaxMac() {
@@ -938,7 +773,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set maximum Minor Allele Count
      * @param maxMac
      */
     public void setMaxMac(Integer maxMac) {
@@ -946,7 +781,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum Non-Reference Allele Counts
      * @return
      */
     public Double getNonRefAc() {
@@ -954,7 +789,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set minimum Non-Reference Allele Counts
      * @param nonRefAc
      */
     public void setNonRefAc(Double nonRefAc) {
@@ -962,7 +797,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get maximum Non-Reference Allele Counts
      * @return
      */
     public Double getMaxNonRefAc() {
@@ -970,7 +805,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set maximum Non-Reference Allele Counts
      * @param maxNonRefAc
      */
     public void setMaxNonRefAc(Double maxNonRefAc) {
@@ -978,7 +813,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set Hardy-Weinberg Equilibrium
      * @return
      */
     public Double getHwe() {
@@ -986,7 +821,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get Hardy-Weinberg Equilibrium
      * @param hwe
      */
     public void setHwe(Double hwe) {
@@ -994,7 +829,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set proportion of missing data
      * @return
      */
     public Double getGeno() {
@@ -1002,7 +837,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get proportion of missing data
      * @param geno
      */
     public void setGeno(Double geno) {
@@ -1010,7 +845,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set maximum missing chromosomes 
      * @return
      */
     public Integer getMaxMissingCount() {
@@ -1018,7 +853,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get maximum missing chromosomes
      * @param maxMissingCount
      */
     public void setMaxMissingCount(Integer maxMissingCount) {
@@ -1026,7 +861,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum number of alleles
      * @return
      */
     public Integer getMinAlleles() {
@@ -1034,7 +869,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set minimum number of alleles
      * @param minAlleles
      */
     public void setMinAlleles(Integer minAlleles) {
@@ -1042,7 +877,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get maximum number of alleles
      * @return
      */
     public Integer getMaxAlleles() {
@@ -1050,7 +885,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set maximum number of alleles
      * @param maxAlleles
      */
     public void setMaxAlleles(Integer maxAlleles) {
@@ -1058,7 +893,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get thinning number
      * @return
      */
     public Integer getThin() {
@@ -1066,7 +901,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set thinning number
      * @param thin
      */
     public void setThin(Integer thin) {
@@ -1074,7 +909,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Load mask file
      * @param maskFile
      */
     public void loadMaskFile(String maskFile) {
@@ -1090,7 +925,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get mask
      * @return
      */
     public MultiMap getMask() {
@@ -1098,7 +933,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set mask
      * @param mask
      */
     public void setMask(MultiMap mask) {
@@ -1106,7 +941,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Add mask item
      * @param key
      * @param value
      */
@@ -1115,7 +950,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Load inverted mask file
      * @param invertMaskFile
      */
     public void loadInvertMaskFile(String invertMaskFile) {
@@ -1131,7 +966,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get inverted mask
      * @return
      */
     public MultiMap getInvertMask() {
@@ -1139,7 +974,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set inverted mask
      * @param invertMask
      */
     public void setInvertMask(MultiMap invertMask) {
@@ -1147,7 +982,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Add inverted mask item
      * @param key
      * @param value
      */
@@ -1156,7 +991,7 @@ public class Settings {
     }    
     
     /**
-     *
+     * Get minimum mask number
      * @return
      */
     public Integer getMaskMin() {
@@ -1164,7 +999,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set minimum mask number
      * @param maskMin
      */
     public void setMaskMin(Integer maskMin) {
@@ -1172,7 +1007,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get list of individuals to keep
      * @return
      */
     public List<String> getKeepIndv() {
@@ -1180,7 +1015,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set list of individuals to keep
      * @param keepIndv
      */
     public void setKeepIndv(List<String> keepIndv) {
@@ -1188,7 +1023,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Add list of individuals to keep
      * @param keepIndv
      */
     public void addKeepIndv(List<String> keepIndv) {
@@ -1196,7 +1031,7 @@ public class Settings {
     }
     
     /**
-     *
+     * Add individual to keep
      * @param keepIndv
      */
     public void addKeepIndv(String keepIndv) {
@@ -1204,7 +1039,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Load file with individuals to keep
      * @param keepIndvFile
      */
     public void loadKeepIndvFile(String keepIndvFile) {
@@ -1218,7 +1053,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get list of individuals to remove
      * @return
      */
     public List<String> getRemoveIndv() {
@@ -1226,7 +1061,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set list of individuals to remove
      * @param removeIndv
      */
     public void setRemoveIndv(List<String> removeIndv) {
@@ -1234,7 +1069,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Add list of individuals to remove
      * @param removeIndv
      */
     public void addRemoveIndv(List<String> removeIndv) {
@@ -1242,7 +1077,7 @@ public class Settings {
     }
     
     /**
-     *
+     * Add individual to remove
      * @param removeIndv
      */
     public void addRemoveIndv(String removeIndv) {
@@ -1250,7 +1085,7 @@ public class Settings {
     }    
 
     /**
-     *
+     * Load file with individuals to remove
      * @param removeIndvFile
      */
     public void loadRemoveIndvFile(String removeIndvFile) {
@@ -1263,15 +1098,15 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum individual mean depth
      * @return
      */
     public Double getMinIndvMeanDp() {
         return minIndvMeanDp;
     }
 
-    /**
-     *
+    /** 
+     * Set minimum individual mean depth
      * @param minIndvMeanDp
      */
     public void setMinIndvMeanDp(Double minIndvMeanDp) {
@@ -1279,7 +1114,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get maximum individual mean depth
      * @return
      */
     public Double getMaxIndvMeanDp() {
@@ -1287,7 +1122,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set maximum individual mean depth
      * @param maxIndvMeanDp
      */
     public void setMaxIndvMeanDp(Double maxIndvMeanDp) {
@@ -1295,7 +1130,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum call rate threshold
      * @return
      */
     public Double getMind() {
@@ -1303,7 +1138,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set minimum call rate threshold
      * @param mind
      */
     public void setMind(Double mind) {
@@ -1311,7 +1146,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get this filter: First excludes all individuals having all genotypes unphased, and subsequently excludes all sites with unphased genotypes. The remaining data therefore consists of phased data only.
      * @return
      */
     public Boolean isPhased() {
@@ -1319,7 +1154,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set this filter: First excludes all individuals having all genotypes unphased, and subsequently excludes all sites with unphased genotypes. The remaining data therefore consists of phased data only.
      * @param phased
      */
     public void setPhased(Boolean phased) {
@@ -1327,7 +1162,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get this filter: Randomly thins individuals so that only the specified number are retained.
      * @return
      */
     public Integer getMaxIndv() {
@@ -1335,7 +1170,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set this filter: Set this filter: Randomly thins individuals so that only the specified number are retained.
      * @param maxIndv
      */
     public void setMaxIndv(Integer maxIndv) {
@@ -1343,7 +1178,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get statistics count
      * @return
      */
     public Boolean isCount() {
@@ -1351,7 +1186,7 @@ public class Settings {
     }
 
     /**
-     *
+     * set statistics count
      * @param count
      */
     public void setCount(Boolean count) {
@@ -1359,7 +1194,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get statistics freq
      * @return
      */
     public Boolean isFreq() {
@@ -1367,7 +1202,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set statistics freq
      * @param freq
      */
     public void setFreq(Boolean freq) {
@@ -1375,7 +1210,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get statistics depth
      * @return
      */
     public Boolean isDepth() {
@@ -1383,7 +1218,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set statistics depth
      * @param depth
      */
     public void setDepth(Boolean depth) {
@@ -1391,7 +1226,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get to remove filtered genotypes
      * @return
      */
     public Boolean isRemoveFilteredGenoAll() {
@@ -1399,7 +1234,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set to remove filtered genotypes
      * @param removeFilteredGenoAll
      */
     public void setRemoveFilteredGenoAll(Boolean removeFilteredGenoAll) {
@@ -1407,15 +1242,15 @@ public class Settings {
     }
 
     /**
-     *
+     * Get list of filters to remove genotypes with
      * @return
      */
     public List<String> getRemoveFilteredGeno() {
         return removeFilteredGeno;
     }
 
-    /**
-     *
+    /** 
+     * Set list of filters to remove genotypes with
      * @param removeGenoFiltered
      */
     public void setRemoveFilteredGeno(List<String> removeGenoFiltered) {
@@ -1423,7 +1258,7 @@ public class Settings {
     }
     
     /**
-     *
+     * Add filter to remove genotypes with
      * @param removeGenoFiltered
      */
     public void addRemoveFilteredGeno(String removeGenoFiltered) {
@@ -1431,7 +1266,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum genotype quality
      * @return
      */
     public Double getMinGq() {
@@ -1439,7 +1274,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set minimum genotype quality
      * @param minGq
      */
     public void setMinGq(Double minGq) {
@@ -1447,7 +1282,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get minimum genotype depth
      * @return
      */
     public Double getMinDp() {
@@ -1455,7 +1290,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set minimum genotype depth
      * @param minDp
      */
     public void setMinDp(Double minDp) {
@@ -1463,7 +1298,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Get maximum genotype depth
      * @return
      */
     public Double getMaxDp() {
@@ -1471,7 +1306,7 @@ public class Settings {
     }
 
     /**
-     *
+     * Set maximum genotype depth
      * @param maxDp
      */
     public void setMaxDp(Double maxDp) {

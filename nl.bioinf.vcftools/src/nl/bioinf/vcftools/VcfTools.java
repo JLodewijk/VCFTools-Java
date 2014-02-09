@@ -8,7 +8,6 @@ package nl.bioinf.vcftools;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.cli.ParseException;
 
 /**
  *
@@ -20,7 +19,6 @@ public class VcfTools {
 
     /**
      * @param args the command line arguments
-     * @throws org.apache.commons.cli.ParseException
      */
     public static void main(String[] args) {
         

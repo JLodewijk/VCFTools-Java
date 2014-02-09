@@ -64,7 +64,7 @@ public class VcfProcessor {
         this.initVars();
         
         // create writer with define output stream
-        this.writer = new VcfWriter(this.settings.getOutputFile());
+        this.writer = new VcfWriter(stream);
      
         // perform filters
         this.runAllFilters();
