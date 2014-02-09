@@ -34,7 +34,7 @@ public class VcfLine {
 
     /**
      *
-     * @return
+     * @return string representation
      */
     @Override
     public String toString() {
@@ -117,7 +117,7 @@ public class VcfLine {
     /**
      * Get original GATK VariantContext for internal use
      *
-     * @return
+     * @return string representation
      */
     public VariantContext getBroadinstituteVariantContext() {
         return this.vc;
@@ -319,7 +319,7 @@ public class VcfLine {
      * Get the genotype using the specified index number
      *
      * @param index
-     * @return
+     * @return genotype
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public VcfGenotype getGenotype(int index) {

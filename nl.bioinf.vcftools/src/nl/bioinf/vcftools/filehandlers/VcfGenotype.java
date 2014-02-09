@@ -32,7 +32,7 @@ public class VcfGenotype {
     
     /**
      * Get original GATK Genotype for internal use
-     * @return 
+     * @return GATK genotype
      * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public Genotype getBroadinstituteGenotype() {

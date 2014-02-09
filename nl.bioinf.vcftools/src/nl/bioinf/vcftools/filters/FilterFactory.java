@@ -140,7 +140,7 @@ public class FilterFactory {
     
     /**
      * Get the list of site filters
-     * @return 
+     * @return list of site filters
      */
     public List<AbstractSiteFilter> getSiteFilters() {
         return siteFilters;
@@ -148,7 +148,7 @@ public class FilterFactory {
 
     /**
      * Get the list of genotype filters
-     * @return 
+     * @return list of genotype filters
      */
     public List<AbstractGenotypeFilter> getGenotypeFilters() {
         return genotypeFilters;
@@ -156,7 +156,7 @@ public class FilterFactory {
     
     /**
      * Get the list of individual filters
-     * @return 
+     * @return list of individual filters
      */
     public List<AbstractIndividualFilter> getIndividualFilters() {
         return individualFilters;
@@ -164,7 +164,7 @@ public class FilterFactory {
 
     /**
      * Are there site filters set
-     * @return 
+     * @return true when has filters
      */
     public Boolean isHasSiteFilters() {
         return hasSiteFilters;
@@ -172,7 +172,7 @@ public class FilterFactory {
 
      /**
      * Are there genotype filters set
-     * @return 
+     * @return true when has filters
      */
     public Boolean isHasGenotypeFilters() {
         return hasGenotypeFilters;
@@ -180,7 +180,7 @@ public class FilterFactory {
 
      /**
      * Are there individual filters set
-     * @return 
+     * @return true when has filters
      */
     public Boolean isHasIndividualFilters() {
         return hasIndividualFilters;

@@ -26,7 +26,7 @@ public class VcfHeader {
 
     /**
      * Get original GATK VCFHeader for internal use
-     * @return 
+     * @return GATK header
      */
     public VCFHeader getBroadinstituteVCFHeader() {
         return this.header;
@@ -34,7 +34,7 @@ public class VcfHeader {
 
     /**
      * Get the genotype samples
-     * @return 
+     * @return List of samples
      */
     public List<String> getGenotypeSamples() {
         return this.header.getGenotypeSamples();
@@ -42,7 +42,7 @@ public class VcfHeader {
     
     /**
      * Get the number of genotype samples
-     * @return 
+     * @return Sample
      */
     public int getGenotypeSampleNumber() {
         return this.header.getNGenotypeSamples();
@@ -50,7 +50,7 @@ public class VcfHeader {
     
     /**
      *
-     * @return
+     * @return string representation
      */
     @Override
     public String toString() {

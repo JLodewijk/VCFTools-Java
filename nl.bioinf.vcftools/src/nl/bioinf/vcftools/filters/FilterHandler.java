@@ -14,7 +14,7 @@ import nl.bioinf.vcftools.filehandlers.VcfLine;
 /**
  * Class used to perform all the filters and return results
  *
- * @author Sergfilterltero Bondfilterlterettfilterlter <sergfilterltero@bondfilterlterettfilterlter.nl>
+ * @author Sergio Bondietti <sergio@bondietti.nl>
  */
 public class FilterHandler {
 
@@ -30,7 +30,7 @@ public class FilterHandler {
      * Default constructor. Pre loads all the filters.
      *
      * @param settings
-     * @author Sergfilterltero Bondfilterlterettfilterlter <sergfilterltero@bondfilterlterettfilterlter.nl>
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public FilterHandler(Settings settings) {
         this.settings = settings;
@@ -47,8 +47,8 @@ public class FilterHandler {
      * Perform all the site filters
      *
      * @param vcfLine
-     * @return
-     * @author Sergfilterltero Bondfilterlterettfilterlter <sergfilterltero@bondfilterlterettfilterlter.nl>
+     * @return filter results
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public boolean performSiteFilters(VcfLine vcfLine) {
         // perform filters
@@ -64,8 +64,8 @@ public class FilterHandler {
      * Perform all the genotype filters
      *
      * @param vcfLine
-     * @return
-     * @author Sergfilterltero Bondfilterlterettfilterlter <sergfilterltero@bondfilterlterettfilterlter.nl>
+     * @return filter results
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public List<Boolean> performGenotypeFilters(VcfLine vcfLine) {
         // Create and prefill list with true values 
@@ -96,7 +96,8 @@ public class FilterHandler {
      * 
      * @param vcfHeader
      * @param filterDependencies
-     * @return 
+     * @return filter results
+     * @author Sergio Bondietti <sergio@bondietti.nl>
      */
     public List<Boolean> performIndividualFilters(VcfHeader vcfHeader, FilterDependencies filterDependencies) {
         // Create and prefill list with true values
@@ -130,7 +131,7 @@ public class FilterHandler {
     
         /**
      * Are there site filters set
-     * @return 
+     * @return true when has filters
      */
     public Boolean isHasSiteFilters() {
         return hasSiteFilters;
@@ -138,7 +139,7 @@ public class FilterHandler {
 
      /**
      * Are there genotype filters set
-     * @return 
+     * @return true when has filters
      */
     public Boolean isHasGenotypeFilters() {
         return hasGenotypeFilters;
@@ -146,7 +147,7 @@ public class FilterHandler {
 
      /**
      * Are there individual filters set
-     * @return 
+     * @return true when has filters
      */
     public Boolean isHasIndividualFilters() {
         return hasIndividualFilters;

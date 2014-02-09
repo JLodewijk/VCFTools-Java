@@ -95,7 +95,7 @@ public class StatisticsGenerator {
 
     /**
      * Get a list of meanDP per individual
-     * @return 
+     * @return list of meanDP per individual
      */
     public List<Double> getMeanDp() {
         return meanDp;
@@ -104,7 +104,7 @@ public class StatisticsGenerator {
 
     /**
      * Get the list of call ratios for individuals
-     * @return 
+     * @return list of call ratios for individuals
      */
     public List<Double> getCalledRatio() {
         return calledRatio;
@@ -112,7 +112,7 @@ public class StatisticsGenerator {
 
     /**
      * Get a list of frequencies to write to a file
-     * @return 
+     * @return list of frequencies to write to a file
      */
     public List<Double> getFreq() {
         return freq;

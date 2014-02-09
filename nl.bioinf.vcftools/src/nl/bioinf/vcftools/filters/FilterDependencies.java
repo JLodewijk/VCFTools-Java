@@ -78,7 +78,7 @@ public class FilterDependencies {
 
     /**
      * Get a list of meanDP per individual
-     * @return 
+     * @return list of meanDP per individual
      */
     public List<Double> getMeanDp() {
         return meanDp;
@@ -86,7 +86,7 @@ public class FilterDependencies {
     
     /**
      * Get if there is phased data per individual, if its all unphased it returns false
-     * @return 
+     * @return list of if there is phased data per individual
      */
     public List<Boolean> getPhased() {
         return phased;
@@ -94,7 +94,7 @@ public class FilterDependencies {
 
     /**
      * Get the list of call ratios for individuals
-     * @return 
+     * @return list of call ratios for individuals
      */
     public List<Double> getCalledRatio() {
         return calledRatio;
@@ -102,7 +102,7 @@ public class FilterDependencies {
     
     /**
      * Get the list of individuals left after previous filter steps
-     * @return 
+     * @return list of individuals left after previous filter steps
      */
     public List<Boolean> getIndividualsLeft() {
         return individualsLeft;
