@@ -493,7 +493,7 @@ public class Settings {
 
     /**
      * Is remove all filtered sites enabled
-     * @return
+     * @return setting
      */
     public Boolean isRemoveFilteredAll() {
         return removeFilteredAll;
@@ -509,7 +509,7 @@ public class Settings {
 
     /**
      * Get list with specific filters to remove sites with
-     * @return
+     * @return list with specific filters to remove sites with
      */
     public List<String> getRemoveFiltered() {
         return removeFiltered;
@@ -541,7 +541,7 @@ public class Settings {
 
     /**
      * Get list with specific filters to keep sites with
-     * @return
+     * @return list with specific filters to keep sites with
      */
     public List<String> getKeepFiltered() {
         return keepFiltered;
@@ -573,7 +573,7 @@ public class Settings {
 
     /**
      * Get list with specific info to remove sites with
-     * @return
+     * @return list with specific info to remove sites with
      */
     public List<String> getRemoveInfo() {
         return removeInfo;
@@ -605,7 +605,7 @@ public class Settings {
 
     /**
      * Get list with specific info to keep sites with
-     * @return
+     * @return list with specific info to keep sites with
      */
     public List<String> getKeepInfo() {
         return keepInfo;
@@ -637,7 +637,7 @@ public class Settings {
 
     /**
      * Get minimum quality
-     * @return
+     * @return setting
      */
     public Double getMinQ() {
         return minQ;
@@ -653,7 +653,7 @@ public class Settings {
 
     /**
      * Get minimum mean depth
-     * @return
+     * @return setting
      */
     public Double getMinMeanDp() {
         return minMeanDp;
@@ -669,7 +669,7 @@ public class Settings {
 
     /**
      * Get maximum mean depth
-     * @return
+     * @return setting
      */
     public Double getMaxMeanDp() {
         return maxMeanDp;
@@ -685,7 +685,7 @@ public class Settings {
 
     /**
      * Get minimum Minor Allele Frequency
-     * @return
+     * @return setting
      */
     public Double getMaf() {
         return maf;
@@ -701,7 +701,7 @@ public class Settings {
 
     /**
      * Get maximum Minor Allele Frequency
-     * @return
+     * @return setting
      */
     public Double getMaxMaf() {
         return maxMaf;
@@ -717,7 +717,7 @@ public class Settings {
 
     /**
      * Get minimum Non-Reference Allele Frequencies
-     * @return
+     * @return setting
      */
     public Double getNonRefAf() {
         return nonRefAf;
@@ -733,7 +733,7 @@ public class Settings {
 
     /**
      * Get maximum Non-Reference Allele Frequencies
-     * @return
+     * @return setting
      */
     public Double getMaxNonRefAf() {
         return maxNonRefAf;
@@ -749,7 +749,7 @@ public class Settings {
 
     /**
      * Get minimum Minor Allele Count
-     * @return
+     * @return setting
      */
     public Integer getMac() {
         return mac;
@@ -765,7 +765,7 @@ public class Settings {
 
     /**
      * Get maximum Minor Allele Count
-     * @return
+     * @return setting
      */
     public Integer getMaxMac() {
         return maxMac;
@@ -781,7 +781,7 @@ public class Settings {
 
     /**
      * Get minimum Non-Reference Allele Counts
-     * @return
+     * @return setting
      */
     public Double getNonRefAc() {
         return nonRefAc;
@@ -797,7 +797,7 @@ public class Settings {
 
     /**
      * Get maximum Non-Reference Allele Counts
-     * @return
+     * @return setting
      */
     public Double getMaxNonRefAc() {
         return maxNonRefAc;
@@ -813,7 +813,7 @@ public class Settings {
 
     /**
      * Set Hardy-Weinberg Equilibrium
-     * @return
+     * @return setting
      */
     public Double getHwe() {
         return hwe;
@@ -829,7 +829,7 @@ public class Settings {
 
     /**
      * Set proportion of missing data
-     * @return
+     * @return setting
      */
     public Double getGeno() {
         return geno;
@@ -845,7 +845,7 @@ public class Settings {
 
     /**
      * Set maximum missing chromosomes 
-     * @return
+     * @return setting
      */
     public Integer getMaxMissingCount() {
         return maxMissingCount;
@@ -861,7 +861,7 @@ public class Settings {
 
     /**
      * Get minimum number of alleles
-     * @return
+     * @return setting
      */
     public Integer getMinAlleles() {
         return minAlleles;
@@ -877,7 +877,7 @@ public class Settings {
 
     /**
      * Get maximum number of alleles
-     * @return
+     * @return setting
      */
     public Integer getMaxAlleles() {
         return maxAlleles;
@@ -893,7 +893,7 @@ public class Settings {
 
     /**
      * Get thinning number
-     * @return
+     * @return setting
      */
     public Integer getThin() {
         return thin;
@@ -925,7 +925,7 @@ public class Settings {
 
     /**
      * Get mask
-     * @return
+     * @return setting
      */
     public MultiMap getMask() {
         return mask;
@@ -966,7 +966,7 @@ public class Settings {
 
     /**
      * Get inverted mask
-     * @return
+     * @return inverted mask
      */
     public MultiMap getInvertMask() {
         return invertMask;
@@ -991,7 +991,7 @@ public class Settings {
     
     /**
      * Get minimum mask number
-     * @return
+     * @return setting
      */
     public Integer getMaskMin() {
         return maskMin;
@@ -1007,7 +1007,7 @@ public class Settings {
 
     /**
      * Get list of individuals to keep
-     * @return
+     * @return list of individuals to keep
      */
     public List<String> getKeepIndv() {
         return keepIndv;
@@ -1053,7 +1053,7 @@ public class Settings {
 
     /**
      * Get list of individuals to remove
-     * @return
+     * @return list of individuals to remove
      */
     public List<String> getRemoveIndv() {
         return removeIndv;
@@ -1098,7 +1098,7 @@ public class Settings {
 
     /**
      * Get minimum individual mean depth
-     * @return
+     * @return setting
      */
     public Double getMinIndvMeanDp() {
         return minIndvMeanDp;
@@ -1114,7 +1114,7 @@ public class Settings {
 
     /**
      * Get maximum individual mean depth
-     * @return
+     * @return setting
      */
     public Double getMaxIndvMeanDp() {
         return maxIndvMeanDp;
@@ -1130,7 +1130,7 @@ public class Settings {
 
     /**
      * Get minimum call rate threshold
-     * @return
+     * @return setting
      */
     public Double getMind() {
         return mind;
@@ -1146,7 +1146,7 @@ public class Settings {
 
     /**
      * Get this filter: First excludes all individuals having all genotypes unphased, and subsequently excludes all sites with unphased genotypes. The remaining data therefore consists of phased data only.
-     * @return
+     * @return setting
      */
     public Boolean isPhased() {
         return phased;
@@ -1162,7 +1162,7 @@ public class Settings {
 
     /**
      * Get this filter: Randomly thins individuals so that only the specified number are retained.
-     * @return
+     * @return setting
      */
     public Integer getMaxIndv() {
         return maxIndv;
@@ -1178,7 +1178,7 @@ public class Settings {
 
     /**
      * Get statistics count
-     * @return
+     * @return setting
      */
     public Boolean isCount() {
         return count;
@@ -1194,7 +1194,7 @@ public class Settings {
 
     /**
      * Get statistics freq
-     * @return
+     * @return setting
      */
     public Boolean isFreq() {
         return freq;
@@ -1210,7 +1210,7 @@ public class Settings {
 
     /**
      * Get statistics depth
-     * @return
+     * @return setting
      */
     public Boolean isDepth() {
         return depth;
@@ -1226,7 +1226,7 @@ public class Settings {
 
     /**
      * Get to remove filtered genotypes
-     * @return
+     * @return setting
      */
     public Boolean isRemoveFilteredGenoAll() {
         return removeFilteredGenoAll;
@@ -1242,7 +1242,7 @@ public class Settings {
 
     /**
      * Get list of filters to remove genotypes with
-     * @return
+     * @return list of filters to remove genotypes with
      */
     public List<String> getRemoveFilteredGeno() {
         return removeFilteredGeno;
@@ -1266,7 +1266,7 @@ public class Settings {
 
     /**
      * Get minimum genotype quality
-     * @return
+     * @return setting
      */
     public Double getMinGq() {
         return minGq;
@@ -1282,7 +1282,7 @@ public class Settings {
 
     /**
      * Get minimum genotype depth
-     * @return
+     * @return setting
      */
     public Double getMinDp() {
         return minDp;
@@ -1298,7 +1298,7 @@ public class Settings {
 
     /**
      * Get maximum genotype depth
-     * @return
+     * @return setting
      */
     public Double getMaxDp() {
         return maxDp;
