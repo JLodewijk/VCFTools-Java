@@ -30,7 +30,6 @@ public class VcfProcessor {
     private Settings settings;
     private FilterDependencies filterDependencies;
     private Boolean performStatistics;
-    private StatisticsGenerator statisticsGenerator;
     private FilterHandler filterHandler;
     private VcfWriter writer;
     
@@ -134,11 +133,7 @@ public class VcfProcessor {
         
         // Write header to output
         this.writer.writeHeader(header);
-
-        // Build the StatisticsGenerator
-        if (this.performStatistics == true) { statisticsGenerator = new StatisticsGenerator(this.settings); }
-        
-
+     
         // Perform Individual filters
         List<Boolean> individualFilterResults = null;
         if (this.filterHandler.isHasIndividualFilters() == true) { individualFilterResults = this.filterHandler.performIndividualFilters(header, filterDependencies); }
@@ -158,16 +153,11 @@ public class VcfProcessor {
                     List<Boolean> genotypeFilterResults = this.filterHandler.performGenotypeFilters(vcfLine);
                     if (genotypeFilterResults.contains(false) == true) { vcfLine.filterGenotypes(genotypeFilterResults); }
                 }
-                // Collect statistics
-                //if (this.performStatistics == true) { statisticsGenerator.collectStatistics(vcfLine); }
                 
                 // Write line
                 this.writer.writeVcfLine(vcfLine);
             }
-        }
-        
-        // Calculate the statistics
-        if (this.performStatistics == true) { statisticsGenerator.calculateStatistics(); }
+        }      
 
         // close the reader and writer
         reader.close();
