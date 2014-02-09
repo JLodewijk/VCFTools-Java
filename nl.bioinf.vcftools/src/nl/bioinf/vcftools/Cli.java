@@ -6,13 +6,11 @@
 package nl.bioinf.vcftools;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.ParseException;
-import nl.bioinf.vcftools.Settings;
 import org.apache.commons.cli.HelpFormatter;
 
 /**
@@ -470,7 +468,10 @@ public class Cli {
 
         if (this.cmd.hasOption("maxIndv")) {
             try {
-                int maxIndv = Integer.parseInt(this.cmd.getOptionValue("maxIndv"));
+                if(Integer.parseInt(this.cmd.getOptionValue("maxIndv")) < 1){
+                    System.err.println("The value of the option -maxIndv can not be lower than 1");
+                    System.exit(1);
+                } 
             } catch (NumberFormatException e) {
                 System.err.println("The value of the option -maxIndv has to be numerical");
                 System.exit(1);
@@ -644,22 +645,16 @@ public class Cli {
      */
     private void procesOptions() {
 
-        if (this.cmd.hasOption("h")) {
-            usage();
-        }
-        if (this.cmd.hasOption("vcf")) {
 
+        if (this.cmd.hasOption("vcf")) {
             settings.setInputFile(this.cmd.getOptionValue("vcf"));
         }
-
-        settings.setInputFile(this.cmd.getOptionValue("vcf"));
 
         if (this.cmd.hasOption("gvcf")) {
             settings.setGzipped(true);
         }
         if (this.cmd.hasOption("out")) {
             settings.setOutputFile(this.cmd.getOptionValue("out"));
-//            settings.setOutputFile(cmd.getOptionValue("out"));
         }
         if (this.cmd.hasOption("chr")) {
 
