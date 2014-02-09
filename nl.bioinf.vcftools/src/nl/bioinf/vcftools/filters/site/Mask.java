@@ -34,7 +34,7 @@ public class Mask extends AbstractSiteFilter {
              digitList.add(Integer.parseInt(String.valueOf(digit)));
           }
           //if value of chromosome is higher than -min mask, VCF line is removed
-          if(digitList.get(vcfLine.getPosition()-1) > settings.getMaskMin()){
+          if(digitList.get(vcfLine.getPosition()-1) >= settings.getMaskMin()){
               test = false;}
         }
         return test;

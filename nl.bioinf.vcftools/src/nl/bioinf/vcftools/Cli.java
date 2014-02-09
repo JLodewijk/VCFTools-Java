@@ -141,11 +141,13 @@ public class Cli {
      * Function to check if valid options are given
      */
     private void checkOptions() throws Exception {
-
+        
+                
         if (this.cmd.hasOption("h")) {
             usage();
         }
-
+        
+        
         if (this.args.length < 1) {
             usage();
         }
@@ -154,122 +156,13 @@ public class Cli {
             System.err.println("To run this program a VCF file is required");
             System.exit(1);
         }
-        if (((this.cmd.hasOption("fromBp")) || (this.cmd.hasOption("toBp"))) && ((!this.cmd.hasOption("chr")) && (!this.cmd.hasOption("notChr")))) {
-            System.err.println("The options -fromBp and -toBp can only be used in conjunction with -chr or -notChr");
-            System.exit(1);
-        }
 
-        /*Check if fromBp is used with toBp and vice-verca and if fromBp and
-         toBp is used with chr or notChr
-         Only last missing fromBp or toBp gives ArrayOutOfBounceError   */
         if (this.cmd.hasOption("fromBp") || this.cmd.hasOption("toBp")) {
             if (this.cmd.getOptionValues("fromBp").length != this.cmd.getOptionValues("toBp").length) {
-                System.err.println("It is required to use the option -fromBp and -toBp together");
+                System.err.println("It is required to use the options -fromBp and -toBp together");
                 System.exit(1);
             }
         }
-//        if ((this.args[0].equals("-fromBp")) || (this.args[0].equals("-toBp")) || (this.args[1].equals("-fromBp")) || (this.args[1].equals("-toBp"))) {
-//            System.err.println("ERROR 1");
-//        }
-//
-//        for (int i = 2; i < this.args.length; i++) {
-//            if (this.args[i].equals("-fromBp")) {
-//
-//                if (((!this.args[i - 2].equals("-chr")) && (!this.args[i - 2].equals("-notChr"))) && (!this.args[i - 2].equals("-toBp"))) {
-//                    System.err.println("ERROR 2a");
-//                }
-//            }
-        
-//
-//            if (this.args[i].equals("-toBp")) {
-//                if (((!this.args[i - 2].equals("-chr")) && (!this.args[i - 2].equals("-notChr"))) && (!this.args[i - 2].equals("-fromBp"))) {
-//                    System.err.println("ERROR 2b");
-//                }
-//            }
-//
-//        }
-
-//                System.out.println(this.args[i]);
-//                    if(this.args[i].equals("-fromBp")){
-//                       
-//                        if(i+4 == this.args.length){
-//                            if(!this.args[i-2].equals("-chr") || !this.args[i-2].equals("-notChr")){
-//                                System.err.println("error 1");
-//                                System.exit(1);
-//                            }
-//                     }
-//                        if(i+2 == this.args.length){
-//                         if(!(this.args[i-2].equals("-chr")) && !(this.args[i-2].equals("-notChr"))){
-//                                System.err.println("error 2");
-//                                System.exit(1);
-//                            }
-//                        }
-//                    if(this.args[i-2].equals("-toBp")){
-//                        System.out.println(this.args[i+1]);
-//                        if(!(this.args[i-4].equals("-chr"))){
-//                                System.err.println("error 1b");
-//                                System.exit(1);
-//                            }
-//                    }
-//                    if(this.args[i+2].equals("-toBp")){
-//                     if(!this.args[i-2].equals("-chr") || !this.args[i-2].equals("-notChr")){
-//                                System.err.println("error 2b");
-//                                System.exit(1);
-//                            }
-//                    }
-//                        
-//                        
-//                        
-//                    }
-//                       
-//                        if(this.args[i+2].equals("-toBp") || this.args[i-2].equals("-to")){
-//                            if(Integer.parseInt(this.args[i+1]) > Integer.parseInt(this.args[i+3])){
-//                                System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
-//                                System.exit(1);
-//                            }
-//                        if(!(this.args[i-2].equals("-notChr")) && !(this.args[i-2].equals("-chr"))){
-//                            System.err.println("1 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-//                            System.exit(1);
-//                        } 
-//                        }
-//                        else if(this.args[i-2].equals("-toBp")){
-//                            if(Integer.parseInt(this.args[i+1]) > Integer.parseInt(this.args[i-3])){
-//                            System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
-//                            System.exit(1);
-//                            }
-//                            if(!(this.args[i-4].equals("-chr")) && !(this.args[i-4].equals("-notChr"))){
-//                            System.err.println("2 It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-//                            System.exit(1);
-//                           }
-//                        } else{System.err.println("3 It is required to use -fromBp in conjunction with -toBp");
-//                                System.exit(1);
-//                        }
-//                    }
-//                   
-//                   if(this.args[i].equals("-toBp")){
-//                       if(this.args[i-2].equals("-fromBp")){
-//                           if(Integer.parseInt(this.args[i+1]) < Integer.parseInt(this.args[i-1])){
-//                                System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
-//                                System.exit(1);
-//                           }
-//                       if(!(this.args[i-4].equals("-chr")) && !(this.args[i-4].equals("-notChr"))){
-//                           System.err.println("1b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-//                           System.exit(1);
-//                        } 
-//                       } else if(this.args[i+2].equals("-fromBp")){
-//                           if(Integer.parseInt(this.args[i+1]) < Integer.parseInt(this.args[i+3])){
-//                               System.err.println("The value of -fromBp can not be higer than the value of -toBp ");
-//                               System.exit(1);
-//                           }
-//                       if(!(this.args[i-2].equals("-chr")) && !(this.args[i-2].equals("-notChr"))){
-//                           System.err.println("2b It is required to use -fromBp and -toBp in conjunction with -chr or -notChr");
-//                           System.exit(1);
-//                       }
-//                       } else{System.err.println("3b It is required to use -fromBp in conjunction with -toBp");
-//                                System.exit(1);
-//                       }
-//                     
-//                   }
         if (this.cmd.hasOption("removeFilteredAll") && (this.cmd.hasOption("removeFiltered") || this.cmd.hasOption("keepFiltered"))) {
             System.err.println("When option -removeFilteredAll is given the options -removeFilterd or -keepFilterd are not allowed");
             System.exit(1);
@@ -485,6 +378,11 @@ public class Cli {
                 System.exit(1);
 
             }
+        }
+        
+        if( ( (this.cmd.hasOption("mask")) && !(this.cmd.hasOption("maskMin"))) || (!(this.cmd.hasOption("mask")) && (this.cmd.hasOption("maskMin")))){
+            System.err.println("It is required to use the options -mask and -maskMin together");
+            System.exit(1);
         }
 
         if (cmd.hasOption("vcf")) {
