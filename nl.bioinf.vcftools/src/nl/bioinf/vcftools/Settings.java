@@ -90,6 +90,10 @@ public class Settings {
     private Boolean freq;
     private Boolean depth;
     
+    /**
+     * Get a settings instance
+     * @return instance
+     */
     public static Settings getInstance() {
         return instance;
     }

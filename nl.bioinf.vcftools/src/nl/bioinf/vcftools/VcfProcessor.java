@@ -57,6 +57,12 @@ public class VcfProcessor {
         this.runAllFilters();
     }
     
+    /**
+     * The constructor to use when you want to use a custom output stream
+     * @param settings
+     * @param stream
+     * @throws IOException
+     */
     public VcfProcessor(Settings settings, OutputStream stream) throws IOException {
         // initialize variables
         this.settings = settings;
