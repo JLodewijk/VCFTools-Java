@@ -48,6 +48,10 @@ public class VcfHeader {
         return this.header.getNGenotypeSamples();
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "VcfHeader{" + "header=" + header + '}';
